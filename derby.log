@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Fri Jul 14 14:57:12 CST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - localhost - (1629631): instance a816c00e-015d-3fe3-1491-0000062c25b0 
+on database directory C:\Users\Denise Furaque\Documents\NetBeansProjects\db_partNumber\database with class loader sun.misc.Launcher$AppClassLoader@5e2de80c 
+Loaded from file:/C:/Program%20Files/Java/jdk1.8.0_131/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_131-b11
+user.dir=C:\Users\Denise Furaque\Documents\NetBeansProjects\db_partNumber
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
