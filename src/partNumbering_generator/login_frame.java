@@ -237,7 +237,7 @@ public class login_frame extends javax.swing.JFrame {
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering " ,"Admin01","07032017");
+            Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering " ,"Admin01","07032017");
             PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet resultset = smt.executeQuery();
             
