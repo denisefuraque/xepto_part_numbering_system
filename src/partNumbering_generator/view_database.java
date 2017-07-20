@@ -72,7 +72,7 @@ public final class view_database extends javax.swing.JFrame {
         switch (n){
             case 0:
                 try{
-                    con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
+                    con = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
                     con = getConnection();
                     st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     String searchQuery = "SELECT * FROM PART_NUMBER_DATA";
@@ -116,7 +116,7 @@ public final class view_database extends javax.swing.JFrame {
     public Connection getConnection(){
         
         try{
-            con1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
+            con1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
