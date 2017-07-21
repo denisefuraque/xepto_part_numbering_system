@@ -17,13 +17,13 @@ import javax.swing.JOptionPane;
 
 public class login_frame extends javax.swing.JFrame {
 
-    String host = Host.getHost();
+    String host_address = Host.getHost();
     
     public login_frame() {
         
         initComponents();
         
-        lbl_host.setText("Host: " + host);
+        lbl_host.setText("Host: " + host_address);
         
         setLocationRelativeTo(null);
         
@@ -267,7 +267,7 @@ public class login_frame extends javax.swing.JFrame {
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            Connection connect = DriverManager.getConnection("jdbc:derby://" + host + "/partNumbering " ,"Admin01","07032017");
+            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering " ,"Admin01","07032017");
             PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet resultset = smt.executeQuery();
             
@@ -369,8 +369,8 @@ public class login_frame extends javax.swing.JFrame {
                 }
             }
             if(valid_ip){
-                host = input_host;
-                Host.setHost(host);
+                host_address = input_host;
+                Host.setHost(host_address);
                 JOptionPane.showMessageDialog(null, "Host Address changed to " + Host.getHost());
                 lbl_host.setText("Host: " + Host.getHost());
             }

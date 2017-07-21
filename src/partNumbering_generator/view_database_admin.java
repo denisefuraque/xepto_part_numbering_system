@@ -20,6 +20,7 @@ import javax.swing.table.TableRowSorter;
 
 public class view_database_admin extends javax.swing.JFrame {
 
+    String host_address = Host.getHost();
     
     public view_database_admin() {
         initComponents();
@@ -37,7 +38,7 @@ public class view_database_admin extends javax.swing.JFrame {
         Connection con = null;
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
+            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

@@ -26,6 +26,8 @@ public class save_data_user extends javax.swing.JFrame {
     
     String pn, cat, pn1, cat1;
     
+    String host_address = Host.getHost();
+    
     public save_data_user(String partNum, String category) throws SQLException {
         
         initComponents();
@@ -52,7 +54,7 @@ public class save_data_user extends javax.swing.JFrame {
         try{
             //Connect to the database
             
-            String host = "jdbc:derby://localhost/partNumbering  ";
+            String host = "jdbc:derby://" + host_address + "/partNumbering  ";
             String username = "Admin01";
             String password = "07032017";
             con = DriverManager.getConnection(host, username, password);

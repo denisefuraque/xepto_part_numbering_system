@@ -17,6 +17,8 @@ public class mod_user_admin extends javax.swing.JFrame {
 
     String user, pass, fname, lname, job;
     
+    String host_address = Host.getHost();
+    
     public mod_user_admin(String mod_user, String mod_pass, String mod_fname, String mod_lname, String mod_job) {
         initComponents();
         
@@ -321,7 +323,7 @@ public class mod_user_admin extends javax.swing.JFrame {
                                     String val3 = txt_fname.getText();
                                     String val4 = txt_lname.getText();
                                     String val5 = txt_job.getText(); 
-                                    String host = "jdbc:derby://localhost/partNumbering";
+                                    String host = "jdbc:derby://" + host_address + "/partNumbering";
                                     String username = "Admin01";
                                     String password = "07032017";
                                     Connection connect = DriverManager.getConnection(host, username, password);
@@ -383,7 +385,7 @@ public class mod_user_admin extends javax.swing.JFrame {
                                                     String val3 = txt_fname.getText();
                                                     String val4 = txt_lname.getText();
                                                     String val5 = txt_job.getText(); 
-                                                    String host = "jdbc:derby://localhost/partNumbering";
+                                                    String host = "jdbc:derby://" + host_address + "/partNumbering";
                                                     String username = "Admin01";
                                                     String password = "07032017";
                                                     Connection connect = DriverManager.getConnection(host, username, password);

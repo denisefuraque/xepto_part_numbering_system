@@ -45,6 +45,8 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     String a_user, a_pass, a_fname, a_lname, a_job;
     
+    String host_address = Host.getHost();
+    
     int curRow = 0;
     
     public emp_dir_admin() {
@@ -86,7 +88,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
                 Statement state = null;
                 ResultSet result = null; 
                 try{
-                    connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
+                    connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
                     state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     String query = "SELECT * FROM ADMINS";
                     result = state.executeQuery(query);
@@ -133,7 +135,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
     public Connection getConnection(){
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
+            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
@@ -441,7 +443,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
                     }
             System.out.println(dataInd);
             try{
-                String host = "jdbc:derby://localhost/partNumbering";
+                String host = "jdbc:derby://" + host_address + "/partNumbering";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset

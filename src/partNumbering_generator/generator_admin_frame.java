@@ -28,6 +28,8 @@ public final class generator_admin_frame extends javax.swing.JFrame {
     String monthText;
     String dayText;
     
+    String host_address = Host.getHost();
+    
     public generator_admin_frame() {
         
         initComponents();
@@ -59,7 +61,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering";
+                String host = "jdbc:derby://" + host_address + "/partNumbering";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -105,7 +107,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -151,7 +153,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -197,7 +199,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -243,7 +245,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -289,7 +291,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -335,7 +337,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -380,7 +382,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -426,7 +428,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
             try{
                 //Connect to the database - External Released Commodity
 
-                String host = "jdbc:derby://localhost/partNumbering  ";
+                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -1805,7 +1807,7 @@ public final class generator_admin_frame extends javax.swing.JFrame {
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
         //open_save_db_pan.setVisible(true);
         try{
-            Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " , "Admin01", "07032017");
+            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " , "Admin01", "07032017");
             Statement state = connect.createStatement();
             String sql = "SELECT * FROM Admin01.DATA_USERS";
             ResultSet res = state.executeQuery(sql);

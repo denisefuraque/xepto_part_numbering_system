@@ -34,6 +34,8 @@ public class view_database_user extends javax.swing.JFrame {
     
     int curRow = 0;
     
+    String host_address = Host.getHost();
+    
     public view_database_user() {
         
         initComponents();
@@ -64,7 +66,7 @@ public class view_database_user extends javax.swing.JFrame {
     public Connection getConnection(){
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
+            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
