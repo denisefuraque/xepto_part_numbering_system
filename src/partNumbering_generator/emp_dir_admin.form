@@ -205,6 +205,7 @@
                     </BindingProperty>
                   </BindingProperties>
                   <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbl_databaseMouseClicked"/>
                     <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbl_databaseMousePressed"/>
                   </Events>
                 </Component>
