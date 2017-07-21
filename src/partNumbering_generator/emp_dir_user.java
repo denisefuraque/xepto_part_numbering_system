@@ -90,7 +90,7 @@ public class emp_dir_user extends javax.swing.JFrame {
                 Statement state = null;
                 ResultSet result = null; 
                 try{
-                    connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                    connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                     state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     String query = "SELECT * FROM EMPLOYEE";
                     result = state.executeQuery(query);
@@ -137,7 +137,7 @@ public class emp_dir_user extends javax.swing.JFrame {
     public Connection getConnection(){
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+            con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
@@ -208,7 +208,7 @@ public class emp_dir_user extends javax.swing.JFrame {
     
     public void user(){
             try{
-                String host = "jdbc:derby://192.168.0.202/partNumbering  ";
+                String host = "jdbc:derby://localhost/partNumbering  ";
                 String username = "Admin01";
                 String password = "07032017";
                 //Execute some sql and load the records into the resultset
@@ -482,7 +482,7 @@ public class emp_dir_user extends javax.swing.JFrame {
             case 0:
 
             try{
-                conn = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                conn = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                 stmnt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 String querySql = "SELECT * FROM ADMINS";
                 reSet = stmnt.executeQuery(querySql);
@@ -531,7 +531,7 @@ public class emp_dir_user extends javax.swing.JFrame {
             Statement state = null;
             ResultSet result = null;
             try{
-                connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                 connect = getConnection();
                 state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 String query = "SELECT * FROM EMPLOYEE";

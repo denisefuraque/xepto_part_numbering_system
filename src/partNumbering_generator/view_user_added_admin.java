@@ -79,7 +79,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 Statement state = null;
                 ResultSet result = null; 
                 try{
-                    connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                    connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                     connect = getConnection();
                     state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     String query = "SELECT * FROM DATA_USERS";
@@ -127,7 +127,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
     public Connection getConnection(){
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+            con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
@@ -404,7 +404,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
         case 0:
            
             try{
-                conn = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                conn = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                 stmnt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 String querySql = "SELECT * FROM PART_NUMBER_DATA";
                 reSet = stmnt.executeQuery(querySql);
@@ -450,7 +450,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
             Statement state = null;
             ResultSet result = null; 
             try{
-                connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                 connect = getConnection();
                 state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 String query = "SELECT * FROM DATA_USERS";

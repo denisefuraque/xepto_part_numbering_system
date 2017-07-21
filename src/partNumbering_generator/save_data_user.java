@@ -52,7 +52,7 @@ public class save_data_user extends javax.swing.JFrame {
         try{
             //Connect to the database
             
-            String host = "jdbc:derby://192.168.0.202/partNumbering  ";
+            String host = "jdbc:derby://localhost/partNumbering  ";
             String username = "Admin01";
             String password = "07032017";
             con = DriverManager.getConnection(host, username, password);
