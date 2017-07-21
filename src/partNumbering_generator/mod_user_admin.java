@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -16,6 +17,10 @@ import javax.swing.JPasswordField;
 public class mod_user_admin extends javax.swing.JFrame {
 
     String user, pass, fname, lname, job;
+    
+    ArrayList<String> uAdmin = new ArrayList<>(), uUser = new ArrayList<>();
+    
+    String[] AdminArray, UserArray;
     
     public mod_user_admin(String mod_user, String mod_pass, String mod_fname, String mod_lname, String mod_job) {
         initComponents();
@@ -36,6 +41,48 @@ public class mod_user_admin extends javax.swing.JFrame {
         txt_job.setText(mod_job);
         txt_pType.setText("Administrator");
         
+        getAdminNames();
+        getUserNames();
+    }
+    
+    public void getAdminNames(){
+        try{
+            Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet resultset = smt.executeQuery();
+
+            while(resultset.next()){
+                String db_uname = resultset.getString("username");
+                        
+                uAdmin.add(db_uname);
+            }
+            smt.closeOnCompletion();
+            resultset.close();
+            connect.close();
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public void getUserNames(){
+        try{
+            Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = connect.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet resultset = smt.executeQuery();
+
+            while(resultset.next()){
+                String db_uname = resultset.getString("username");
+                        
+                uUser.add(db_uname);
+            }
+            smt.closeOnCompletion();
+            resultset.close();
+            connect.close();
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     
     @SuppressWarnings("unchecked")
