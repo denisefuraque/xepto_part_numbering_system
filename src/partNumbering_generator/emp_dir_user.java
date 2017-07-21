@@ -48,6 +48,7 @@ public class emp_dir_user extends javax.swing.JFrame {
     String rowPass = "";
     
     String host_address = Host.getHost();
+    String a_user, a_pass, a_fname, a_lname, a_job;
     
     int curRow = 0;
     
@@ -293,6 +294,9 @@ public class emp_dir_user extends javax.swing.JFrame {
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tbl_databaseMousePressed(evt);
             }
@@ -590,6 +594,47 @@ public class emp_dir_user extends javax.swing.JFrame {
         
         rowPass = dataList.get(row).getPword();
     }//GEN-LAST:event_tbl_databaseMousePressed
+
+    private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
+        if (evt.getClickCount() == 2) {
+            int dataInd = tbl_database.getSelectedRow();
+            if (tbl_database.getRowSorter()!=null) {
+                        dataInd = tbl_database.getRowSorter().convertRowIndexToModel(dataInd);
+                    }
+            System.out.println(dataInd);
+            try{
+                String host = "jdbc:derby://" + host_address + "/partNumbering";
+                String username = "Admin01";
+                String password = "07032017";
+                //Execute some sql and load the records into the resultset
+                try (Connection con0 = DriverManager.getConnection(host, username, password)) {
+                    //Execute some sql and load the records into the resultset
+                    Statement stmt0 = con0.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
+                    String sql = "SELECT * FROM EMPLOYEE";
+                    //getting the data for the external
+                        try (ResultSet rs0 = stmt0.executeQuery(sql)) {
+                            //getting the data for the external
+                            rs0.absolute(dataInd+1);
+                            a_user = rs0.getString("username");
+                            a_pass = rs0.getString("password");
+                            a_fname = rs0.getString("first_name");
+                            a_lname = rs0.getString("last_name");
+                            a_job = rs0.getString("job_title");
+                            System.out.println(a_user + " | " + a_pass + " | " + a_fname + " " + a_lname + " | " + a_job);
+                            
+                            rs0.close();
+                            stmt0.closeOnCompletion();
+                            con0.close();
+                        }
+                        this.hide();
+                        new mod_user_user(a_user, a_pass, a_fname, a_lname, a_job).setVisible(true);
+                    }
+                }
+                catch(SQLException err){
+                    JOptionPane.showMessageDialog(this, err.getMessage());
+                }
+        }
+    }//GEN-LAST:event_tbl_databaseMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
-public class mod_user_admin extends javax.swing.JFrame {
+public class mod_user_user extends javax.swing.JFrame {
 
     String user, pass, fname, lname, job;
     
@@ -26,8 +26,8 @@ public class mod_user_admin extends javax.swing.JFrame {
     
     String host_address = Host.getHost();
     
-    public mod_user_admin(String mod_user, String mod_pass, String mod_fname, String mod_lname, String mod_job) {
-        initComponents();
+    public mod_user_user(String mod_user, String mod_pass, String mod_fname, String mod_lname, String mod_job) {
+         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage());
         setLocationRelativeTo(null);
@@ -48,7 +48,7 @@ public class mod_user_admin extends javax.swing.JFrame {
         getAdminNames();
         getUserNames();
     }
-    
+
     public void getAdminNames(){
         try{
             Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
@@ -119,9 +119,7 @@ public class mod_user_admin extends javax.swing.JFrame {
         btn_save = new javax.swing.JButton();
         btn_back = new javax.swing.JButton();
 
-        setTitle("User Information (ADMIN) - Part Number Generator");
-        setMinimumSize(new java.awt.Dimension(600, 400));
-        setSize(new java.awt.Dimension(600, 400));
+        setTitle("User Information (USER) - Part Number Generator");
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan.setMaximumSize(new java.awt.Dimension(600, 400));
@@ -354,16 +352,16 @@ public class mod_user_admin extends javax.swing.JFrame {
         txt_fname.setEditable(true);
         txt_lname.setEditable(true);
         txt_job.setEditable(true);
-        
+
         txt_user.requestFocus();
         txt_user.selectAll();
-        
+
         btn_mod.setEnabled(false);
         btn_save.setEnabled(true);
     }//GEN-LAST:event_btn_modActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        
+
         if(!txt_user.getText().equals(user)){
             if(txt_user.getText().isEmpty()){
                 lbl_user.setIcon(war);
@@ -376,12 +374,12 @@ public class mod_user_admin extends javax.swing.JFrame {
             if(!Arrays.asList(AdminArray).contains(txt_user.getText()) && !txt_user.getText().isEmpty()){
                 lbl_user.setIcon(che);
             }
-            
+
         }
         else if(txt_user.getText().equals(user)){
-           lbl_user.setIcon(che);
+            lbl_user.setIcon(che);
         }
-        
+
         if(txt_fname.getText().isEmpty()){
             lbl_fname.setIcon(war);
         }
@@ -395,14 +393,14 @@ public class mod_user_admin extends javax.swing.JFrame {
         else if(!txt_lname.getText().isEmpty()){
             lbl_lname.setIcon(che);
         }
-        
+
         if(txt_job.getText().isEmpty()){
             lbl_job.setIcon(war);
         }
         else if(!txt_job.getText().isEmpty()){
             lbl_job.setIcon(che);
         }
-        
+
         if(txt_pass.getText().equals(pass)){
             lbl_pass.setIcon(che);
             if(lbl_pass.getIcon() == che && lbl_user.getIcon() == che && lbl_lname.getIcon() == che && lbl_fname.getIcon() == che && lbl_job.getIcon() == che){
@@ -410,22 +408,91 @@ public class mod_user_admin extends javax.swing.JFrame {
                 int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Your Password",JOptionPane.OK_CANCEL_OPTION);
                 switch(action){
                     case 0:
-                        if(pwd.getText().equals(txt_pass.getText())){
-                            Object[] options = {"Yes","No"};
-                            int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
-                            switch (opt){
-                                case 0:
+                    if(pwd.getText().equals(txt_pass.getText())){
+                        Object[] options = {"Yes","No"};
+                        int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                        switch (opt){
+                            case 0:
+                            try {
+                                String val1 = txt_user.getText();
+                                String val2 = txt_pass.getText();
+                                String val3 = txt_fname.getText();
+                                String val4 = txt_lname.getText();
+                                String val5 = txt_job.getText();
+                                String host = "jdbc:derby://" + host_address + "/partNumbering";
+                                String username = "Admin01";
+                                String password = "07032017";
+                                Connection connect = DriverManager.getConnection(host, username, password);
+                                String sql = "UPDATE EMPLOYEE SET USERNAME = ?, PASSWORD = ?, FIRST_NAME = ?, LAST_NAME = ?, JOB_TITLE = ?  WHERE USERNAME = ?";
+                                PreparedStatement stmt = connect.prepareStatement(sql);
+                                stmt.setString(1, val1);
+                                stmt.setString(2, val2);
+                                stmt.setString(3, val3);
+                                stmt.setString(4, val4);
+                                stmt.setString(5, val5);
+                                stmt.setString(6, user);
+                                stmt.executeUpdate();
+                                JOptionPane.showMessageDialog(null, "Database has been Updated !");
+
+                                btn_save.setEnabled(false);
+                                btn_mod.setEnabled(true);
+                                txt_user.setEditable(false);
+                                txt_pass.setEditable(false);
+                                txt_fname.setEditable(false);
+                                txt_lname.setEditable(false);
+                                txt_job.setEditable(false);
+                            } catch (SQLException e){
+                                JOptionPane.showMessageDialog(null, e);
+                            }
+                            break;
+                            case 1:
+                            txt_pass.setText(pass);
+                            break;
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        btn_save.doClick();
+                    }
+                    break;
+                    case 1:
+                    break;
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Wrong Values!!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        else if(!txt_pass.getText().equals(pass)){
+            if(txt_pass.getText().length() >= 5){
+                lbl_pass.setIcon(che);
+                JPasswordField pwd = new JPasswordField();
+                int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Old Password",JOptionPane.OK_CANCEL_OPTION);
+                System.out.println(action + " " + pwd.getText());
+                switch(action){
+                    case 0:
+                    if(pwd.getText().equals(pass)){
+                        JPasswordField pwd1 = new JPasswordField();
+                        int action1 = JOptionPane.showConfirmDialog(null, pwd1,"Confirm New Password",JOptionPane.OK_CANCEL_OPTION);
+                        switch(action1){
+                            case 0:
+                            if(pwd1.getText().equals(txt_pass.getText())){
+                                Object[] options = {"Yes","No"};
+                                int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                                switch (opt){
+                                    case 0:
                                     try {
                                         String val1 = txt_user.getText();
                                         String val2 = txt_pass.getText();
                                         String val3 = txt_fname.getText();
                                         String val4 = txt_lname.getText();
-                                        String val5 = txt_job.getText(); 
+                                        String val5 = txt_job.getText();
                                         String host = "jdbc:derby://" + host_address + "/partNumbering";
                                         String username = "Admin01";
                                         String password = "07032017";
                                         Connection connect = DriverManager.getConnection(host, username, password);
-                                        String sql = "UPDATE ADMINS SET USERNAME = ?, PASSWORD = ?, FIRST_NAME = ?, LAST_NAME = ?, JOB_TITLE = ?  WHERE USERNAME = ?";
+                                        String sql = "UPDATE EMPLOYEE SET USERNAME = ?, PASSWORD = ?, FIRST_NAME = ?, LAST_NAME = ?, JOB_TITLE = ?  WHERE USERNAME = ?";
                                         PreparedStatement stmt = connect.prepareStatement(sql);
                                         stmt.setString(1, val1);
                                         stmt.setString(2, val2);
@@ -447,96 +514,27 @@ public class mod_user_admin extends javax.swing.JFrame {
                                         JOptionPane.showMessageDialog(null, e);
                                     }
                                     break;
-                                case 1:
+                                    case 1:
                                     txt_pass.setText(pass);
                                     break;
-                            }
-                        }
-                        else{
-                            JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
-                            btn_save.doClick();
-                            }
-                        break;
-                    case 1:
-                        break;
-                }
-            }
-            else{
-                JOptionPane.showMessageDialog(this, "Wrong Values!!", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-
-        else if(!txt_pass.getText().equals(pass)){
-            if(txt_pass.getText().length() >= 5){
-                lbl_pass.setIcon(che);
-                JPasswordField pwd = new JPasswordField();
-                int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Old Password",JOptionPane.OK_CANCEL_OPTION);
-                System.out.println(action + " " + pwd.getText());
-                switch(action){
-                    case 0:
-                        if(pwd.getText().equals(pass)){
-                            JPasswordField pwd1 = new JPasswordField();
-                            int action1 = JOptionPane.showConfirmDialog(null, pwd1,"Confirm New Password",JOptionPane.OK_CANCEL_OPTION);
-                            switch(action1){
-                                case 0:
-                                    if(pwd1.getText().equals(txt_pass.getText())){
-                                        Object[] options = {"Yes","No"};
-                                        int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
-                                            switch (opt){
-                                                case 0:
-                                                    try {
-                                                        String val1 = txt_user.getText();
-                                                        String val2 = txt_pass.getText();
-                                                        String val3 = txt_fname.getText();
-                                                        String val4 = txt_lname.getText();
-                                                        String val5 = txt_job.getText(); 
-                                                        String host = "jdbc:derby://" + host_address + "/partNumbering";
-                                                        String username = "Admin01";
-                                                        String password = "07032017";
-                                                        Connection connect = DriverManager.getConnection(host, username, password);
-                                                        String sql = "UPDATE ADMINS SET USERNAME = ?, PASSWORD = ?, FIRST_NAME = ?, LAST_NAME = ?, JOB_TITLE = ?  WHERE USERNAME = ?";
-                                                        PreparedStatement stmt = connect.prepareStatement(sql);
-                                                        stmt.setString(1, val1);
-                                                        stmt.setString(2, val2);
-                                                        stmt.setString(3, val3);
-                                                        stmt.setString(4, val4);
-                                                        stmt.setString(5, val5);
-                                                        stmt.setString(6, user);
-                                                        stmt.executeUpdate();
-                                                        JOptionPane.showMessageDialog(null, "Database has been Updated !");
-
-                                                        btn_save.setEnabled(false);
-                                                        btn_mod.setEnabled(true);
-                                                        txt_user.setEditable(false);
-                                                        txt_pass.setEditable(false);
-                                                        txt_fname.setEditable(false);
-                                                        txt_lname.setEditable(false);
-                                                        txt_job.setEditable(false);
-                                                    } catch (SQLException e){
-                                                        JOptionPane.showMessageDialog(null, e);
-                                                    }
-                                                    break;
-                                                case 1:
-                                                    txt_pass.setText(pass);
-                                                    break;
-                                            }
-                                        }
-                                        else{
-                                            JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
-                                            btn_save.doClick();
-                                        }
-                                        break;
-                                    case 1:
-                                        break;
                                 }
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
+                                btn_save.doClick();
+                            }
+                            break;
+                            case 1:
+                            break;
                         }
-                        else{
-                            JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
-                            btn_save.doClick();
-                        }
-                        break;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        btn_save.doClick();
+                    }
+                    break;
                     case 1:
-                        break;
+                    break;
                 }
             }
             else{
@@ -560,6 +558,9 @@ public class mod_user_admin extends javax.swing.JFrame {
         new emp_dir_admin().setVisible(true);
     }//GEN-LAST:event_btn_backActionPerformed
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -574,19 +575,19 @@ public class mod_user_admin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mod_user_admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_user_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mod_user_admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_user_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mod_user_admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_user_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mod_user_admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_user_user.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new mod_user_admin(null, null, null, null, null).setVisible(true);
+            new mod_user_user(null, null, null, null, null).setVisible(true);
         });
     }
 
