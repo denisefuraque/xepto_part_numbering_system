@@ -24,9 +24,9 @@ public class sign_up_frame extends javax.swing.JFrame {
     
     String[] AdminArray, UserArray;
     
-    String mesUser, mesPass, mesConPass, mesFname, mesLname, mesJob;
+    String get, ret, yey;
     
-    Connection conn = null;
+    Connection connect, conn, con;
     Statement stmnt;
     ResultSet reSet;
     
@@ -39,21 +39,18 @@ public class sign_up_frame extends javax.swing.JFrame {
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
-        getAdminNames();
-        getUserNames();
-        
     }
     
-    public void getAdminNames(){
+    public String getAdminNames(){
         try{
-            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = connect.prepareStatement("SELECT USERNAME FROM ADMINS WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            smt.setString(1, get);
             ResultSet resultset = smt.executeQuery();
 
-            while(resultset.next()){
-                String db_uname = resultset.getString("username");
-                        
-                uAdmin.add(db_uname);
+            if(resultset.next() == true){
+                ret = "true";
+                return ret;
             }
             smt.closeOnCompletion();
             resultset.close();
@@ -62,22 +59,20 @@ public class sign_up_frame extends javax.swing.JFrame {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
-        for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-        }
+        ret = "false";
+        return ret;
     }
     
-    public void getUserNames(){
+    public String getUserNames(){
         try{
             Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            PreparedStatement smt = connect.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            PreparedStatement smt = connect.prepareStatement("SELECT USERNAME FROM EMPLOYEE WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            smt.setString(1, get);
             ResultSet resultset = smt.executeQuery();
 
-            while(resultset.next()){
-                String db_uname = resultset.getString("username");
-                        
-                uUser.add(db_uname);
+            if(resultset.next() == true){
+                ret = "true";
+                return ret;
             }
             smt.closeOnCompletion();
             resultset.close();
@@ -86,10 +81,8 @@ public class sign_up_frame extends javax.swing.JFrame {
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
-        for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-        }
+        ret = "false";
+        return ret;
     }
     
     @SuppressWarnings("unchecked")
@@ -223,6 +216,11 @@ public class sign_up_frame extends javax.swing.JFrame {
         txt_pass.setForeground(new java.awt.Color(0, 51, 153));
         txt_pass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_pass.setSelectionColor(new java.awt.Color(204, 204, 255));
+        txt_pass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txt_passMousePressed(evt);
+            }
+        });
 
         txt_conPass.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         txt_conPass.setForeground(new java.awt.Color(0, 51, 153));
@@ -236,19 +234,9 @@ public class sign_up_frame extends javax.swing.JFrame {
                 btn_sign_upActionPerformed(evt);
             }
         });
-        btn_sign_up.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btn_sign_upKeyPressed(evt);
-            }
-        });
 
         btn_check.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_check.setText("Check");
-        btn_check.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_checkMousePressed(evt);
-            }
-        });
         btn_check.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_checkActionPerformed(evt);
@@ -381,43 +369,43 @@ public class sign_up_frame extends javax.swing.JFrame {
 
     private void btn_sign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sign_upActionPerformed
         try{
-                conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                stmnt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                String querySql = "SELECT * FROM EMPLOYEE";
-                reSet = stmnt.executeQuery(querySql);
+            connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            stmnt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            String querySql = "SELECT * FROM EMPLOYEE";
+            reSet = stmnt.executeQuery(querySql);
 
-                reSet.next();
+            reSet.next();
 
-                reSet.moveToInsertRow();
+            reSet.moveToInsertRow();
 
-                reSet.updateString("username", txt_user.getText());
-                reSet.updateString("password", txt_conPass.getText());
-                reSet.updateString("first_name", txt_fname.getText());
-                reSet.updateString("last_name", txt_lname.getText());
-                reSet.updateString("job_title", txt_job.getText());
+            reSet.updateString("username", txt_user.getText());
+            reSet.updateString("password", txt_conPass.getText());
+            reSet.updateString("first_name", txt_fname.getText());
+            reSet.updateString("last_name", txt_lname.getText());
+            reSet.updateString("job_title", txt_job.getText());
 
-                reSet.insertRow();
-                reSet.moveToCurrentRow();
+            reSet.insertRow();
+            reSet.moveToCurrentRow();
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        finally {
+            if (reSet != null) {
+                try {
+                    reSet.close();
+                } catch (SQLException e) { /* ignored */}
             }
-            catch(Exception ex){
-                System.out.println(ex.getMessage());
+            if (stmnt != null) {
+                try {
+                    stmnt.close();
+                } catch (SQLException e) { /* ignored */}
             }
-            finally {
-                if (reSet != null) {
-                    try {
-                        reSet.close();
-                    } catch (SQLException e) { /* ignored */}
-                }
-                if (stmnt != null) {
-                    try {
-                        stmnt.close();
-                    } catch (SQLException e) { /* ignored */}
-                }
-                if (conn != null) {
-                    try {
-                        conn.close();
-                    } catch (SQLException e) { /* ignored */}
-                }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException e) { /* ignored */}
+            }
         }
         
         JLabel result = new JLabel("You can now log-in to use the generator!");
@@ -428,22 +416,14 @@ public class sign_up_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_sign_upActionPerformed
 
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
-        if(lbl_user.getIcon() == che && lbl_pass.getIcon() == che && lbl_conPass.getIcon() == che && lbl_fname.getIcon() == che && lbl_lname.getIcon() == che && lbl_job.getIcon() == che){
-                    btn_check.setVisible(false);
-                    btn_sign_up.setVisible(true);
-                    btn_sign_up.requestFocus();
-                }
-    }//GEN-LAST:event_btn_checkActionPerformed
 
-    private void btn_checkMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_checkMousePressed
-        
-        if(Arrays.asList(AdminArray).contains(txt_user.getText())){
-                lbl_user.setIcon(err);
-                txt_user.requestFocus();
-                txt_user.setToolTipText("Similar Username");
-            }
-        else if(!Arrays.asList(AdminArray).contains(txt_user.getText()) && !txt_user.getText().isEmpty()){
-                lbl_user.setIcon(che);
+        if("ok".equals(yey)){
+            lbl_user.setIcon(err);
+            txt_user.requestFocus();
+            txt_user.setToolTipText("Similar Username");
+        }
+        else if("nope".equals(yey)){
+            lbl_user.setIcon(che);
         }
         else if(txt_user.getText().isEmpty()){
             lbl_user.setIcon(war);
@@ -509,13 +489,24 @@ public class sign_up_frame extends javax.swing.JFrame {
             }
         }
         
-    }//GEN-LAST:event_btn_checkMousePressed
+        
+        if(lbl_user.getIcon() == che && lbl_pass.getIcon() == che && lbl_conPass.getIcon() == che && lbl_fname.getIcon() == che && lbl_lname.getIcon() == che && lbl_job.getIcon() == che){
+                    btn_check.setVisible(false);
+                    btn_sign_up.setVisible(true);
+                    btn_sign_up.requestFocus();
+                }
+    }//GEN-LAST:event_btn_checkActionPerformed
 
-    private void btn_sign_upKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_sign_upKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            btn_sign_up.doClick();
+    private void txt_passMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_passMousePressed
+        get = txt_user.getText();
+        
+        if("true".equals(getAdminNames()) && "true".equals(getUserNames())){
+            yey = "ok";
         }
-    }//GEN-LAST:event_btn_sign_upKeyPressed
+        else if("false".equals(getAdminNames()) && !txt_user.getText().isEmpty() || "false".equals(getUserNames()) && !txt_user.getText().isEmpty()){
+            yey = "nope";
+        }
+    }//GEN-LAST:event_txt_passMousePressed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
