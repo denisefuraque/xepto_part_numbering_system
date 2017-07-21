@@ -1,6 +1,5 @@
 package partNumbering_generator;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -11,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,6 +39,57 @@ public class sign_up_frame extends javax.swing.JFrame {
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
+        getAdminNames();
+        getUserNames();
+        
+    }
+    
+    public void getAdminNames(){
+        try{
+            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet resultset = smt.executeQuery();
+
+            while(resultset.next()){
+                String db_uname = resultset.getString("username");
+                        
+                uAdmin.add(db_uname);
+            }
+            smt.closeOnCompletion();
+            resultset.close();
+            connect.close();
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        for(int i = 0; i < uAdmin.size(); i++){
+                    AdminArray = uAdmin.toArray(new String[i]);
+        }
+    }
+    
+    public void getUserNames(){
+        try{
+            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = connect.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet resultset = smt.executeQuery();
+
+            while(resultset.next()){
+                String db_uname = resultset.getString("username");
+                        
+                uUser.add(db_uname);
+            }
+            smt.closeOnCompletion();
+            resultset.close();
+            connect.close();
+        }
+        catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        for(int i = 0; i < uUser.size(); i++){
+                    UserArray = uUser.toArray(new String[i]);
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -153,97 +202,32 @@ public class sign_up_frame extends javax.swing.JFrame {
         txt_user.setForeground(new java.awt.Color(0, 51, 153));
         txt_user.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_user.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_user.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_userKeyPressed(evt);
-            }
-        });
 
         txt_fname.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_fname.setForeground(new java.awt.Color(0, 51, 153));
         txt_fname.setPreferredSize(new java.awt.Dimension(299, 28));
         txt_fname.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_fname.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_fname.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txt_fnameMousePressed(evt);
-            }
-        });
-        txt_fname.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_fnameKeyPressed(evt);
-            }
-        });
 
         txt_lname.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_lname.setForeground(new java.awt.Color(0, 51, 153));
         txt_lname.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_lname.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_lname.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txt_lnameMousePressed(evt);
-            }
-        });
-        txt_lname.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_lnameActionPerformed(evt);
-            }
-        });
-        txt_lname.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_lnameKeyPressed(evt);
-            }
-        });
 
         txt_job.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_job.setForeground(new java.awt.Color(0, 51, 153));
         txt_job.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_job.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_job.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txt_jobMousePressed(evt);
-            }
-        });
-        txt_job.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_jobKeyPressed(evt);
-            }
-        });
 
         txt_pass.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         txt_pass.setForeground(new java.awt.Color(0, 51, 153));
         txt_pass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_pass.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_pass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txt_passMousePressed(evt);
-            }
-        });
-        txt_pass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_passActionPerformed(evt);
-            }
-        });
-        txt_pass.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_passKeyPressed(evt);
-            }
-        });
 
         txt_conPass.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         txt_conPass.setForeground(new java.awt.Color(0, 51, 153));
         txt_conPass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_conPass.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_conPass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txt_conPassMousePressed(evt);
-            }
-        });
-        txt_conPass.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_conPassKeyPressed(evt);
-            }
-        });
 
         btn_sign_up.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_sign_up.setText("Sign - Up");
@@ -286,8 +270,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                                     .addComponent(lbl_pass)
                                     .addComponent(lbl_fname))
                                 .addGap(161, 161, 161)
-                                .addComponent(lbl_lname)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(lbl_lname))
                             .addGroup(main_panLayout.createSequentialGroup()
                                 .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lbl_job, javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,313 +379,6 @@ public class sign_up_frame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_userKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_userKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else{
-                try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    txt_pass.requestFocus();
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-            }
-        }   
-    }//GEN-LAST:event_txt_userKeyPressed
-
-    private void txt_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_passActionPerformed
-
-    }//GEN-LAST:event_txt_passActionPerformed
-
-    private void txt_passKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passKeyPressed
-        String passSize = txt_pass.getText();
-        
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else{
-                txt_conPass.requestFocus();
-                lbl_pass.setIcon(che);
-                mesPass = "ok";
-            }
-            try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-        } 
-    }//GEN-LAST:event_txt_passKeyPressed
-
-    private void txt_conPassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_conPassKeyPressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_conPass.getText();
-        
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else{
-                txt_fname.requestFocus();
-                lbl_conPass.setIcon(che);
-                mesConPass = "ok";
-            }
-            try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-        } 
-    }//GEN-LAST:event_txt_conPassKeyPressed
-
-    private void txt_lnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_lnameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_lnameActionPerformed
-
     private void btn_sign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sign_upActionPerformed
         try{
                 conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
@@ -751,920 +427,8 @@ public class sign_up_frame extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btn_sign_upActionPerformed
 
-    private void txt_fnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_fnameKeyPressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
-        
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else if(txt_fname.getText().isEmpty()){
-                txt_fname.requestFocus();
-                lbl_fname.setIcon(war);
-                txt_fname.setToolTipText("Enter Your First Name");
-            }
-            else{
-                txt_lname.requestFocus();
-                lbl_fname.setIcon(che);
-                mesFname = "ok";
-            }
-            try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-        } 
-    }//GEN-LAST:event_txt_fnameKeyPressed
-
-    private void txt_lnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_lnameKeyPressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
-        
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else if(txt_fname.getText().isEmpty()){
-                txt_fname.requestFocus();
-                lbl_fname.setIcon(war);
-                txt_fname.setToolTipText("Enter Your First Name");
-            }
-            else if(txt_lname.getText().isEmpty()){
-                txt_lname.requestFocus();
-                lbl_lname.setIcon(war);
-                txt_lname.setToolTipText("Enter Your Last Name");
-            }
-            else{
-                txt_job.requestFocus();
-                lbl_lname.setIcon(che);
-                mesLname = "ok";
-            }
-            try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-        } 
-    }//GEN-LAST:event_txt_lnameKeyPressed
-
-    private void txt_jobKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_jobKeyPressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
-        
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else if(txt_fname.getText().isEmpty()){
-                txt_fname.requestFocus();
-                lbl_fname.setIcon(war);
-                txt_fname.setToolTipText("Enter Your First Name");
-            }
-            else if(txt_lname.getText().isEmpty()){
-                txt_lname.requestFocus();
-                lbl_lname.setIcon(war);
-                txt_lname.setToolTipText("Enter Your Last Name");
-            }
-            else if(txt_job.getText().isEmpty()){
-                txt_job.requestFocus();
-                lbl_job.setIcon(war);
-                txt_job.setToolTipText("Enter Your Job Position");
-            }
-            else{
-                mesJob = "ok";
-                btn_check.doClick();
-                lbl_job.setIcon(che);
-            }
-            try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-        } 
-    }//GEN-LAST:event_txt_jobKeyPressed
-
-    private void txt_passMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_passMousePressed
-
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else{
-                try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-            }
-            
- 
-    }//GEN-LAST:event_txt_passMousePressed
-
-    private void txt_conPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_conPassMousePressed
-        String passSize = txt_pass.getText();
-        
-        if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else{
-                txt_conPass.requestFocus();
-                lbl_pass.setIcon(che);
-            }
-        try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-    }//GEN-LAST:event_txt_conPassMousePressed
-
-    private void txt_fnameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_fnameMousePressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
-        
-        if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else{
-                txt_fname.requestFocus();
-                lbl_conPass.setIcon(che);
-            }
-        try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-    }//GEN-LAST:event_txt_fnameMousePressed
-
-    private void txt_lnameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_lnameMousePressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
-        
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else if(txt_fname.getText().isEmpty()){
-                txt_fname.requestFocus();
-                lbl_fname.setIcon(war);
-                txt_fname.setToolTipText("Enter Your First Name");
-            }
-            else{
-                txt_lname.requestFocus();
-                lbl_fname.setIcon(che);
-            }
-        try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-    }//GEN-LAST:event_txt_lnameMousePressed
-
-    private void txt_jobMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_jobMousePressed
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
-        
-            if(txt_user.getText().isEmpty()){
-                txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
-            }
-            else if(txt_pass.getText().isEmpty()){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(passSize.length() < 5){
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(err);
-                txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(conPassSize.length() < 5){
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(err);
-                txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
-                lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
-            }
-            else if(txt_fname.getText().isEmpty()){
-                txt_fname.requestFocus();
-                lbl_fname.setIcon(war);
-                txt_fname.setToolTipText("Enter Your First Name");
-            }
-            else if(txt_lname.getText().isEmpty()){
-                txt_lname.requestFocus();
-                lbl_lname.setIcon(war);
-                txt_lname.setToolTipText("Enter Your Last Name");
-            }
-            else{
-                txt_job.requestFocus();
-                lbl_lname.setIcon(che);
-            }
-        try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                if(condAdmin == "ok" && condUser == "ok"){
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-    }//GEN-LAST:event_txt_jobMousePressed
-
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
-        if(mesJob.equals("ok") && mesUser.equals("ok") && mesPass.equals("ok") && mesConPass.equals("ok") && mesFname.equals("ok") && mesLname.equals("ok")){
+        if(lbl_user.getIcon() == che && lbl_pass.getIcon() == che && lbl_conPass.getIcon() == che && lbl_fname.getIcon() == che && lbl_lname.getIcon() == che && lbl_job.getIcon() == che){
                     btn_check.setVisible(false);
                     btn_sign_up.setVisible(true);
                     btn_sign_up.requestFocus();
@@ -1672,207 +436,79 @@ public class sign_up_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_checkActionPerformed
 
     private void btn_checkMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_checkMousePressed
-                
-        String passSize = txt_pass.getText();
-        String conPassSize = txt_pass.getText();
         
-        if(!txt_user.getText().isEmpty()){
-                try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset = smt.executeQuery();
-
-                    while(resultset.next()){
-                        String db_uname = resultset.getString("username");
-                        
-                        uAdmin.add(db_uname);
-                    }
-                    smt.closeOnCompletion();
-                    resultset.close();
-                    connect.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    AdminArray = uAdmin.toArray(new String[i]);
-                }
-                
-                try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-
-                    while(resultset1.next()){
-                        String uname = resultset1.getString("username");
-                        
-                        uUser.add(uname);
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
-                    connect1.close();
-                }
-                catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    UserArray = uUser.toArray(new String[i]);
-                }
-                
-                String condAdmin = "ok";
-                String condUser = "ok";
-                
-                for(int i = 0; i < uAdmin.size(); i++){
-                    String temp = AdminArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                
-                for(int i = 0; i < uUser.size(); i++){
-                    String temp = UserArray[i];
-                    if(txt_user.getText().matches(temp)){
-                        txt_user.requestFocus();
-                        lbl_user.setIcon(err);
-                        txt_user.setToolTipText("Similar Username. Try Again");
-                        condAdmin = "no";
-                    }
-                }
-                if(condAdmin == "ok" && condUser == "ok"){
-                    txt_pass.requestFocus();
-                    lbl_user.setIcon(che);
-                    mesUser = "ok";
-                }
-            }
-            if(!txt_pass.getText().isEmpty()){
-                if(passSize.length() < 5){
-                    JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                    resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                    JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                    txt_pass.requestFocus();
-                    lbl_pass.setIcon(err);
-                    txt_pass.setToolTipText("Password must contain 5 letters or numbers!");
-                }
-                else{
-                    txt_conPass.requestFocus();
-                    lbl_pass.setIcon(che);
-                    mesPass = "ok";
-                }
-            }
-            if(!txt_conPass.getText().isEmpty()){
-                if(conPassSize.length() < 5){
-                    JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                    resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                    JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                    txt_conPass.requestFocus();
-                    lbl_conPass.setIcon(err);
-                    txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-                }
-                else{
-                    txt_fname.requestFocus();
-                    lbl_conPass.setIcon(che);
-                    mesConPass = "ok";
-                }
-            }
-            if(!txt_conPass.getText().isEmpty()){
-                if(conPassSize.length() < 5){
-                    JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                    resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                    JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                    txt_conPass.requestFocus();
-                    lbl_conPass.setIcon(err);
-                    txt_conPass.setToolTipText("Password must contain 5 letters or numbers!");
-                }
-                else{
-                    txt_fname.requestFocus();
-                    lbl_conPass.setIcon(che);
-                    mesConPass = "ok";
-                }
-            }
-            if(!txt_fname.getText().isEmpty()){
-                txt_lname.requestFocus();
-                lbl_fname.setIcon(che);
-                mesFname = "ok";
-            }
-            if(!txt_lname.getText().isEmpty()){
-                txt_job.requestFocus();
-                lbl_lname.setIcon(che);
-                mesLname = "ok";
-            }
-
-//------------------------------------------------------------------------------------------------------------------------------------
-
-            if(txt_user.getText().isEmpty()){
-                JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
+        if(Arrays.asList(AdminArray).contains(txt_user.getText())){
+                lbl_user.setIcon(err);
                 txt_user.requestFocus();
-                lbl_user.setIcon(war);
-                txt_user.setToolTipText("Enter Your Username");
+                txt_user.setToolTipText("Similar Username");
             }
-            else if(txt_pass.getText().isEmpty()){
-                JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                txt_pass.requestFocus();
-                lbl_pass.setIcon(war);
-                txt_pass.setToolTipText("Enter Your Password");
-            }
-            else if(txt_conPass.getText().isEmpty()){
-                JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                txt_conPass.requestFocus();
-                lbl_conPass.setIcon(war);
-                txt_conPass.setToolTipText("Re-enter Your Password");
-            }
-            else if(!txt_conPass.getText().equals(txt_pass.getText())){
-                JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                txt_pass.requestFocus();
-                lbl_conPass.setIcon(err);
+        else if(!Arrays.asList(AdminArray).contains(txt_user.getText()) && !txt_user.getText().isEmpty()){
+                lbl_user.setIcon(che);
+        }
+        else if(txt_user.getText().isEmpty()){
+            lbl_user.setIcon(war);
+            txt_user.setToolTipText("Enter your Username!");
+        }
+        
+        if(txt_fname.getText().isEmpty()){
+            lbl_fname.setIcon(war);
+            txt_fname.setToolTipText("Enter Your First Name!");
+        }
+        else if(!txt_fname.getText().isEmpty()){
+            lbl_fname.setIcon(che);
+        }
+
+        if(txt_lname.getText().isEmpty()){
+            lbl_lname.setIcon(war);
+            txt_lname.setToolTipText("Enter your Last Name!");
+        }
+        
+        else if(!txt_lname.getText().isEmpty()){
+            lbl_lname.setIcon(che);
+        }
+        
+        if(txt_job.getText().isEmpty()){
+            lbl_job.setIcon(war);
+            txt_job.setToolTipText("Enter your Job Position!");
+        }
+        else if(!txt_job.getText().isEmpty()){
+            lbl_job.setIcon(che);
+        }
+        
+        if(txt_pass.getText().isEmpty()){
+            lbl_pass.setIcon(war);
+        }
+        else if(!txt_pass.getText().isEmpty()){
+            if(txt_pass.getText().length() < 5){
                 lbl_pass.setIcon(err);
-                txt_conPass.setToolTipText("Password Do Not Match");
-                txt_pass.setToolTipText("Password Do Not Match");
+                txt_pass.setToolTipText("Password should be more than 5 digits!");
             }
-            else if(txt_fname.getText().isEmpty()){
-                JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                txt_fname.requestFocus();
-                lbl_fname.setIcon(war);
-                txt_fname.setToolTipText("Enter Your First Name");
+            else{
+                lbl_pass.setIcon(che);
             }
-            else if(txt_lname.getText().isEmpty()){
-                JLabel resLabel = new JLabel("All fields are required. \n\nPlease complete all the details!");
-                resLabel.setFont(new Font("Miriam", Font.BOLD, 15));
-                JOptionPane.showMessageDialog( this, resLabel, "Invalid", JOptionPane.ERROR_MESSAGE );
-                txt_lname.requestFocus();
-                lbl_lname.setIcon(war);
-                txt_lname.setToolTipText("Enter Your Last Name");
+        }
+        if(txt_conPass.getText().isEmpty()){
+            lbl_conPass.setIcon(war);
+        }
+        else if(!txt_conPass.getText().isEmpty()){
+            if(txt_conPass.getText().length() < 5){
+                lbl_conPass.setIcon(err);
+                txt_conPass.setToolTipText("Password should be more than 5 digits!");
             }
-            else if(txt_job.getText().isEmpty()){
-                txt_job.requestFocus();
-                lbl_job.setIcon(war);
-                txt_job.setToolTipText("Enter Your Job Position");
-            }
-            else if(!txt_job.getText().isEmpty()){
-                mesJob = "ok";
-                btn_check.doClick();
-                lbl_job.setIcon(che);
-                
-                if(mesJob.equals("ok") && mesUser.equals("ok") && mesPass.equals("ok") && mesConPass.equals("ok") && mesFname.equals("ok") && mesLname.equals("ok")){
-                    btn_check.setVisible(false);
-                    btn_sign_up.setVisible(true);
-                    btn_sign_up.requestFocus();
+            if(txt_conPass.getText().length() >= 5){
+                if(!txt_conPass.getText().equals(txt_pass.getText())){
+                    lbl_conPass.setIcon(err);
+                    lbl_pass.setIcon(err);
+                    txt_pass.setToolTipText("Password does not match!");
+                    txt_conPass.setToolTipText("Password does not match!");
+                }
+                else{
+                    lbl_conPass.setIcon(che);
+                    lbl_pass.setIcon(che);
                 }
             }
+        }
+        
     }//GEN-LAST:event_btn_checkMousePressed
 
     private void btn_sign_upKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_sign_upKeyPressed

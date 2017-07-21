@@ -1,7 +1,7 @@
-Wed Jul 19 14:25:46 CST 2017 : Apache Derby Network Server - 10.13.1.1 - (1765088) started and ready to accept connections on port 1527
+Fri Jul 21 13:57:11 CST 2017 : Apache Derby Network Server - 10.13.1.1 - (1765088) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Wed Jul 19 14:25:54 CST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-015d-5986-1672-ffffb3d1c2ff 
+Fri Jul 21 13:57:18 CST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-015d-63b8-a5ff-ffffb3d1c2ff 
 on database directory C:\Users\Denise Furaque\Documents\db_partNumber\part_sys_1\JavaDB\bin\partNumbering with class loader sun.misc.Launcher$AppClassLoader@60e53b93 
 Loaded from file:/C:/Users/Denise%20Furaque/Documents/db_partNumber/part_sys_1/JavaDB/lib/derby.jar
 java.vendor=Oracle Corporation
