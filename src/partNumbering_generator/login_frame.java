@@ -1,6 +1,7 @@
 package partNumbering_generator;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,14 +9,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
+import javax.persistence.*;
+import javax.swing.JOptionPane;
 
 public class login_frame extends javax.swing.JFrame {
 
-
+    String host = Host.getHost();
+    
     public login_frame() {
         
         initComponents();
+        
+        lbl_host.setText("Host: " + host);
         
         setLocationRelativeTo(null);
         
@@ -39,6 +47,8 @@ public class login_frame extends javax.swing.JFrame {
         err_mes = new javax.swing.JLabel();
         acc_pan = new javax.swing.JPanel();
         btn_signup = new javax.swing.JButton();
+        lbl_host = new javax.swing.JLabel();
+        btn_changeHost = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Log-in - Part Number Generator");
@@ -115,33 +125,34 @@ public class login_frame extends javax.swing.JFrame {
         login_pan.setLayout(login_panLayout);
         login_panLayout.setHorizontalGroup(
             login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(login_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
+                .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(login_panLayout.createSequentialGroup()
-                        .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(login_panLayout.createSequentialGroup()
-                                .addComponent(lbl_password)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_password))
-                            .addGroup(login_panLayout.createSequentialGroup()
-                                .addComponent(lbl_username)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(login_panLayout.createSequentialGroup()
+                                    .addComponent(lbl_password)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txt_password))
+                                .addGroup(login_panLayout.createSequentialGroup()
+                                    .addComponent(lbl_username)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
-                                .addComponent(btn_enter)
-                                .addGap(182, 182, 182))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
+                                .addGap(0, 80, Short.MAX_VALUE)
                                 .addComponent(err_mes)
-                                .addGap(86, 86, 86))))))
+                                .addGap(68, 68, 68))))
+                    .addGroup(login_panLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_enter)
+                        .addGap(164, 164, 164)))
+                .addContainerGap())
         );
         login_panLayout.setVerticalGroup(
             login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(login_panLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
                 .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_username)
                     .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -152,8 +163,7 @@ public class login_frame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_enter, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(err_mes)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(err_mes))
         );
 
         err_mes.setVisible(false);
@@ -192,16 +202,32 @@ public class login_frame extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
+        lbl_host.setText("Host:");
+
+        btn_changeHost.setBackground(new java.awt.Color(204, 204, 255));
+        btn_changeHost.setFont(new java.awt.Font("Miriam", 0, 12)); // NOI18N
+        btn_changeHost.setText("Change");
+        btn_changeHost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_changeHostActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bg_panLayout = new javax.swing.GroupLayout(bg_pan);
         bg_pan.setLayout(bg_panLayout);
         bg_panLayout.setHorizontalGroup(
             bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bg_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(acc_pan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(login_pan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(bg_panLayout.createSequentialGroup()
+                        .addComponent(lbl_host)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_changeHost))
+                    .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(acc_pan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(login_pan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         bg_panLayout.setVerticalGroup(
@@ -209,6 +235,10 @@ public class login_frame extends javax.swing.JFrame {
             .addGroup(bg_panLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_host)
+                    .addComponent(btn_changeHost, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(login_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -313,6 +343,44 @@ public class login_frame extends javax.swing.JFrame {
         new sign_up_frame().setVisible(true);
     }//GEN-LAST:event_btn_signupActionPerformed
 
+    private void btn_changeHostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_changeHostActionPerformed
+        Pattern ip_pattern = Pattern.compile("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})");
+        Matcher ip_matcher;
+        boolean valid_ip = false;
+        
+        do{
+            String input_host = JOptionPane.showInputDialog("Enter new host address");
+            ip_matcher = ip_pattern.matcher(input_host);
+            
+            if(ip_matcher.matches() || input_host.equals("localhost")){
+                valid_ip = true;
+            }
+            
+            if(ip_matcher.matches()){
+                for(int x=1; x <= ip_matcher.groupCount(); x++){
+                    int block = Integer.parseInt(ip_matcher.group(x));
+                    if(block < 0 || block > 255){
+                        valid_ip = false;
+                        JOptionPane.showMessageDialog(null, "Please an IP address within 0.0.0.0 "
+                                + "and 255.255.255.255.",
+                                "Invalid address", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                }
+            }
+            if(valid_ip){
+                host = input_host;
+                Host.setHost(host);
+                JOptionPane.showMessageDialog(null, "Host Address changed to " + Host.getHost());
+                lbl_host.setText("Host: " + Host.getHost());
+            }
+            else if(!ip_matcher.matches()){
+                JOptionPane.showMessageDialog(null, "Please enter a valid IPv4 address.",
+                    "Invalid address format", JOptionPane.ERROR_MESSAGE);
+            }
+        }while(!valid_ip);
+    }//GEN-LAST:event_btn_changeHostActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -346,10 +414,12 @@ public class login_frame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel acc_pan;
     private javax.swing.JPanel bg_pan;
+    private javax.swing.JButton btn_changeHost;
     private javax.swing.JButton btn_enter;
     private javax.swing.JButton btn_signup;
     private javax.swing.JLabel err_mes;
     private javax.swing.JPanel header_pan;
+    private javax.swing.JLabel lbl_host;
     private javax.swing.JLabel lbl_icon;
     private javax.swing.JLabel lbl_password;
     private javax.swing.JLabel lbl_username;

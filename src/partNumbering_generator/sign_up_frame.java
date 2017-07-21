@@ -403,7 +403,7 @@ public class sign_up_frame extends javax.swing.JFrame {
             }
             else{
                 try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -425,7 +425,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -507,7 +507,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 mesPass = "ok";
             }
             try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -529,7 +529,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -624,7 +624,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 mesConPass = "ok";
             }
             try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -646,7 +646,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -703,7 +703,7 @@ public class sign_up_frame extends javax.swing.JFrame {
 
     private void btn_sign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sign_upActionPerformed
         try{
-                conn = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  ", "Admin01", "07032017");
+                conn = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  ", "Admin01", "07032017");
                 stmnt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 String querySql = "SELECT * FROM EMPLOYEE";
                 reSet = stmnt.executeQuery(querySql);
@@ -797,7 +797,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 mesFname = "ok";
             }
             try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -819,7 +819,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -923,7 +923,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 mesLname = "ok";
             }
             try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -945,7 +945,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1055,7 +1055,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 lbl_job.setIcon(che);
             }
             try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1077,7 +1077,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1137,7 +1137,7 @@ public class sign_up_frame extends javax.swing.JFrame {
             }
             else{
                 try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1159,7 +1159,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1235,7 +1235,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 lbl_pass.setIcon(che);
             }
         try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1257,7 +1257,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1348,7 +1348,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 lbl_conPass.setIcon(che);
             }
         try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1370,7 +1370,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1466,7 +1466,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 lbl_fname.setIcon(che);
             }
         try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1488,7 +1488,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1589,7 +1589,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 lbl_lname.setIcon(che);
             }
         try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1611,7 +1611,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 
@@ -1676,7 +1676,7 @@ public class sign_up_frame extends javax.swing.JFrame {
         
         if(!txt_user.getText().isEmpty()){
                 try{
-                    Connection connect = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset = smt.executeQuery();
 
@@ -1698,7 +1698,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                 }
                 
                 try{
-                    Connection connect1 = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+                    Connection connect1 = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
                     PreparedStatement smt1 = connect1.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                     ResultSet resultset1 = smt1.executeQuery();
 

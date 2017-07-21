@@ -63,7 +63,7 @@ public class view_user_save extends javax.swing.JFrame {
     public Connection getConnection(){
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://192.168.0.202/partNumbering  " ,"Admin01","07032017");
+            con = DriverManager.getConnection("jdbc:derby://localhost/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
