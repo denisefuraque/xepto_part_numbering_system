@@ -1,7 +1,6 @@
 package partNumbering_generator;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,7 +11,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
-import javax.persistence.*;
 import javax.swing.JOptionPane;
 
 public class login_frame extends javax.swing.JFrame {
@@ -31,7 +29,7 @@ public class login_frame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
-        
+
     }
 
     @SuppressWarnings("unchecked")

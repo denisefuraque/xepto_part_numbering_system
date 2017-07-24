@@ -191,22 +191,6 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lbl_user" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lbl_pass" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lbl_fname" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
-                                      <Component id="lbl_lname" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="lbl_job" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lbl_conPass" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
@@ -220,6 +204,22 @@
                                               <Component id="txt_lname" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lbl_user" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lbl_pass" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lbl_fname" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="161" max="-2" attributes="0"/>
+                                              <Component id="lbl_lname" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="lbl_job" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lbl_conPass" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -431,9 +431,6 @@
                   <Color blue="ff" green="cc" red="cc" type="rgb"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txt_passMousePressed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JPasswordField" name="txt_conPass">
               <Properties>
