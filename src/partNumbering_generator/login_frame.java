@@ -1,14 +1,6 @@
 package partNumbering_generator;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -18,6 +10,7 @@ import javax.swing.JOptionPane;
 public class login_frame extends javax.swing.JFrame {
 
     String host_address;
+    EntityManager em;
     
     public login_frame() {
         
@@ -28,6 +21,12 @@ public class login_frame extends javax.swing.JFrame {
         
         lbl_host.setText("Host: " + host_address);
         
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }        
         setLocationRelativeTo(null);
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
@@ -270,66 +269,56 @@ public class login_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_usernameActionPerformed
 
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
-        try{
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering " ,"Admin01","07032017");
-            PreparedStatement smt = connect.prepareStatement("SELECT * FROM ADMINS", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet resultset = smt.executeQuery();
-            
             String user = txt_username.getText();
             StringBuilder pass_sb = new StringBuilder(txt_password.getPassword().length);
             for(Character c : txt_password.getPassword())
                 pass_sb.append(c.charValue());
             String pass = pass_sb.toString();
             
-            while(resultset.next()){
-                String db_uname = resultset.getString("username");
-                String db_pword = resultset.getString("password");
+            boolean validAdmin = false;
+            boolean validEmployee = false;
+            
+            try{
+                Query q_admins = em.createNamedQuery("Admins.findByUsername")
+                                .setParameter("username", user);
+                Admins admin = (Admins) q_admins.getSingleResult();
                 
-                if((user.equals(db_uname)) && (pass.equals(db_pword))){
-                        new generator_admin_frame().setVisible(true);
-                        this.setVisible(false);
-                        txt_username.setText("");
-                        txt_password.setText("");
-                }
-                else{
-                    PreparedStatement smt1 = connect.prepareStatement("SELECT * FROM EMPLOYEE", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    ResultSet resultset1 = smt1.executeQuery();
-                    
-                    String user1 = txt_username.getText();
-                    StringBuilder pass_sb1 = new StringBuilder(txt_password.getPassword().length);
-                    for(Character c : txt_password.getPassword())
-                        pass_sb1.append(c.charValue());
-                    String pass1 = pass_sb1.toString();
-                    
-                    while(resultset1.next()){
-                        String db_uname1 = resultset1.getString("username");
-                        String db_pword1 = resultset1.getString("password");
-
-                        if((user1.equals(db_uname1)) && (pass1.equals(db_pword1))){
-                                new generator_user_frame().setVisible(true);
-                                this.setVisible(false);
-                                txt_username.setText("");
-                                txt_password.setText("");
-                        }
-                        else{
-                            err_mes.setVisible(true);
-                        }
-                        
-                    }
-                    smt1.closeOnCompletion();
-                    resultset1.close();
+                if(pass.equals(admin.getPassword())){
+                    validAdmin = true;
                 }
             }
-            smt.closeOnCompletion();
-            resultset.close();
-            connect.close();
-        }
-        catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(login_frame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            catch(Exception e){
+                
+            }
+            
+            try{
+                Query q_emps = em.createNamedQuery("Employee.findByUsername")
+                                .setParameter("username", user);
+                Employee emp = (Employee) q_emps.getSingleResult();
+
+                if(pass.equals(emp.getPassword())){
+                    validEmployee = true;
+                }
+            }
+            catch(Exception e){
+                
+            }
+            
+            if(validAdmin){
+                new generator_admin_frame().setVisible(true);
+                this.setVisible(false);
+                txt_username.setText("");
+                txt_password.setText("");
+            }
+            else if(validEmployee){
+                new generator_user_frame().setVisible(true);
+                this.setVisible(false);
+                txt_username.setText("");
+                txt_password.setText("");
+            }
+            else{
+                err_mes.setVisible(true);
+            }
     }//GEN-LAST:event_btn_enterActionPerformed
 
     private void txt_usernameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyPressed
@@ -378,6 +367,13 @@ public class login_frame extends javax.swing.JFrame {
                 Host.setHost(host_address);
                 JOptionPane.showMessageDialog(null, "Host Address changed to " + Host.getHost());
                 lbl_host.setText("Host: " + Host.getHost());
+                
+                try{
+                    em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+                }
+                catch(Exception e){
+                    JOptionPane.showMessageDialog(null, e.toString());
+                }
             }
             else if(!ip_matcher.matches()){
                 JOptionPane.showMessageDialog(null, "Please enter a valid IPv4 address.",

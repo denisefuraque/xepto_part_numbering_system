@@ -5,9 +5,12 @@
  */
 package partNumbering_generator;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Map;
 
 /**
  *
@@ -15,8 +18,10 @@ import java.util.Scanner;
  */
 public class Host {
     static private String host_address;
+    static private Map persistenceMap;
     
     public Host(){
+        
     }
     
     public static void fetchHost(){
@@ -24,11 +29,12 @@ public class Host {
             Scanner s = new Scanner(new FileReader("host.txt"));
             host_address = s.nextLine();
         } 
-        catch (Exception e) {
+        catch (FileNotFoundException e) {
             host_address = "localhost";
         }
+        
+        updatePersistenceAddress();
     }
-    
     
     public static String getHost(){
         return host_address;
@@ -44,5 +50,20 @@ public class Host {
         } catch (Exception ex) {
             
         }
+        
+        updatePersistenceAddress();
     }
+    
+    public static void updatePersistenceAddress(){
+        persistenceMap = new HashMap();
+        persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + host_address + "/partNumbering");
+        persistenceMap.put("javax.persistence.jdbc.user", "Admin01");
+        persistenceMap.put("javax.persistence.jdbc.password", "07032017");
+        persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
+    }
+    
+    public static Map getPersistence(){
+        return persistenceMap;
+    }
+    
 }

@@ -6,6 +6,15 @@
     <class>partNumbering_generator.DataUsers</class>
     <class>partNumbering_generator.Employee</class>
     <class>partNumbering_generator.Admins</class>
+    <class>partNumbering_generator.ExternalReleasedDocuments</class>
+    <class>partNumbering_generator.InternalReportDocuments</class>
+    <class>partNumbering_generator.NetworkingPeripheralCommodity</class>
+    <class>partNumbering_generator.InternalSpecificationDocument</class>
+    <class>partNumbering_generator.ConsumableParts</class>
+    <class>partNumbering_generator.ComputerPeripheralsCommodity</class>
+    <class>partNumbering_generator.MechanicalPartCommodity</class>
+    <class>partNumbering_generator.InternalProcessDocument</class>
+    <class>partNumbering_generator.ElectricalPartCommodity</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost/partNumbering  "/>
       <property name="javax.persistence.jdbc.user" value="Admin01"/>

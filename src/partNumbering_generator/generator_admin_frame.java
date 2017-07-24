@@ -5,6 +5,10 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.*;
 
 public final class generator_admin_frame extends javax.swing.JFrame {
@@ -30,6 +34,8 @@ public final class generator_admin_frame extends javax.swing.JFrame {
     
     String host_address = Host.getHost();
     
+    EntityManager em = Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
+    
     public generator_admin_frame() {
         
         initComponents();
@@ -53,413 +59,207 @@ public final class generator_admin_frame extends javax.swing.JFrame {
 
     public void DoConnect_external(){
             
-            //reads the database
-            
             ext_name = new ArrayList<>();
             ext_code = new ArrayList<>();
-
+            
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con0 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
+                Query q = em.createNamedQuery("ExternalReleasedDocuments.findAll");
+                List<ExternalReleasedDocuments> list = q.getResultList();
+                
+                for(ExternalReleasedDocuments record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
                     
-                    Statement stmt0 = con0.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM EXTERNAL_RELEASED_DOCUMENTS";
-                    //getting the data for the external
-                    try (ResultSet rs0 = stmt0.executeQuery(sql)) {
-                        //getting the data for the external
-                        
-                        while(rs0.next()){
-                            
-                            comCode_col = rs0.getString("commodity_code");
-                            comName_col = rs0.getString("commodity_name");
-                            
-                            //populating arraylist with data from the database
-                            
-                            ext_name.add(comName_col);
-                            ext_code.add(comCode_col);
-                            
-                        }
-                        rs0.close();
-                        stmt0.closeOnCompletion();
-                        con0.close();
-                    }
+                    ext_name.add(comName_col);
+                    ext_code.add(comCode_col);
                 }
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_intPro(){
             
-            //reads the database
-            
             intPro_name = new ArrayList<>();
             intPro_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con1 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
+                Query q = em.createNamedQuery("InternalProcessDocument.findAll");
+                List<InternalProcessDocument> list = q.getResultList();
+                
+                for(InternalProcessDocument record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
                     
-                    Statement stmt1 = con1.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM INTERNAL_PROCESS_DOCUMENT";
-                    ResultSet rs1 = stmt1.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs1.next()){
-                        
-                        comCode_col = rs1.getString("commodity_code");
-                        comName_col = rs1.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        intPro_name.add(comName_col);
-                        intPro_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt1.closeOnCompletion();
-                    rs1.close();
+                    intPro_name.add(comName_col);
+                    intPro_code.add(comCode_col);
                 }
-
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_intSpec(){
-            
-            //reads the database
-            
+ 
             intSpec_name = new ArrayList<>();
             intSpec_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con2 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
-                    
-                    Statement stmt2 = con2.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM INTERNAL_SPECIFICATION_DOCUMENT";
-                    ResultSet rs2 = stmt2.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs2.next()){
-                        
-                        comCode_col = rs2.getString("commodity_code");
-                        comName_col = rs2.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        intSpec_name.add(comName_col);
-                        intSpec_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt2.closeOnCompletion();
-                    rs2.close();
-                }
+                Query q = em.createNamedQuery("InternalProcessDocument.findAll");
+                List<InternalProcessDocument> list = q.getResultList();
                 
+                for(InternalProcessDocument record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
+                    
+                    intSpec_name.add(comName_col);
+                    intSpec_code.add(comCode_col);
+                }
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_intRep(){
             
-            //reads the database
-            
             intRep_name = new ArrayList<>();
             intRep_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con3 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
-                    
-                    Statement stmt3 = con3.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM INTERNAL_REPORT_DOCUMENTS";
-                    ResultSet rs3 = stmt3.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs3.next()){
-                        
-                        comCode_col = rs3.getString("commodity_code");
-                        comName_col = rs3.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        intRep_name.add(comName_col);
-                        intRep_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt3.closeOnCompletion();
-                    rs3.close();
-                }
+                Query q = em.createNamedQuery("InternalReportDocuments.findAll");
+                List<InternalReportDocuments> list = q.getResultList();
                 
+                for(InternalReportDocuments record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
+                    
+                    intRep_name.add(comName_col);
+                    intRep_code.add(comCode_col);
+                }
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_mechPart(){
             
-            //reads the database
-            
             mechPart_name = new ArrayList<>();
             mechPart_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con4 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
-                    
-                    Statement stmt4 = con4.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM MECHANICAL_PART_COMMODITY";
-                    ResultSet rs4 = stmt4.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs4.next()){
-                        
-                        comCode_col = rs4.getString("commodity_code");
-                        comName_col = rs4.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        mechPart_name.add(comName_col);
-                        mechPart_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt4.closeOnCompletion();
-                    rs4.close();
-                }
+                Query q = em.createNamedQuery("MechanicalPartCommodity.findAll");
+                List<MechanicalPartCommodity> list = q.getResultList();
                 
+                for(MechanicalPartCommodity record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
+                    
+                    mechPart_name.add(comName_col);
+                    mechPart_code.add(comCode_col);
+                }
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_compPeri(){
             
-            //reads the database
-            
             compPeri_name = new ArrayList<>();
             compPeri_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con5 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
-                    
-                    Statement stmt5 = con5.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM COMPUTER_PERIPHERALS_COMMODITY";
-                    ResultSet rs5 = stmt5.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs5.next()){
-                        
-                        comCode_col = rs5.getString("commodity_code");
-                        comName_col = rs5.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        compPeri_name.add(comName_col);
-                        compPeri_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt5.closeOnCompletion();
-                    rs5.close();
-                }
+                Query q = em.createNamedQuery("ComputerPeripheralsCommodity.findAll");
+                List<ComputerPeripheralsCommodity> list = q.getResultList();
                 
+                for(ComputerPeripheralsCommodity record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
+                    
+                    compPeri_name.add(comName_col);
+                    compPeri_code.add(comCode_col);
+                }
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_elecPart(){
             
-            //reads the database
-            
             elecPart_name = new ArrayList<>();
             elecPart_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con6 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
+                Query q = em.createNamedQuery("ElectricalPartCommodity.findAll");
+                List<ElectricalPartCommodity> list = q.getResultList();
+                
+                for(ElectricalPartCommodity record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
                     
-                    Statement stmt6 = con6.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM ELECTRICAL_PART_COMMODITY";
-                    ResultSet rs6 = stmt6.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs6.next()){
-                        
-                        comCode_col = rs6.getString("commodity_code");
-                        comName_col = rs6.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        elecPart_name.add(comName_col);
-                        elecPart_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt6.closeOnCompletion();
-                    rs6.close();
+                    elecPart_name.add(comName_col);
+                    elecPart_code.add(comCode_col);
                 }
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_netPart(){
             
-            //reads the database
-            
             netPart_name = new ArrayList<>();
             netPart_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con7 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
+                Query q = em.createNamedQuery("NetworkingPeripheralCommodity.findAll");
+                List<NetworkingPeripheralCommodity> list = q.getResultList();
+                
+                for(NetworkingPeripheralCommodity record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
                     
-                    Statement stmt7 = con7.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM NETWORKING_PERIPHERAL_COMMODITY";
-                    ResultSet rs7 = stmt7.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs7.next()){
-                        
-                        comCode_col = rs7.getString("commodity_code");
-                        comName_col = rs7.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        netPart_name.add(comName_col);
-                        netPart_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt7.closeOnCompletion();
-                    rs7.close();
+                    netPart_name.add(comName_col);
+                    netPart_code.add(comCode_col);
                 }
-
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
     
     public void DoConnect_conPart(){
             
-            //reads the database
-            
             conPart_name = new ArrayList<>();
             conPart_code = new ArrayList<>();
 
             try{
-                //Connect to the database - External Released Commodity
-
-                String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con8 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
+                Query q = em.createNamedQuery("ConsumableParts.findAll");
+                List<ConsumableParts> list = q.getResultList();
+                
+                for(ConsumableParts record: list){
+                    comCode_col = record.getCommodityCode();
+                    comName_col = record.getCommodityName();
                     
-                    Statement stmt8 = con8.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM CONSUMABLE_PARTS";
-                    ResultSet rs8 = stmt8.executeQuery(sql);
-                    
-                    //getting the data for the external
-                    
-                    while(rs8.next()){
-                        
-                        comCode_col = rs8.getString("commodity_code");
-                        comName_col = rs8.getString("commodity_name");
-                        
-                        //populating arraylist with data from the database
-                        
-                        conPart_name.add(comName_col);
-                        conPart_code.add(comCode_col);
-                        
-                    }
-                    
-                    stmt8.closeOnCompletion();
-                    rs8.close();
+                    conPart_name.add(comName_col);
+                    conPart_code.add(comCode_col);
                 }
-
             }
-            catch(SQLException err){
-                JOptionPane.showMessageDialog(this, err.getMessage());
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null, e.toString());
             }
 
     }
@@ -1806,58 +1606,52 @@ public final class generator_admin_frame extends javax.swing.JFrame {
 
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
         //open_save_db_pan.setVisible(true);
+        
+        String gen_pn = lbl_genPartNum.getText();
+        
+        boolean valid_pn = false;
+        
         try{
-            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " , "Admin01", "07032017");
-            Statement state = connect.createStatement();
-            String sql = "SELECT * FROM Admin01.DATA_USERS";
-            ResultSet res = state.executeQuery(sql);
-            String sim = "";
-
-            while(res.next()){
-                if(lbl_genPartNum.getText().equals(res.getString("Part_Number"))){
-                    sim = "SIMILAR";
-                }
-            }
-
-            Statement state1 = connect.createStatement();
-            String sql1 = "SELECT * FROM Admin01.PART_NUMBER_DATA";
-            ResultSet res1 = state1.executeQuery(sql1);
-
-            while(res1.next()){
-                if(lbl_genPartNum.getText().equals(res1.getString("Part_Number"))){
-                    sim = "SIMILAR";
-                }
-            }
-
-            if("SIMILAR".equals(sim)){
-                JOptionPane.showMessageDialog(this, "Similar Part Number!!! \n Try Again.","Error", JOptionPane.ERROR_MESSAGE);
-
-                //setEnable(false) to all buttons outside input_pan
-
-                btn_new.setEnabled(false);
-                btn_edit.setEnabled(false);
-                btn_check.setEnabled(false);
-                
-                //setEnable all input_pan objects
-                
-                btn_generate.setEnabled(true);
-                cmb_scheme.setEnabled(true);
-                cmb_name.setEnabled(true);
-                cmb_month.setEnabled(true);
-                cmb_day.setEnabled(true);
-                txt_year.setEnabled(true);
-                txt_seq.setEnabled(true);
-                txt_config.setEnabled(true);
-
-            }
-            else{
-                open_save_db_pan.setVisible(true);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(generator_user_frame.class.getName()).log(Level.SEVERE, null, ex);
+            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                    .setParameter("partNumber", gen_pn);
+            DataUsers data = (DataUsers) q.getSingleResult();
         }
+        catch(NoResultException e){
+        }
+        
+        try{
+            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                    .setParameter("partNumber", gen_pn);
+            PartNumberData data = (PartNumberData) q.getSingleResult();
+        }
+        catch(NoResultException e){
+            valid_pn = true;
+        }
+        JOptionPane.showMessageDialog(null, valid_pn);
+        if(valid_pn){
+            open_save_db_pan.setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Similar Part Number!!! \n Try Again.","Error", JOptionPane.ERROR_MESSAGE);
 
+            //setEnable(false) to all buttons outside input_pan
+
+            btn_new.setEnabled(false);
+            btn_edit.setEnabled(false);
+            btn_check.setEnabled(false);
+
+            //setEnable all input_pan objects
+
+            btn_generate.setEnabled(true);
+            cmb_scheme.setEnabled(true);
+            cmb_name.setEnabled(true);
+            cmb_month.setEnabled(true);
+            cmb_day.setEnabled(true);
+            txt_year.setEnabled(true);
+            txt_seq.setEnabled(true);
+            txt_config.setEnabled(true);
+        }
+        
     }//GEN-LAST:event_btn_checkActionPerformed
 
     private void mnu_uData_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_uData_addActionPerformed
