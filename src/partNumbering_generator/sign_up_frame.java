@@ -1,7 +1,6 @@
 package partNumbering_generator;
 
 import java.awt.Font;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,18 +41,18 @@ public class sign_up_frame extends javax.swing.JFrame {
     
     public String getAdminNames(){
         try{
-            connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            PreparedStatement smt = connect.prepareStatement("SELECT USERNAME FROM ADMINS WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            Connection conn;
+            conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = conn.prepareStatement("SELECT USERNAME FROM ADMINS WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             smt.setString(1, get);
-            ResultSet resultset = smt.executeQuery();
-
-            if(resultset.next() == true){
-                ret = "true";
-                return ret;
+            try (ResultSet resultset = smt.executeQuery()) {
+                if(resultset.next() == true){
+                    ret = "true";
+                    return ret;
+                }
+                smt.closeOnCompletion();
             }
-            smt.closeOnCompletion();
-            resultset.close();
-            connect.close();
+            conn.close();
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -65,18 +63,17 @@ public class sign_up_frame extends javax.swing.JFrame {
     
     public String getUserNames(){
         try{
-            Connection connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            PreparedStatement smt = connect.prepareStatement("SELECT USERNAME FROM EMPLOYEE WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            Connection con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            PreparedStatement smt = con.prepareStatement("SELECT USERNAME FROM EMPLOYEE WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             smt.setString(1, get);
-            ResultSet resultset = smt.executeQuery();
-
-            if(resultset.next() == true){
-                ret = "true";
-                return ret;
+            try (ResultSet resultset = smt.executeQuery()) {
+                if(resultset.next() == true){
+                    ret = "true";
+                    return ret;
+                }
+                smt.closeOnCompletion();
             }
-            smt.closeOnCompletion();
-            resultset.close();
-            connect.close();
+            con.close();
         }
         catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -216,11 +213,6 @@ public class sign_up_frame extends javax.swing.JFrame {
         txt_pass.setForeground(new java.awt.Color(0, 51, 153));
         txt_pass.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txt_pass.setSelectionColor(new java.awt.Color(204, 204, 255));
-        txt_pass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txt_passMousePressed(evt);
-            }
-        });
 
         txt_conPass.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
         txt_conPass.setForeground(new java.awt.Color(0, 51, 153));
@@ -253,18 +245,6 @@ public class sign_up_frame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, main_panLayout.createSequentialGroup()
                         .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(main_panLayout.createSequentialGroup()
-                                .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_user)
-                                    .addComponent(lbl_pass)
-                                    .addComponent(lbl_fname))
-                                .addGap(161, 161, 161)
-                                .addComponent(lbl_lname))
-                            .addGroup(main_panLayout.createSequentialGroup()
-                                .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lbl_job, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_conPass, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(main_panLayout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_job, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -274,7 +254,19 @@ public class sign_up_frame extends javax.swing.JFrame {
                                     .addGroup(main_panLayout.createSequentialGroup()
                                         .addComponent(txt_fname, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txt_lname)))))
+                                        .addComponent(txt_lname))))
+                            .addGroup(main_panLayout.createSequentialGroup()
+                                .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(main_panLayout.createSequentialGroup()
+                                        .addGroup(main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbl_user)
+                                            .addComponent(lbl_pass)
+                                            .addComponent(lbl_fname))
+                                        .addGap(161, 161, 161)
+                                        .addComponent(lbl_lname))
+                                    .addComponent(lbl_job)
+                                    .addComponent(lbl_conPass))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addGap(13, 13, 13))
@@ -417,13 +409,16 @@ public class sign_up_frame extends javax.swing.JFrame {
 
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
 
-        if("ok".equals(yey)){
+        get = txt_user.getText();
+        
+        if(getAdminNames().equals("true") || getUserNames().equals("true")){
             lbl_user.setIcon(err);
             txt_user.requestFocus();
             txt_user.setToolTipText("Similar Username");
         }
-        else if("nope".equals(yey)){
+        else if("false".equals(getAdminNames()) || !txt_user.getText().isEmpty() || "false".equals(getUserNames())){
             lbl_user.setIcon(che);
+            txt_user.setToolTipText("OK");
         }
         else if(txt_user.getText().isEmpty()){
             lbl_user.setIcon(war);
@@ -436,6 +431,7 @@ public class sign_up_frame extends javax.swing.JFrame {
         }
         else if(!txt_fname.getText().isEmpty()){
             lbl_fname.setIcon(che);
+            txt_fname.setToolTipText("OK");
         }
 
         if(txt_lname.getText().isEmpty()){
@@ -445,6 +441,7 @@ public class sign_up_frame extends javax.swing.JFrame {
         
         else if(!txt_lname.getText().isEmpty()){
             lbl_lname.setIcon(che);
+            txt_lname.setToolTipText("OK");
         }
         
         if(txt_job.getText().isEmpty()){
@@ -453,10 +450,12 @@ public class sign_up_frame extends javax.swing.JFrame {
         }
         else if(!txt_job.getText().isEmpty()){
             lbl_job.setIcon(che);
+            txt_job.setToolTipText("OK");
         }
         
         if(txt_pass.getText().isEmpty()){
             lbl_pass.setIcon(war);
+            txt_pass.setToolTipText("Enter your Password!");
         }
         else if(!txt_pass.getText().isEmpty()){
             if(txt_pass.getText().length() < 5){
@@ -465,10 +464,12 @@ public class sign_up_frame extends javax.swing.JFrame {
             }
             else{
                 lbl_pass.setIcon(che);
+                txt_pass.setToolTipText("OK");
             }
         }
         if(txt_conPass.getText().isEmpty()){
             lbl_conPass.setIcon(war);
+            txt_conPass.setToolTipText("Re-enter your Password");
         }
         else if(!txt_conPass.getText().isEmpty()){
             if(txt_conPass.getText().length() < 5){
@@ -485,6 +486,8 @@ public class sign_up_frame extends javax.swing.JFrame {
                 else{
                     lbl_conPass.setIcon(che);
                     lbl_pass.setIcon(che);
+                    txt_conPass.setToolTipText("OK");
+                    txt_pass.setToolTipText("OK");
                 }
             }
         }
@@ -496,17 +499,6 @@ public class sign_up_frame extends javax.swing.JFrame {
                     btn_sign_up.requestFocus();
                 }
     }//GEN-LAST:event_btn_checkActionPerformed
-
-    private void txt_passMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txt_passMousePressed
-        get = txt_user.getText();
-        
-        if("true".equals(getAdminNames()) && "true".equals(getUserNames())){
-            yey = "ok";
-        }
-        else if("false".equals(getAdminNames()) && !txt_user.getText().isEmpty() || "false".equals(getUserNames()) && !txt_user.getText().isEmpty()){
-            yey = "nope";
-        }
-    }//GEN-LAST:event_txt_passMousePressed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

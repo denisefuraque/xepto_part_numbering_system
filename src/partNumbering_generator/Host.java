@@ -57,9 +57,6 @@ public class Host {
     public static void updatePersistenceAddress(){
         persistenceMap = new HashMap();
         persistenceMap.put("javax.persistence.jdbc.url", "jdbc:derby://" + host_address + "/partNumbering");
-        persistenceMap.put("javax.persistence.jdbc.user", "Admin01");
-        persistenceMap.put("javax.persistence.jdbc.password", "07032017");
-        persistenceMap.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.ClientDriver");
     }
     
     public static Map getPersistence(){

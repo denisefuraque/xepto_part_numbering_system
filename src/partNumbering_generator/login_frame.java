@@ -3,8 +3,10 @@ package partNumbering_generator;
 import java.awt.event.KeyEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
-import javax.persistence.*;
 import javax.swing.JOptionPane;
 
 public class login_frame extends javax.swing.JFrame {
@@ -30,7 +32,7 @@ public class login_frame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -269,6 +271,7 @@ public class login_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_usernameActionPerformed
 
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
+            
             String user = txt_username.getText();
             StringBuilder pass_sb = new StringBuilder(txt_password.getPassword().length);
             for(Character c : txt_password.getPassword())
@@ -305,13 +308,17 @@ public class login_frame extends javax.swing.JFrame {
             }
             
             if(validAdmin){
-                new generator_admin_frame().setVisible(true);
+                Account.setUser(txt_username.getText());
+                Account.setType("admin");
+                new generator_frame().setVisible(true);
                 this.setVisible(false);
                 txt_username.setText("");
                 txt_password.setText("");
             }
             else if(validEmployee){
-                new generator_user_frame().setVisible(true);
+                Account.setUser(txt_username.getText());
+                Account.setType("user");
+                new generator_frame().setVisible(true);
                 this.setVisible(false);
                 txt_username.setText("");
                 txt_password.setText("");

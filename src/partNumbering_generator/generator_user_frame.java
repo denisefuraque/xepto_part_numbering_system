@@ -1047,7 +1047,7 @@ public final class generator_user_frame extends javax.swing.JFrame {
         try {
             new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         } catch (SQLException ex) {
-            Logger.getLogger(generator_admin_frame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(generator_frame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         cmb_scheme.setSelectedIndex(0);
