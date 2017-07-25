@@ -29,6 +29,7 @@ public class login_frame extends javax.swing.JFrame {
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
         }        
+        
         setLocationRelativeTo(null);
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 

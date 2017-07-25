@@ -11,8 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -35,6 +39,8 @@ public final class view_database extends javax.swing.JFrame {
     Statement st, st1;
     ResultSet rs, rs1;
     
+    EntityManager em;
+    
     int curRow = 0;
     
     String host_address = Host.getHost();
@@ -43,6 +49,13 @@ public final class view_database extends javax.swing.JFrame {
         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
+        
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }        
         
         setLocationRelativeTo(null);
         
@@ -70,43 +83,27 @@ public final class view_database extends javax.swing.JFrame {
         Object[] options = {"Yes",
                             "No"};
         int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this Delete operation \n\nAre you sure you want to delete? ","You are about to DELETE a Record!",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,null, options, options[0]);
-        
+        String selected_pn="";
         switch (n){
             case 0:
                 try{
-                    con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-                    con = getConnection();
-                    st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    String searchQuery = "SELECT * FROM PART_NUMBER_DATA";
-                    rs = st.executeQuery(searchQuery);
-                    
                     int SelectedRowIndex = tbl_database.getSelectedRow();
+                    
+                    selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
+                    
+                    em.getTransaction().begin();
+                    Query q = em.createNativeQuery("DELETE FROM PART_NUMBER_DATA WHERE PART_NUMBER = '" + selected_pn + "'");
+                    q.executeUpdate();
+                    em.getTransaction().commit();
+                    
+                    if (tbl_database.getRowSorter()!=null) {
+                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                    }
                     model.removeRow(SelectedRowIndex);
-                    curRow = SelectedRowIndex + 1;
-                    rs.absolute(curRow);
-                    rs.deleteRow();
-                    //rs.previous();
                 }
-                catch(Exception ex){
-                   System.out.println(ex.getMessage());
-               }finally {
-                    if (rs != null) {
-                        try {
-                            rs.close();
-                        } catch (SQLException e) { /* ignored */}
-                    }
-                    if (st != null) {
-                        try {
-                            st.close();
-                        } catch (SQLException e) { /* ignored */}
-                    }
-                    if (con != null) {
-                        try {
-                            con.close();
-                        } catch (SQLException e) { /* ignored */}
-                    }
+                catch(Exception e){
+                    System.out.println(selected_pn + " " + e.toString());
                 }
-                break;
                 
             case 1:
                 break;
@@ -130,42 +127,23 @@ public final class view_database extends javax.swing.JFrame {
     public ArrayList<Class_data> ListClass_Data(String ValToSearch){
         
         try{
-            con1 = getConnection();
-            st1= con1.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery1 = "SELECT* FROM PART_NUMBER_DATA WHERE ('part_number' || 'category' || 'description') LIKE '%" + ValToSearch + "%'";
-            rs1 = st1.executeQuery(searchQuery1);
-            
             Class_data data;
             
-            while(rs1.next()){
+            Query q = em.createNamedQuery("PartNumberData.findAll");
+            List<PartNumberData> pnd = q.getResultList();
+            for(PartNumberData d: pnd){
                 data = new Class_data(
-                                    rs1.getString("part_number"),
-                                    rs1.getString("category"),
-                                    rs1.getString("description")
-                                     );
+                                    d.getPartNumber(),
+                                    d.getCategory(),
+                                    d.getDescription()
+                                    );
                 dataList.add(data);
             }
-        }        
-        catch(SQLException ex){
-                System.out.println(ex.getMessage());
-                }
-        finally {
-            if (rs1 != null) {
-                try {
-                    rs1.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (st1 != null) {
-                try {
-                    st1.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (con1 != null) {
-                try {
-                    con1.close();
-                } catch (SQLException e) { /* ignored */}
-            }
         }
+        catch(Exception e){
+            System.out.print(e.toString());
+        }
+        
         return dataList;
     }
     
@@ -283,12 +261,12 @@ public final class view_database extends javax.swing.JFrame {
                 .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_search, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(69, 69, 69))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_search))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -351,11 +329,11 @@ public final class view_database extends javax.swing.JFrame {
             .addGroup(bg_panLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
+                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
                     .addGroup(bg_panLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+                        .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
