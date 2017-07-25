@@ -22,4 +22,16 @@
       <property name="javax.persistence.jdbc.password" value="07032017"/>
     </properties>
   </persistence-unit>
+  <persistence-unit name="partNumberingPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>partNumbering_generator.PartNumberData</class>
+    <class>partNumbering_generator.ElectricalPartCommodity</class>
+    <class>partNumbering_generator.DataUsers</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/partNumbering"/>
+      <property name="javax.persistence.jdbc.user" value="Admin01"/>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+      <property name="javax.persistence.jdbc.password" value="07032017"/>
+    </properties>
+  </persistence-unit>
 </persistence>
