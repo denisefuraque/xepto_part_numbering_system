@@ -40,7 +40,7 @@ public final class generator_frame extends javax.swing.JFrame {
         
         initComponents();
         
-        em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        em = PartNumber_EM.getEM();
         
         setLocationRelativeTo(null);
         
