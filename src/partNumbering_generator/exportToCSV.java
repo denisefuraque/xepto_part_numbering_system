@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -33,14 +34,20 @@ public class exportToCSV {
             String name = "C:\\Users\\Denise Furaque\\Desktop\\part_number_csv.csv";
             try{
                 FileWriter fw = new FileWriter(name);
-                
-                
-                
                 Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
                 Connection conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
                 String query  = "SELECT * FROM PART_NUMBER_DATA";
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
+                
+                ResultSetMetaData metadata = rs.getMetaData();
+                int columnCount = metadata.getColumnCount();
+                
+                for(int i=1; i<=columnCount; i++){
+                    String columnName = metadata.getColumnName(i);
+                    fw.append(columnName);
+                }
+                
                 while(rs.next())
                 {
                     fw.append(rs.getString(1));

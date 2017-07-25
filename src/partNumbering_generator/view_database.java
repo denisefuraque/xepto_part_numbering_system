@@ -174,7 +174,7 @@ public final class view_database extends javax.swing.JFrame {
     //function to Display data in JTable
     public void findData(){
         ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
-        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description", "Generated_Date", "Author", "Configuration"});
+        model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
         Object[] row = new Object[6];
         
         for (int i = 0; i < data.size(); i++){
