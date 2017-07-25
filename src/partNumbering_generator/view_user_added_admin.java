@@ -108,7 +108,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                                     d.getPartNumber(),
                                     d.getCategory(),
                                     d.getDescription(), 
-                                    (Date) d.getGeneratedDate(),
+                                    d.getGeneratedDate(),
                                     d.getAuthor(),
                                     d.getConfiguration()
                                     );
