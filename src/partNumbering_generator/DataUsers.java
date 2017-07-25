@@ -8,6 +8,7 @@ package partNumbering_generator;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
@@ -29,6 +32,17 @@ import javax.persistence.Transient;
     , @NamedQuery(name = "DataUsers.findByCategory", query = "SELECT d FROM DataUsers d WHERE d.category = :category")
     , @NamedQuery(name = "DataUsers.findByDescription", query = "SELECT d FROM DataUsers d WHERE d.description = :description")})
 public class DataUsers implements Serializable {
+
+    @Basic(optional = false)
+    @Column(name = "GENERATED_DATE", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date generatedDate;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 100)
+    private String author;
+    @Basic(optional = false)
+    @Column(nullable = false, length = 6)
+    private String configuration;
 
     @Transient
     private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -117,6 +131,36 @@ public class DataUsers implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
+    }
+
+    public Date getGeneratedDate() {
+        return generatedDate;
+    }
+
+    public void setGeneratedDate(Date generatedDate) {
+        Date oldGeneratedDate = this.generatedDate;
+        this.generatedDate = generatedDate;
+        changeSupport.firePropertyChange("generatedDate", oldGeneratedDate, generatedDate);
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        String oldAuthor = this.author;
+        this.author = author;
+        changeSupport.firePropertyChange("author", oldAuthor, author);
+    }
+
+    public String getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(String configuration) {
+        String oldConfiguration = this.configuration;
+        this.configuration = configuration;
+        changeSupport.firePropertyChange("configuration", oldConfiguration, configuration);
     }
     
 }

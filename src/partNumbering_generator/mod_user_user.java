@@ -43,7 +43,7 @@ public class mod_user_user extends javax.swing.JFrame {
         txt_fname.setText(mod_fname);
         txt_lname.setText(mod_lname);
         txt_job.setText(mod_job);
-        txt_pType.setText("Administrator");
+        txt_pType.setText("User");
         
         getAdminNames();
         getUserNames();

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,18 +33,22 @@ public class view_user_added_admin extends javax.swing.JFrame {
     Statement st;
     ResultSet rs;
     
+    Connection con1 = null;
+    Statement st1;
+    ResultSet rs1;
+    
     Connection conn = null;
     Statement stmnt;
     ResultSet reSet;
     
-    String value1 = "", value2 = "", value3 = "";
+    String value1 = "", value2 = "", value3 = "", value5 = "", value6 = "";
+    Date value4;
     
     int curRow = 0;
     
     String host_address = Host.getHost();
     
-    public view_user_added_admin(){
-
+    public view_user_added_admin() {
         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
@@ -68,91 +73,89 @@ public class view_user_added_admin extends javax.swing.JFrame {
         btn_delete.addActionListener(this::btn_delete_confirmationActionPerformed);
     }
     
-    //delete data
+    //opens a joptionpane to confirm whether the user is sure to delete the record
     private void btn_delete_confirmationActionPerformed(java.awt.event.ActionEvent evt){
         
-        Object[] options = { "Yes", "No"};
-        
-        int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this DELETE operation \n\nAre you sure you want to DELETE this record?", "You are about to DELETE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        Object[] options = {"Yes",
+                            "No"};
+        int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this Delete operation \n\nAre you sure you want to delete? ","You are about to DELETE a Record!",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,null, options, options[0]);
         
         switch (n){
             case 0:
-                Connection connect = null;
-                Statement state = null;
-                ResultSet result = null; 
                 try{
-                    connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                    connect = getConnection();
-                    state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    String query = "SELECT * FROM DATA_USERS";
-                    result = state.executeQuery(query);
+                    con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+                    con = getConnection();
+                    st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+                    String searchQuery = "SELECT * FROM DATA_USERS";
+                    rs = st.executeQuery(searchQuery);
                     
                     int SelectedRowIndex = tbl_database.getSelectedRow();
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
-                    }
+                    if (tbl_database.getRowSorter()!=null) 
+                       SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
                     model.removeRow(SelectedRowIndex);
                     curRow = SelectedRowIndex + 1;
-                    result.absolute(curRow);
-                    result.deleteRow();
+                    rs.absolute(curRow);
+                    rs.deleteRow();
+                    //rs.previous();
                 }
                 catch(Exception ex){
-                    System.out.println(ex.getMessage());
-                }
-                finally{
-                    if(result != null){
-                        try{
-                            result.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
+                   System.out.println(ex.getMessage());
+               }finally {
+                    if (rs != null) {
+                        try {
+                            rs.close();
+                        } catch (SQLException e) { /* ignored */}
                     }
-                    if(state != null){
-                        try{
-                            state.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
+                    if (st != null) {
+                        try {
+                            st.close();
+                        } catch (SQLException e) { /* ignored */}
                     }
-                    if(connect != null){
-                        try{
-                            connect.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
+                    if (con != null) {
+                        try {
+                            con.close();
+                        } catch (SQLException e) { /* ignored */}
                     }
                 }
                 break;
+                
             case 1:
                 break;
         }
+    
     }
     
     //function to connect sql
     public Connection getConnection(){
         
         try{
-            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
+            con1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
         }
         catch(SQLException ex){
                   System.out.println(ex.getMessage());
         }
-        return con;
+        return con1;
     }
 
     //function to return arraylist with particular data
     public ArrayList<Class_data> ListClass_Data(String ValToSearch){
         
         try{
-            con = getConnection();
-            st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery = "SELECT * FROM DATA_USERS WHERE ('part_number' || 'category' || 'description') LIKE '%" + ValToSearch + "%'";
-            rs = st.executeQuery(searchQuery);
+            con1 = getConnection();
+            st1= con1.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            String searchQuery1 = "SELECT* FROM DATA_USERS WHERE ('part_number' || 'category' || 'description' || 'generated_date' || 'author' || 'configuration') LIKE '%" + ValToSearch + "%'";
+            rs1 = st1.executeQuery(searchQuery1);
             
             Class_data data;
             
-            while(rs.next()){
+            while(rs1.next()){
                 data = new Class_data(
-                                    rs.getString("part_number"),
-                                    rs.getString("category"),
-                                    rs.getString("description")
+                                    rs1.getString("part_number"),
+                                    rs1.getString("category"),
+                                    rs1.getString("description"),
+                                    rs1.getDate("generated_date"),
+                                    rs1.getString("author"),
+                                    rs1.getString("configuration")
                                      );
                 dataList.add(data);
             }
@@ -161,47 +164,54 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 System.out.println(ex.getMessage());
                 }
         finally {
-            if (rs != null) {
+            if (rs1 != null) {
                 try {
-                    rs.close();
+                    rs1.close();
                 } catch (SQLException e) { /* ignored */}
             }
-            if (st != null) {
+            if (st1 != null) {
                 try {
-                    st.close();
+                    st1.close();
                 } catch (SQLException e) { /* ignored */}
             }
-            if (con != null) {
+            if (con1 != null) {
                 try {
-                    con.close();
+                    con1.close();
                 } catch (SQLException e) { /* ignored */}
             }
         }
         return dataList;
     }
-    
+
     //function to Display data in JTable
     public void findData(){
         ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
-        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description"});
-        Object[] row = new Object[4];
+        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description", "Generated_Date", "Author", "Configuration"});
+        Object[] row = new Object[6];
         
         for (int i = 0; i < data.size(); i++){
             row[0] = data.get(i).getPn();
-            row[1]= data.get(i).getCat();
+            row[1] = data.get(i).getCat();
             row[2] = data.get(i).getDes();
+            row[3] = data.get(i).getDate();
+            row[4] = data.get(i).getAut();
+            row[5] = data.get(i).getConfig();
             model.addRow(row);
         }
         tbl_database.setModel(model);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
+        dataUsersQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT d FROM DataUsers d");
+        dataUsersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : dataUsersQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tbl_database = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         txt_search = new javax.swing.JTextField();
@@ -221,12 +231,33 @@ public class view_user_added_admin extends javax.swing.JFrame {
         data_pan.setMaximumSize(new java.awt.Dimension(445, 840));
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, dataUsersList, tbl_database);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
+        columnBinding.setColumnName("Part Number");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
+        columnBinding.setColumnName("Category");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
+        columnBinding.setColumnName("Description");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${generatedDate}"));
+        columnBinding.setColumnName("Generated Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${author}"));
+        columnBinding.setColumnName("Author");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${configuration}"));
+        columnBinding.setColumnName("Configuration");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tbl_databaseMousePressed(evt);
             }
         });
-        jScrollPane1.setViewportView(tbl_database);
+        jScrollPane2.setViewportView(tbl_database);
 
         javax.swing.GroupLayout data_panLayout = new javax.swing.GroupLayout(data_pan);
         data_pan.setLayout(data_panLayout);
@@ -234,13 +265,13 @@ public class view_user_added_admin extends javax.swing.JFrame {
             data_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(data_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
         data_panLayout.setVerticalGroup(
             data_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(data_panLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -308,8 +339,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbl_icon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         header_panLayout.setVerticalGroup(
             header_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,14 +376,17 @@ public class view_user_added_admin extends javax.swing.JFrame {
             .addGroup(bg_panLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(bg_panLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(bg_panLayout.createSequentialGroup()
+                        .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         bg_panLayout.setVerticalGroup(
@@ -384,6 +417,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        bindingGroup.bind();
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -404,7 +439,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
     switch(opt){
        
         case 0:
-           
+
             try{
                 conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
                 stmnt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -418,6 +453,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 reSet.updateString("part_number", value1);
                 reSet.updateString("category", value2);
                 reSet.updateString("description", value3);
+                reSet.updateDate("generated_date", value4);
+                reSet.updateString("author", value5);
+                reSet.updateString("configuration", value6);
 
                 reSet.insertRow();
                 reSet.moveToCurrentRow();
@@ -426,6 +464,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 row.add(value1);
                 row.add(value2);
                 row.add(value3);
+                row.add(value4);
+                row.add(value5);
+                row.add(value6);
 
             }
             catch(Exception ex){
@@ -498,7 +539,6 @@ public class view_user_added_admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void tbl_databaseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMousePressed
-        
         int row = tbl_database.getSelectedRow();
         if (tbl_database.getRowSorter()!=null) {
             row = tbl_database.getRowSorter().convertRowIndexToModel(row);
@@ -506,7 +546,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
         value1 = tbl_database.getModel().getValueAt(row, 0).toString();
         value2 = tbl_database.getModel().getValueAt(row, 1).toString();
         value3 = tbl_database.getModel().getValueAt(row, 2).toString();
-
+        value4 = (java.sql.Date) tbl_database.getModel().getValueAt(row, 3);
+        value5 = tbl_database.getModel().getValueAt(row, 4).toString();
+        value6 = tbl_database.getModel().getValueAt(row, 5).toString();
     }//GEN-LAST:event_tbl_databaseMousePressed
 
     public static void main(String args[]) {
@@ -546,13 +588,17 @@ public class view_user_added_admin extends javax.swing.JFrame {
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_save;
     private javax.swing.JButton btn_search;
+    private java.util.List<partNumbering_generator.DataUsers> dataUsersList;
+    private javax.persistence.Query dataUsersQuery;
     private javax.swing.JPanel data_pan;
     private javax.swing.JPanel header_pan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_icon;
+    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

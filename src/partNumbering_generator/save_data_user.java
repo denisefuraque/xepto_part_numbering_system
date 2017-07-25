@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -291,27 +292,31 @@ public class save_data_user extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        String aut = Account.getUser();
+        Date today = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(today.getTime());
+        String config = txt_partNum.getText().substring(txt_partNum.getText().length() - 4);
 
         try{
 
             rs.moveToInsertRow();
-
+            
             rs.updateString("part_number", txt_partNum.getText());
             rs.updateString("category", txt_cat.getText());
             rs.updateString("description", txt_des.getText());
-
+            rs.updateDate("generated_date", sqlDate);
+            rs.updateString("author", aut);
+            rs.updateString("configuration", config);
+            
             rs.insertRow();
             rs.moveToCurrentRow();
-
+            
             Vector row = new Vector();
             row.add(txt_partNum.getText());
             row.add(txt_cat.getText());
             row.add(txt_des.getText());
             dtm.addRow(row);
             dtm.fireTableDataChanged();
-
-            btn_save.setVisible(false);
-
         }
         catch(SQLException err){
             JOptionPane.showMessageDialog(null, "Similar Part Number! Try Again.", "alert", JOptionPane.ERROR_MESSAGE);

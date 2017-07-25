@@ -6,10 +6,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -73,7 +69,7 @@ public class database_open extends javax.swing.JFrame {
             //move the cursor the first record
             
             rs.next();
-        
+
         }
         catch(SQLException err){
             JOptionPane.showMessageDialog(database_open.this, err.getMessage());
