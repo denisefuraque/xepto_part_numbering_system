@@ -5,6 +5,8 @@
  */
 package partNumbering_generator;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,6 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "ElectricalPartCommodity.findByCommodityName", query = "SELECT e FROM ElectricalPartCommodity e WHERE e.commodityName = :commodityName")
     , @NamedQuery(name = "ElectricalPartCommodity.findByDescription", query = "SELECT e FROM ElectricalPartCommodity e WHERE e.description = :description")})
 public class ElectricalPartCommodity implements Serializable {
+
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,7 +63,9 @@ public class ElectricalPartCommodity implements Serializable {
     }
 
     public void setCommodityCode(String commodityCode) {
+        String oldCommodityCode = this.commodityCode;
         this.commodityCode = commodityCode;
+        changeSupport.firePropertyChange("commodityCode", oldCommodityCode, commodityCode);
     }
 
     public String getCommodityName() {
@@ -65,7 +73,9 @@ public class ElectricalPartCommodity implements Serializable {
     }
 
     public void setCommodityName(String commodityName) {
+        String oldCommodityName = this.commodityName;
         this.commodityName = commodityName;
+        changeSupport.firePropertyChange("commodityName", oldCommodityName, commodityName);
     }
 
     public String getDescription() {
@@ -73,7 +83,9 @@ public class ElectricalPartCommodity implements Serializable {
     }
 
     public void setDescription(String description) {
+        String oldDescription = this.description;
         this.description = description;
+        changeSupport.firePropertyChange("description", oldDescription, description);
     }
 
     @Override
@@ -99,6 +111,14 @@ public class ElectricalPartCommodity implements Serializable {
     @Override
     public String toString() {
         return "entity_classes.ElectricalPartCommodity[ commodityCode=" + commodityCode + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

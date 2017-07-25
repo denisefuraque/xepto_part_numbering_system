@@ -84,6 +84,7 @@ public final class view_database extends javax.swing.JFrame {
                     if (tbl_database.getRowSorter()!=null) {
                         SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
                     }
+
                     model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
@@ -108,7 +109,10 @@ public final class view_database extends javax.swing.JFrame {
                 data = new Class_data(
                                     d.getPartNumber(),
                                     d.getCategory(),
-                                    d.getDescription()
+                                    d.getDescription(),
+                                    d.getGeneratedDate(),
+                                    d.getAuthor(),
+                                    d.getConfiguration()
                                     );
                 dataList.add(data);
             }
@@ -123,13 +127,16 @@ public final class view_database extends javax.swing.JFrame {
     //function to Display data in JTable
     public void findData(){
         ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
-        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description"});
-        Object[] row = new Object[4];
+        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description", "Generated_Date", "Author", "Configuration"});
+        Object[] row = new Object[6];
         
         for (int i = 0; i < data.size(); i++){
             row[0] = data.get(i).getPn();
-            row[1]= data.get(i).getCat();
+            row[1] = data.get(i).getCat();
             row[2] = data.get(i).getDes();
+            row[3] = data.get(i).getDate();
+            row[4] = data.get(i).getAut();
+            row[5] = data.get(i).getConfig();
             model.addRow(row);
         }
         tbl_database.setModel(model);
@@ -138,10 +145,16 @@ public final class view_database extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        partNumberingPUEntityManager0 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
+        partNumberDataQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager0.createQuery("SELECT p FROM PartNumberData p");
+        partNumberDataList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : partNumberDataQuery.getResultList();
+        partNumberDataQuery1 = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager0.createQuery("SELECT p FROM PartNumberData p");
+        partNumberDataList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : partNumberDataQuery1.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
         tbl_database = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         txt_search = new javax.swing.JTextField();
@@ -164,30 +177,41 @@ public final class view_database extends javax.swing.JFrame {
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
         data_pan.setPreferredSize(new java.awt.Dimension(445, 840));
 
-        tbl_database.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(tbl_database);
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, partNumberDataList1, tbl_database);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
+        columnBinding.setColumnName("Part Number");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
+        columnBinding.setColumnName("Category");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
+        columnBinding.setColumnName("Description");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${generatedDate}"));
+        columnBinding.setColumnName("Generated Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${author}"));
+        columnBinding.setColumnName("Author");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${configuration}"));
+        columnBinding.setColumnName("Configuration");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
+        jScrollPane1.setViewportView(tbl_database);
         if (tbl_database.getColumnModel().getColumnCount() > 0) {
             tbl_database.getColumnModel().getColumn(0).setResizable(false);
             tbl_database.getColumnModel().getColumn(1).setResizable(false);
             tbl_database.getColumnModel().getColumn(2).setResizable(false);
+            tbl_database.getColumnModel().getColumn(3).setResizable(false);
+            tbl_database.getColumnModel().getColumn(4).setResizable(false);
+            tbl_database.getColumnModel().getColumn(5).setResizable(false);
         }
 
         javax.swing.GroupLayout data_panLayout = new javax.swing.GroupLayout(data_pan);
@@ -196,13 +220,13 @@ public final class view_database extends javax.swing.JFrame {
             data_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(data_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         data_panLayout.setVerticalGroup(
             data_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(data_panLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -299,12 +323,12 @@ public final class view_database extends javax.swing.JFrame {
             .addGroup(bg_panLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
                     .addGroup(bg_panLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE))
                 .addContainerGap())
         );
         bg_panLayout.setVerticalGroup(
@@ -331,6 +355,8 @@ public final class view_database extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -381,9 +407,15 @@ public final class view_database extends javax.swing.JFrame {
     private javax.swing.JPanel header_pan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_icon;
+    private java.util.List<partNumbering_generator.PartNumberData> partNumberDataList;
+    private java.util.List<partNumbering_generator.PartNumberData> partNumberDataList1;
+    private javax.persistence.Query partNumberDataQuery;
+    private javax.persistence.Query partNumberDataQuery1;
+    private javax.persistence.EntityManager partNumberingPUEntityManager0;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

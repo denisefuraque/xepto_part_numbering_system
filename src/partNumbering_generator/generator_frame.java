@@ -120,10 +120,10 @@ public final class generator_frame extends javax.swing.JFrame {
             intSpec_code = new ArrayList<>();
 
             try{
-                Query q = em.createNamedQuery("InternalProcessDocument.findAll");
-                List<InternalProcessDocument> list = q.getResultList();
+                 Query q = em.createNamedQuery("InternalSpecificationDocument.findAll");
+                List<InternalSpecificationDocument> list = q.getResultList();
                 
-                for(InternalProcessDocument record: list){
+                for(InternalSpecificationDocument record: list){
                     comCode_col = record.getCommodityCode();
                     comName_col = record.getCommodityName();
                     
@@ -1503,6 +1503,8 @@ public final class generator_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_schemeActionPerformed
 
     private void btn_open_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_open_saveActionPerformed
+        
+        
         
         //clearing all inputted items
 

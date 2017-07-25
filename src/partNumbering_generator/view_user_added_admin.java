@@ -4,6 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -28,12 +34,12 @@ public class view_user_added_admin extends javax.swing.JFrame {
     
     EntityManager em;
     
-    String value1 = "", value2 = "", value3 = "";
+    String value1 = "", value2 = "", value3 = "", value5 = "", value6 = "";
+    Date value4;
     
     String host_address = Host.getHost();
     
-    public view_user_added_admin(){
-
+    public view_user_added_admin() {
         initComponents();
         
         try{
@@ -65,12 +71,12 @@ public class view_user_added_admin extends javax.swing.JFrame {
         btn_delete.addActionListener(this::btn_delete_confirmationActionPerformed);
     }
     
-    //delete data
+    //opens a joptionpane to confirm whether the user is sure to delete the record
     private void btn_delete_confirmationActionPerformed(java.awt.event.ActionEvent evt){
         
-        Object[] options = { "Yes", "No"};
-        
-        int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this DELETE operation \n\nAre you sure you want to DELETE this record?", "You are about to DELETE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        Object[] options = {"Yes",
+                            "No"};
+        int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this Delete operation \n\nAre you sure you want to delete? ","You are about to DELETE a Record!",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,null, options, options[0]);
         
         switch (n){
             case 0:
@@ -96,6 +102,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
             case 1:
                 break;
         }
+    
     }
     
 
@@ -110,10 +117,14 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 data = new Class_data(
                                     d.getPartNumber(),
                                     d.getCategory(),
-                                    d.getDescription()
+                                    d.getDescription(),
+                                    d.getGeneratedDate(),
+                                    d.getAuthor(),
+                                    d.getConfiguration()
                                     );
                 dataList.add(data);
             }
+
         }
         catch(Exception e){
             System.out.println(e.toString());
@@ -121,29 +132,36 @@ public class view_user_added_admin extends javax.swing.JFrame {
         
         return dataList;
     }
-    
+
     //function to Display data in JTable
     public void findData(){
         ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
-        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description"});
-        Object[] row = new Object[4];
+        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description", "Generated_Date", "Author", "Configuration"});
+        Object[] row = new Object[6];
         
         for (int i = 0; i < data.size(); i++){
             row[0] = data.get(i).getPn();
-            row[1]= data.get(i).getCat();
+            row[1] = data.get(i).getCat();
             row[2] = data.get(i).getDes();
+            row[3] = data.get(i).getDate();
+            row[4] = data.get(i).getAut();
+            row[5] = data.get(i).getConfig();
             model.addRow(row);
         }
         tbl_database.setModel(model);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
+        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
+        dataUsersQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT d FROM DataUsers d");
+        dataUsersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : dataUsersQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         tbl_database = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         txt_search = new javax.swing.JTextField();
@@ -163,12 +181,33 @@ public class view_user_added_admin extends javax.swing.JFrame {
         data_pan.setMaximumSize(new java.awt.Dimension(445, 840));
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, dataUsersList, tbl_database);
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
+        columnBinding.setColumnName("Part Number");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
+        columnBinding.setColumnName("Category");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
+        columnBinding.setColumnName("Description");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${generatedDate}"));
+        columnBinding.setColumnName("Generated Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${author}"));
+        columnBinding.setColumnName("Author");
+        columnBinding.setColumnClass(String.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${configuration}"));
+        columnBinding.setColumnName("Configuration");
+        columnBinding.setColumnClass(String.class);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tbl_databaseMousePressed(evt);
             }
         });
-        jScrollPane1.setViewportView(tbl_database);
+        jScrollPane2.setViewportView(tbl_database);
 
         javax.swing.GroupLayout data_panLayout = new javax.swing.GroupLayout(data_pan);
         data_pan.setLayout(data_panLayout);
@@ -176,13 +215,13 @@ public class view_user_added_admin extends javax.swing.JFrame {
             data_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(data_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
         data_panLayout.setVerticalGroup(
             data_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(data_panLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -250,8 +289,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbl_icon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         header_panLayout.setVerticalGroup(
             header_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,14 +326,17 @@ public class view_user_added_admin extends javax.swing.JFrame {
             .addGroup(bg_panLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(bg_panLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(btn_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(bg_panLayout.createSequentialGroup()
+                        .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         bg_panLayout.setVerticalGroup(
@@ -326,6 +367,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        bindingGroup.bind();
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -351,6 +394,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
             try{
                 PartNumberData data = new PartNumberData(value1, value2);
                 data.setCategory(value3);
+                data.setGeneratedDate(value4);
+                data.setAuthor(value5);
+                data.setConfiguration(value6);
                 
                 em.persist(data);
             }
@@ -382,7 +428,6 @@ public class view_user_added_admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void tbl_databaseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMousePressed
-        
         int row = tbl_database.getSelectedRow();
         if (tbl_database.getRowSorter()!=null) {
             row = tbl_database.getRowSorter().convertRowIndexToModel(row);
@@ -390,7 +435,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
         value1 = tbl_database.getModel().getValueAt(row, 0).toString();
         value2 = tbl_database.getModel().getValueAt(row, 1).toString();
         value3 = tbl_database.getModel().getValueAt(row, 2).toString();
-
+        value4 = (java.sql.Date) tbl_database.getModel().getValueAt(row, 3);
+        value5 = tbl_database.getModel().getValueAt(row, 4).toString();
+        value6 = tbl_database.getModel().getValueAt(row, 5).toString();
     }//GEN-LAST:event_tbl_databaseMousePressed
 
     public static void main(String args[]) {
@@ -430,13 +477,17 @@ public class view_user_added_admin extends javax.swing.JFrame {
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_save;
     private javax.swing.JButton btn_search;
+    private java.util.List<partNumbering_generator.DataUsers> dataUsersList;
+    private javax.persistence.Query dataUsersQuery;
     private javax.swing.JPanel data_pan;
     private javax.swing.JPanel header_pan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_icon;
+    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

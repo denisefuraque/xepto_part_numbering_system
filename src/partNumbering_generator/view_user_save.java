@@ -79,7 +79,7 @@ public class view_user_save extends javax.swing.JFrame {
         try{
             con = getConnection();
             st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery = "SELECT * FROM DATA_USERS WHERE ('part_number' || 'category' || 'description') LIKE '%" + ValToSearch + "%'";
+            String searchQuery = "SELECT * FROM DATA_USERS WHERE ('part_number' || 'category' || 'description' || 'generated_date' || 'author' || 'configuration') LIKE '%" + ValToSearch + "%'";
             rs = st.executeQuery(searchQuery);
             
             Class_data data;
@@ -88,7 +88,10 @@ public class view_user_save extends javax.swing.JFrame {
                 data = new Class_data(
                                     rs.getString("part_number"),
                                     rs.getString("category"),
-                                    rs.getString("description")
+                                    rs.getString("description"),
+                                    rs.getDate("generated_date"),
+                                    rs.getString("author"),
+                                    rs.getString("configuration")
                                      );
                 dataList.add(data);
             }
@@ -119,13 +122,16 @@ public class view_user_save extends javax.swing.JFrame {
     //function to Display data in JTable
     public void findData(){
         ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
-        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description"});
-        Object[] row = new Object[4];
+        model.setColumnIdentifiers(new Object[]{"Part_Number", "Category", "Description", "Generated_Date", "Author", "Configuration"});
+        Object[] row = new Object[6];
         
         for (int i = 0; i < data.size(); i++){
             row[0] = data.get(i).getPn();
-            row[1]= data.get(i).getCat();
+            row[1] = data.get(i).getCat();
             row[2] = data.get(i).getDes();
+            row[3] = data.get(i).getDate();
+            row[4] = data.get(i).getAut();
+            row[5] = data.get(i).getConfig();
             model.addRow(row);
         }
         tbl_database.setModel(model);
@@ -170,7 +176,7 @@ public class view_user_save extends javax.swing.JFrame {
         columnBinding.setColumnName("Description");
         columnBinding.setColumnClass(String.class);
         bindingGroup.addBinding(jTableBinding);
-
+        jTableBinding.bind();
         jScrollPane1.setViewportView(tbl_database);
 
         javax.swing.GroupLayout data_panLayout = new javax.swing.GroupLayout(data_pan);
