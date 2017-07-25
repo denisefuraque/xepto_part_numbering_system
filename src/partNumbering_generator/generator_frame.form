@@ -149,7 +149,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="bg_pan3" min="-2" max="-2" attributes="0"/>
+          <Component id="bg_pan3" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -476,7 +476,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txt_year" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="cmb_month" pref="0" max="32767" attributes="0"/>
+                          <Component id="cmb_month" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cmb_day" min="-2" pref="130" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
