@@ -24,6 +24,7 @@ public class login_frame extends javax.swing.JFrame {
         lbl_host.setText("Host: " + host_address);
         
         PartNumber_EM.initEM();
+
         em = PartNumber_EM.getEM();   
         
         setLocationRelativeTo(null);
@@ -269,8 +270,8 @@ public class login_frame extends javax.swing.JFrame {
 
     private void btn_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enterActionPerformed
             
-        exportToCSV ex = new exportToCSV();
-        ex.export();
+        //exportToCSV ex = new exportToCSV();
+        //ex.export();
         
             String user = txt_username.getText();
             StringBuilder pass_sb = new StringBuilder(txt_password.getPassword().length);

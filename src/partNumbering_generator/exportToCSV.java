@@ -31,9 +31,8 @@ public class exportToCSV {
             Scanner s = new Scanner(new FileReader("host.txt"));
             host_address = s.nextLine();
             
-            String name = "C:\\Users\\Denise Furaque\\Desktop\\part_number_csv.csv";
             try{
-                FileWriter fw = new FileWriter(name);
+                FileWriter fw = new FileWriter("part_number_csv.csv");
                 Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
                 Connection conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
                 String query  = "SELECT * FROM PART_NUMBER_DATA";
@@ -69,7 +68,6 @@ public class exportToCSV {
                 fw.flush();
                 fw.close();
                 conn.close();
-                System.out.println("CSV File is created successfully.");
             } catch (Exception e) {
                 e.printStackTrace();
             }

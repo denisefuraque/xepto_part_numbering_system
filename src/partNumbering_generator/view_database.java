@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -28,6 +29,9 @@ public final class view_database extends javax.swing.JFrame {
     ArrayList<Class_data> dataList = new ArrayList<>();
     
     EntityManager em;
+    
+    String num, cat, des, aut, con;
+    Date dat;
     
     String host_address = Host.getHost();
     
@@ -163,6 +167,7 @@ public final class view_database extends javax.swing.JFrame {
         header_pan = new javax.swing.JPanel();
         lbl_icon = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        btn_export = new javax.swing.JButton();
 
         setTitle("View Database (Admin) - Part Number Generator");
         setMaximumSize(new java.awt.Dimension(860, 530));
@@ -204,6 +209,11 @@ public final class view_database extends javax.swing.JFrame {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_database);
         if (tbl_database.getColumnModel().getColumnCount() > 0) {
             tbl_database.getColumnModel().getColumn(0).setResizable(false);
@@ -252,10 +262,10 @@ public final class view_database extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_search, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                .addGap(69, 69, 69))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,6 +326,15 @@ public final class view_database extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btn_export.setBackground(new java.awt.Color(204, 204, 255));
+        btn_export.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        btn_export.setText("Export to CSV");
+        btn_export.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_exportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bg_panLayout = new javax.swing.GroupLayout(bg_pan);
         bg_pan.setLayout(bg_panLayout);
         bg_panLayout.setHorizontalGroup(
@@ -326,7 +345,9 @@ public final class view_database extends javax.swing.JFrame {
                     .addGroup(bg_panLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(btn_export, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE))
                 .addContainerGap())
@@ -339,9 +360,12 @@ public final class view_database extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(data_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 373, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(bg_panLayout.createSequentialGroup()
+                        .addComponent(btn_delete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_export)))
                 .addContainerGap())
         );
 
@@ -368,6 +392,31 @@ public final class view_database extends javax.swing.JFrame {
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         //new view_database().setVisible(true);
     }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportActionPerformed
+        exportToCSV ex = new exportToCSV();
+        ex.export();
+        JOptionPane.showMessageDialog(this, "CSV File is created successfully.");
+    }//GEN-LAST:event_btn_exportActionPerformed
+
+    private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
+        if (evt.getClickCount() == 2) {
+            int dataInd = tbl_database.getSelectedRow();
+            if (tbl_database.getRowSorter()!=null) {
+                        dataInd = tbl_database.getRowSorter().convertRowIndexToModel(dataInd);
+                    }
+            
+            num = tbl_database.getValueAt(dataInd, 0).toString();
+            cat = tbl_database.getValueAt(dataInd, 1).toString();
+            des = tbl_database.getValueAt(dataInd, 2).toString();
+            dat = (Date) tbl_database.getValueAt(dataInd, 3);
+            aut = tbl_database.getValueAt(dataInd, 4).toString();
+            con = tbl_database.getValueAt(dataInd, 5).toString();
+            
+            this.hide();
+            new mod_data_ad(num, cat, des, dat, aut, con).setVisible(true);
+        }
+    }//GEN-LAST:event_tbl_databaseMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -402,6 +451,7 @@ public final class view_database extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg_pan;
     private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_export;
     private javax.swing.JButton btn_search;
     private javax.swing.JPanel data_pan;
     private javax.swing.JPanel header_pan;
