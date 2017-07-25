@@ -297,7 +297,7 @@ public class database_open extends javax.swing.JFrame {
        
         Object[] options = { "Yes", "No"};
 
-        int opt = JOptionPane.showOptionDialog(this, "If you click YES, the data will be SAVED in the main database \n\tand it will be DELETED in this database permanently.\n\nAre you sure you want to SAVE this record?", "You are about to SAVE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        int opt = JOptionPane.showOptionDialog(this, "If you click YES, the data will be SAVED in the 'to be approved' database \n\tand only the admin can save it to the main database.", "You are about to SAVE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
         switch(opt){
 

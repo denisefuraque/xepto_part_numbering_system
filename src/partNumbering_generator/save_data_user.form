@@ -150,9 +150,9 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="tbl_database">
                   <BindingProperties>
-                    <BindingProperty name="elements" source="dataUsersList" target="jTable1" targetPath="elements" updateStrategy="0" immediately="false">
+                    <BindingProperty name="elements" source="dataUsersList" target="tbl_database" targetPath="elements" updateStrategy="0" immediately="false">
                       <Subbinding sourcePath="${partNumber}">
                         <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
                       </Subbinding>

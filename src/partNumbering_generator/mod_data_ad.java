@@ -1,6 +1,7 @@
 
 package partNumbering_generator;
 
+import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -17,6 +18,10 @@ public class mod_data_ad extends javax.swing.JFrame {
     Date date;
     
     EntityManager em;
+    
+    ImageIcon err = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-error-icon (1).png"));
+    ImageIcon war = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-warning-icon (1).png"));
+    ImageIcon che = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-check-icon (1).png"));
     
     public mod_data_ad(String part, String category, String description, Date genDate, String author, String configuration) {
         initComponents();
@@ -322,7 +327,7 @@ public class mod_data_ad extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_modActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        
+
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
