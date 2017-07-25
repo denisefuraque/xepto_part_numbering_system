@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -36,6 +39,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
     Statement stmnt;
     ResultSet reSet;
     
+    EntityManager em;
+    
     String value1 = "", value2 = "", value3 = "";
     
     int curRow = 0;
@@ -45,6 +50,13 @@ public class view_user_added_admin extends javax.swing.JFrame {
     public view_user_added_admin(){
 
         initComponents();
+        
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }    
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -77,6 +89,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
         
         switch (n){
             case 0:
+                
                 Connection connect = null;
                 Statement state = null;
                 ResultSet result = null; 

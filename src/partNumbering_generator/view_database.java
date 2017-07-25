@@ -1,19 +1,11 @@
 package partNumbering_generator;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -35,13 +27,7 @@ public final class view_database extends javax.swing.JFrame {
     
     ArrayList<Class_data> dataList = new ArrayList<>();
     
-    Connection con = null, con1 = null;
-    Statement st, st1;
-    ResultSet rs, rs1;
-    
     EntityManager em;
-    
-    int curRow = 0;
     
     String host_address = Host.getHost();
     
@@ -83,13 +69,12 @@ public final class view_database extends javax.swing.JFrame {
         Object[] options = {"Yes",
                             "No"};
         int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this Delete operation \n\nAre you sure you want to delete? ","You are about to DELETE a Record!",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,null, options, options[0]);
-        String selected_pn="";
         switch (n){
             case 0:
                 try{
                     int SelectedRowIndex = tbl_database.getSelectedRow();
                     
-                    selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
+                    String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
                     em.getTransaction().begin();
                     Query q = em.createNativeQuery("DELETE FROM PART_NUMBER_DATA WHERE PART_NUMBER = '" + selected_pn + "'");
@@ -102,25 +87,13 @@ public final class view_database extends javax.swing.JFrame {
                     model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
-                    System.out.println(selected_pn + " " + e.toString());
+                    System.out.println(e.toString());
                 }
                 
             case 1:
                 break;
         }
     
-    }
-    
-    //function to connect sql
-    public Connection getConnection(){
-        
-        try{
-            con1 = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-        }
-        catch(SQLException ex){
-                  System.out.println(ex.getMessage());
-        }
-        return con1;
     }
 
     //function to return arraylist with particular data
@@ -166,9 +139,6 @@ public final class view_database extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        partNumberDataQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT p FROM PartNumberData p");
-        partNumberDataList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : partNumberDataQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -413,9 +383,6 @@ public final class view_database extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_icon;
-    private java.util.List<partNumbering_generator.PartNumberData> partNumberDataList;
-    private javax.persistence.Query partNumberDataQuery;
-    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
     // End of variables declaration//GEN-END:variables
