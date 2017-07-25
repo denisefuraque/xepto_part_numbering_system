@@ -4,13 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -31,19 +26,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
     
     ArrayList<Class_data> dataList = new ArrayList<>();
     
-    Connection con = null;
-    Statement st;
-    ResultSet rs;
-    
-    Connection conn = null;
-    Statement stmnt;
-    ResultSet reSet;
-    
     EntityManager em;
     
     String value1 = "", value2 = "", value3 = "";
-    
-    int curRow = 0;
     
     String host_address = Host.getHost();
     
@@ -113,58 +98,27 @@ public class view_user_added_admin extends javax.swing.JFrame {
         }
     }
     
-    //function to connect sql
-    public Connection getConnection(){
-        
-        try{
-            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-        }
-        catch(SQLException ex){
-                  System.out.println(ex.getMessage());
-        }
-        return con;
-    }
 
     //function to return arraylist with particular data
     public ArrayList<Class_data> ListClass_Data(String ValToSearch){
-        
         try{
-            con = getConnection();
-            st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery = "SELECT * FROM DATA_USERS WHERE ('part_number' || 'category' || 'description') LIKE '%" + ValToSearch + "%'";
-            rs = st.executeQuery(searchQuery);
-            
             Class_data data;
             
-            while(rs.next()){
+            Query q = em.createNamedQuery("DataUsers.findAll");
+            List<DataUsers> pnd = q.getResultList();
+            for(DataUsers d: pnd){
                 data = new Class_data(
-                                    rs.getString("part_number"),
-                                    rs.getString("category"),
-                                    rs.getString("description")
-                                     );
+                                    d.getPartNumber(),
+                                    d.getCategory(),
+                                    d.getDescription()
+                                    );
                 dataList.add(data);
             }
-        }        
-        catch(SQLException ex){
-                System.out.println(ex.getMessage());
-                }
-        finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-            }
         }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
+        
         return dataList;
     }
     
@@ -392,92 +346,34 @@ public class view_user_added_admin extends javax.swing.JFrame {
     switch(opt){
        
         case 0:
-           
+            
+            //add selected data to part number data
             try{
-                conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                stmnt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                String querySql = "SELECT * FROM PART_NUMBER_DATA";
-                reSet = stmnt.executeQuery(querySql);
-
-                reSet.next();
-
-                reSet.moveToInsertRow();
-
-                reSet.updateString("part_number", value1);
-                reSet.updateString("category", value2);
-                reSet.updateString("description", value3);
-
-                reSet.insertRow();
-                reSet.moveToCurrentRow();
-
-                Vector row = new Vector();
-                row.add(value1);
-                row.add(value2);
-                row.add(value3);
-
+                PartNumberData data = new PartNumberData(value1, value2);
+                data.setCategory(value3);
+                
+                em.persist(data);
             }
-            catch(Exception ex){
-                System.out.println(ex.getMessage());
+            catch(Exception e){
+                System.out.println(e.toString());
             }
-            finally {
-                if (reSet != null) {
-                    try {
-                        reSet.close();
-                    } catch (SQLException e) { /* ignored */}
-                }
-                if (stmnt != null) {
-                    try {
-                        stmnt.close();
-                    } catch (SQLException e) { /* ignored */}
-                }
-                if (conn != null) {
-                    try {
-                        conn.close();
-                    } catch (SQLException e) { /* ignored */}
-                }
-            }
-            Connection connect = null;
-            Statement state = null;
-            ResultSet result = null; 
+            
             try{
-                connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                connect = getConnection();
-                state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                String query = "SELECT * FROM DATA_USERS";
-                result = state.executeQuery(query);
-
                 int SelectedRowIndex = tbl_database.getSelectedRow();
-                if (tbl_database.getRowSorter()!=null) 
+
+                em.getTransaction().begin();
+                Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + value1 + "'");
+                q.executeUpdate();
+                em.getTransaction().commit();
+
+                if (tbl_database.getRowSorter()!=null) {
                     SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                }
                 model.removeRow(SelectedRowIndex);
-                curRow = SelectedRowIndex + 1;
-                result.absolute(curRow);
-                result.deleteRow();
             }
-            catch(Exception ex){
-                System.out.println(ex.getMessage());
+            catch(Exception e){
+                System.out.println(e.toString());
             }
-            finally{
-                if(result != null){
-                    try{
-                        result.close();
-                    }
-                    catch (SQLException e) { /* ignored */}
-                    }
-                if(state != null){
-                    try{
-                        state.close();
-                    }
-                    catch (SQLException e) { /* ignored */}
-                    }
-                if(connect != null){
-                    try{
-                        connect.close();
-                    }
-                    catch (SQLException e) { /* ignored */}
-                 }
-            }
-            break;
             
         case 1:
             break;
