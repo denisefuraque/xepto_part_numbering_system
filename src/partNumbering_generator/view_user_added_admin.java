@@ -105,8 +105,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
             Class_data data;
             
             Query q = em.createNamedQuery("DataUsers.findAll");
-            List<DataUsers> pnd = q.getResultList();
-            for(DataUsers d: pnd){
+            List<DataUsers> list_data = q.getResultList();
+            for(DataUsers d: list_data){
                 data = new Class_data(
                                     d.getPartNumber(),
                                     d.getCategory(),

@@ -14,7 +14,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -47,10 +51,19 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     String host_address = Host.getHost();
     
+    EntityManager em;
+    
     int curRow = 0;
     
     public emp_dir_admin() {
         initComponents();
+        
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }    
 
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -145,47 +158,28 @@ public class emp_dir_admin extends javax.swing.JFrame {
 
     //function to return arraylist with particular data
     public ArrayList<class_admin> ListClass_Data(String ValToSearch){
-        
         try{
-            con = getConnection();
-            st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery = "SELECT * FROM ADMINS WHERE ('username' || 'password' || 'first_name' || 'last_name' || 'job_title') LIKE '%" + ValToSearch + "%'";
-            rs = st.executeQuery(searchQuery);
-            
             class_admin data;
             
-            while(rs.next()){
+            Query q = em.createNamedQuery("Admins.findAll");
+            List<Admins> list_data = q.getResultList();
+            for(Admins d: list_data){
                 data = new class_admin(
-                                    rs.getString("username"),
-                                    rs.getString("first_name"),
-                                    rs.getString("last_name"),
-                                    rs.getString("job_title"),
-                                    rs.getString("password")
-                                     );
+                                    d.getUsername(),
+                                    d.getFirstName(),
+                                    d.getLastName(),
+                                    d.getJobTitle(),
+                                    d.getPassword()
+                                    );
                 dataList.add(data);
             }
-        }        
-        catch(SQLException ex){
-                System.out.println(ex.getMessage());
-                }
-        finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-            }
         }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
+        
         return dataList;
+        
     }
     
     //function to Display data in JTable
