@@ -4,12 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -154,11 +149,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        dataUsersQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT d FROM DataUsers d");
-        dataUsersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : dataUsersQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -181,27 +172,6 @@ public class view_user_added_admin extends javax.swing.JFrame {
         data_pan.setMaximumSize(new java.awt.Dimension(445, 840));
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, dataUsersList, tbl_database);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
-        columnBinding.setColumnName("Part Number");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
-        columnBinding.setColumnName("Category");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
-        columnBinding.setColumnName("Description");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${generatedDate}"));
-        columnBinding.setColumnName("Generated Date");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${author}"));
-        columnBinding.setColumnName("Author");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${configuration}"));
-        columnBinding.setColumnName("Configuration");
-        columnBinding.setColumnClass(String.class);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tbl_databaseMousePressed(evt);
@@ -367,8 +337,6 @@ public class view_user_added_admin extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -393,7 +361,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
             //add selected data to part number data
             try{
                 PartNumberData data = new PartNumberData(value1, value2);
-                data.setCategory(value3);
+                data.setDescription(value3);
                 data.setGeneratedDate(value4);
                 data.setAuthor(value5);
                 data.setConfiguration(value6);
@@ -435,7 +403,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
         value1 = tbl_database.getModel().getValueAt(row, 0).toString();
         value2 = tbl_database.getModel().getValueAt(row, 1).toString();
         value3 = tbl_database.getModel().getValueAt(row, 2).toString();
-        value4 = (java.sql.Date) tbl_database.getModel().getValueAt(row, 3);
+        value4 = (Date) tbl_database.getModel().getValueAt(row, 3);
         value5 = tbl_database.getModel().getValueAt(row, 4).toString();
         value6 = tbl_database.getModel().getValueAt(row, 5).toString();
     }//GEN-LAST:event_tbl_databaseMousePressed
@@ -477,17 +445,13 @@ public class view_user_added_admin extends javax.swing.JFrame {
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_save;
     private javax.swing.JButton btn_search;
-    private java.util.List<partNumbering_generator.DataUsers> dataUsersList;
-    private javax.persistence.Query dataUsersQuery;
     private javax.swing.JPanel data_pan;
     private javax.swing.JPanel header_pan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbl_icon;
-    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
