@@ -1631,13 +1631,16 @@ public final class generator_frame extends javax.swing.JFrame {
         String gen_pn = lbl_genPartNum.getText();
         
         boolean valid_pn = false;
+        boolean isUserData = false;
         
         try{
             Query q = em.createNamedQuery("DataUsers.findByPartNumber")
                     .setParameter("partNumber", gen_pn);
             DataUsers data = (DataUsers) q.getSingleResult();
+            isUserData = true;
         }
         catch(NoResultException e){
+            
         }
         
         try{
@@ -1646,7 +1649,9 @@ public final class generator_frame extends javax.swing.JFrame {
             PartNumberData data = (PartNumberData) q.getSingleResult();
         }
         catch(NoResultException e){
-            valid_pn = true;
+            if(!isUserData){
+                valid_pn = true;
+            }
         }
         
         if(valid_pn){

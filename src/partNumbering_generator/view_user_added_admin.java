@@ -89,50 +89,25 @@ public class view_user_added_admin extends javax.swing.JFrame {
         
         switch (n){
             case 0:
-                
-                Connection connect = null;
-                Statement state = null;
-                ResultSet result = null; 
                 try{
-                    connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                    connect = getConnection();
-                    state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    String query = "SELECT * FROM DATA_USERS";
-                    result = state.executeQuery(query);
-                    
                     int SelectedRowIndex = tbl_database.getSelectedRow();
+                    
+                    String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
+                    
+                    em.getTransaction().begin();
+                    Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + selected_pn + "'");
+                    q.executeUpdate();
+                    em.getTransaction().commit();
+                    
                     if (tbl_database.getRowSorter()!=null) {
                         SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
                     }
                     model.removeRow(SelectedRowIndex);
-                    curRow = SelectedRowIndex + 1;
-                    result.absolute(curRow);
-                    result.deleteRow();
                 }
-                catch(Exception ex){
-                    System.out.println(ex.getMessage());
+                catch(Exception e){
+                    System.out.println(e.toString());
                 }
-                finally{
-                    if(result != null){
-                        try{
-                            result.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
-                    }
-                    if(state != null){
-                        try{
-                            state.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
-                    }
-                    if(connect != null){
-                        try{
-                            connect.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
-                    }
-                }
-                break;
+                
             case 1:
                 break;
         }
