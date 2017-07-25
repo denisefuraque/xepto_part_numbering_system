@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Date;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -37,12 +37,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
     public view_user_added_admin() {
         initComponents();
         
-        try{
-            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.toString());
-        }    
+        em = PartNumber_EM.getEM();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -112,8 +107,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 data = new Class_data(
                                     d.getPartNumber(),
                                     d.getCategory(),
-                                    d.getDescription(),
-                                    d.getGeneratedDate(),
+                                    d.getDescription(), 
+                                    (Date) d.getGeneratedDate(),
                                     d.getAuthor(),
                                     d.getConfiguration()
                                     );
@@ -350,49 +345,52 @@ public class view_user_added_admin extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         
-    Object[] options = { "Yes", "No"};
-        
-    int opt = JOptionPane.showOptionDialog(this, "If you click YES, the data will be SAVED in the main database \n\tand it will be DELETED in this database permanently.\n\nAre you sure you want to SAVE this record?", "You are about to SAVE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-    
-    switch(opt){
-       
-        case 0:
-            
-            //add selected data to part number data
-            try{
-                PartNumberData data = new PartNumberData(value1, value2);
-                data.setDescription(value3);
-                data.setGeneratedDate(value4);
-                data.setAuthor(value5);
-                data.setConfiguration(value6);
-                
-                em.persist(data);
-            }
-            catch(Exception e){
-                System.out.println(e.toString());
-            }
-            
-            try{
-                int SelectedRowIndex = tbl_database.getSelectedRow();
+        Object[] options = { "Yes", "No"};
 
-                em.getTransaction().begin();
-                Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + value1 + "'");
-                q.executeUpdate();
-                em.getTransaction().commit();
+        int opt = JOptionPane.showOptionDialog(this, "If you click YES, the data will be SAVED in the main database \n\tand it will be DELETED in this database permanently.\n\nAre you sure you want to SAVE this record?", "You are about to SAVE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-                if (tbl_database.getRowSorter()!=null) {
-                    SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+        switch(opt){
+
+            case 0:
+
+                //add selected data to part number data
+                try{
+                    PartNumberData data = new PartNumberData(value1, value2);
+                    data.setDescription(value3);
+                    data.setGeneratedDate(value4);
+                    data.setAuthor(value5);
+                    data.setConfiguration(value6);
+
+                    em.getTransaction().begin();
+                    em.persist(data);
+                    em.flush();
+                    em.getTransaction().commit();
                 }
-                model.removeRow(SelectedRowIndex);
-            }
-            catch(Exception e){
-                System.out.println(e.toString());
-            }
-            
-        case 1:
-            break;
-            
-    }
+                catch(Exception e){
+                    System.out.println(e.toString());
+                }
+
+                try{
+                    int SelectedRowIndex = tbl_database.getSelectedRow();
+
+                    em.getTransaction().begin();
+                    Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + value1 + "'");
+                    q.executeUpdate();
+                    em.getTransaction().commit();
+
+                    if (tbl_database.getRowSorter()!=null) {
+                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                    }
+                    model.removeRow(SelectedRowIndex);
+                }
+                catch(Exception e){
+                    System.out.println(e.toString());
+                }
+
+            case 1:
+                break;
+
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void tbl_databaseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMousePressed

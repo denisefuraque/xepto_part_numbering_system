@@ -1,90 +1,94 @@
 
 package partNumbering_generator;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class database_open extends javax.swing.JFrame {
-
-    Connection con;
-    Statement stmt;
-    ResultSet rs;
     
-    String comCode_col;
-    String comName_col;
+    DefaultTableModel model = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column){
+            return false;
+        }
+    };
     
-    DefaultTableModel dtm = new DefaultTableModel(0, 0);
-    
-    String pn, cat, pn1, cat1;
+    String pn, cat;
     
     String host_address = Host.getHost();
     
-    public database_open(String partNum, String category) throws SQLException {
+    EntityManager em;
+    
+    public database_open(String partNum, String category){
         
         initComponents();
+        
+        em = PartNumber_EM.getEM();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
         this.pn = partNum;
         this.cat = category;
         
-        txt_partNum.setText(pn);
-        txt_cat.setText(cat);
-        
-        pn1 = pn;
-        cat1 = cat;
+        txt_partNum.setText(partNum);
+        txt_cat.setText(category);
         
         setLocationRelativeTo(null);
         
-        DoConnect();
+        fetchData();
         
     }
 
-    public void DoConnect() throws SQLException{
+    public void fetchData(){
         
         try{
-            //Connect to the database
+            ArrayList<Class_data> dataList = new ArrayList<>();
+            Class_data data;
             
-            String host = "jdbc:derby://" + host_address + "/partNumbering  ";
-            String username = "Admin01";
-            String password = "07032017";
-            con = DriverManager.getConnection(host, username, password);
+            Query q = em.createNamedQuery("PartNumberData.findAll");
+            List<PartNumberData> pnd = q.getResultList();
+            for(PartNumberData d: pnd){
+                data = new Class_data(
+                                    d.getPartNumber(),
+                                    d.getCategory(),
+                                    d.getDescription(), 
+                                    d.getGeneratedDate(),
+                                    d.getAuthor(),
+                                    d.getConfiguration()
+                                    );
+                dataList.add(data);
+            }
             
-            //Execute some sql and load the records into the resultset
-            
-            Statement stmt1 = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT * FROM PART_NUMBER_DATA";
-            rs = stmt1.executeQuery(sql);
-            
-            //move the cursor the first record
-            
-            rs.next();
+            model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
+            Object[] row = new Object[6];
+
+            for (int i = 0; i < dataList.size(); i++){
+                row[0] = dataList.get(i).getPn();
+                row[1] = dataList.get(i).getCat();
+                row[2] = dataList.get(i).getDes();
+                row[3] = dataList.get(i).getDate();
+                row[4] = dataList.get(i).getAut();
+                row[5] = dataList.get(i).getConfig();
+                model.addRow(row);
+            }
+            tbl_database.setModel(model);
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
 
         }
-        catch(SQLException err){
-            JOptionPane.showMessageDialog(database_open.this, err.getMessage());
-        }
-        
     }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        partNumberDataQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT p FROM PartNumberData p");
-        partNumberDataList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : partNumberDataQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         database_pan = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -116,21 +120,6 @@ public class database_open extends javax.swing.JFrame {
         database_pan.setBackground(new java.awt.Color(204, 204, 204));
         database_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DATABASE", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, partNumberDataList, tbl_database);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
-        columnBinding.setColumnName("Part Number");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
-        columnBinding.setColumnName("Category");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
-        columnBinding.setColumnName("Description");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
         jScrollPane1.setViewportView(tbl_database);
         if (tbl_database.getColumnModel().getColumnCount() > 0) {
             tbl_database.getColumnModel().getColumn(0).setResizable(false);
@@ -296,8 +285,6 @@ public class database_open extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -307,56 +294,47 @@ public class database_open extends javax.swing.JFrame {
         Date today = new Date();
         java.sql.Date sqlDate = new java.sql.Date(today.getTime());
         String config = txt_partNum.getText().substring(txt_partNum.getText().length() - 4);
+       
+        Object[] options = { "Yes", "No"};
 
-        try{
+        int opt = JOptionPane.showOptionDialog(this, "If you click YES, the data will be SAVED in the main database \n\tand it will be DELETED in this database permanently.\n\nAre you sure you want to SAVE this record?", "You are about to SAVE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
-            rs.moveToInsertRow();
-            
-            rs.updateString("part_number", txt_partNum.getText());
-            rs.updateString("category", txt_cat.getText());
-            rs.updateString("description", txt_des.getText());
-            rs.updateDate("generated_date", sqlDate);
-            rs.updateString("author", aut);
-            rs.updateString("configuration", config);
-            
-            rs.insertRow();
-            rs.moveToCurrentRow();
-            
-            Vector row = new Vector();
-            row.add(txt_partNum.getText());
-            row.add(txt_cat.getText());
-            row.add(txt_des.getText());
-            dtm.addRow(row);
-            dtm.fireTableDataChanged();
-            
-            btn_save.setVisible(false);
-        
-        }
-        catch(SQLException err){
-            JOptionPane.showMessageDialog(null, "Similar Part Number! Try Again.", "alert", JOptionPane.ERROR_MESSAGE);
-            
-            this.setVisible(false);
-            txt_partNum.setText("");
-            txt_cat.setText("");
-            txt_des.setText("");
-            
-            System.out.println(err.getMessage());
-        }
-        finally{
-            if(con != null)
-                  try{
-                      this.con.close(); 
-                  }catch(SQLException e){
-                      System.out.println("PreparedStatement close problem");
-                  }
-            if(con != null)
-                  try{
-                      this.con.close();
-                  }catch(SQLException e){
-                      System.out.println("Database Connection close problem");
+        switch(opt){
+
+            case 0:
+
+                //add selected data to part number data
+                try{
+                    PartNumberData data = new PartNumberData(pn, cat);
+                    data.setDescription(txt_des.getText());
+                    data.setGeneratedDate(sqlDate);
+                    data.setAuthor(aut);
+                    data.setConfiguration(config);
+
+                    em.getTransaction().begin();
+                    em.persist(data);
+                    em.flush();
+                    em.getTransaction().commit();
+                    
+                    btn_save.setVisible(false);
+                    System.out.println("xx");
                 }
+                catch(Exception err){
+                    JOptionPane.showMessageDialog(null, "Similar Part Number! Try Again.", "alert", JOptionPane.ERROR_MESSAGE);
+            
+                    this.setVisible(false);
+                    txt_partNum.setText("");
+                    txt_cat.setText("");
+                    txt_des.setText("");
+
+                    System.out.println(err.getMessage());
+                }
+
+            case 1:
+                break;
+
         }
-        
+
         txt_partNum.setText("");
         txt_cat.setText("");
         txt_des.setText("");
@@ -390,11 +368,7 @@ public class database_open extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new database_open(null, null).setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(database_open.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            new database_open(null, null).setVisible(true);
         });
     }
 
@@ -411,13 +385,9 @@ public class database_open extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_icon;
     private javax.swing.JLabel lbl_partNumber;
-    private java.util.List<partNumbering_generator.PartNumberData> partNumberDataList;
-    private javax.persistence.Query partNumberDataQuery;
-    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_cat;
     private javax.swing.JTextArea txt_des;
     private javax.swing.JTextField txt_partNum;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

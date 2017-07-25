@@ -1,15 +1,19 @@
 
 package partNumbering_generator;
 
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
-import java.util.logging.*;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public final class generator_frame extends javax.swing.JFrame {
     
@@ -40,7 +44,7 @@ public final class generator_frame extends javax.swing.JFrame {
         
         initComponents();
         
-        em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        em = PartNumber_EM.getEM();
         
         setLocationRelativeTo(null);
         
@@ -1545,15 +1549,15 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_edit.setEnabled(false);
         btn_check.setEnabled(false);
             
-        try {
-            if(Account.getType().equals("admin")){
-                new database_open(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
-            }
-            else{
+        if(Account.getType().equals("admin")){
+            new database_open(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
+        }
+        else{
+            try {
                 new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(generator_frame.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(generator_frame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         cmb_scheme.setSelectedIndex(0);

@@ -98,7 +98,7 @@ public final class view_database extends javax.swing.JFrame {
     }
 
     //function to return arraylist with particular data
-    public ArrayList<Class_data> ListClass_Data(String ValToSearch){
+    public ArrayList<Class_data> ListClass_Data(){
         
         try{
             Class_data data;
@@ -126,7 +126,7 @@ public final class view_database extends javax.swing.JFrame {
     
     //function to Display data in JTable
     public void findData(){
-        ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
+        ArrayList<Class_data> data = ListClass_Data();
         model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
         Object[] row = new Object[6];
         

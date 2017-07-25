@@ -23,12 +23,8 @@ public class login_frame extends javax.swing.JFrame {
         
         lbl_host.setText("Host: " + host_address);
         
-        try{
-            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.toString());
-        }        
+        PartNumber_EM.initEM();
+        em = PartNumber_EM.getEM();   
         
         setLocationRelativeTo(null);
         
