@@ -3,4 +3,5 @@ PART_NUMBER,CATEGORY,DESCRIPTION,GENERATED_DATE,AUTHOR,CONFIGURATION,
 002-000000-0000,Consumable Parts,,2017-07-25,admin01,0000
 004-000000-0000,Networking Peripheral Commodity,,2017-07-25,user01,0000
 006-012444-3856,Networking Peripheral Commodity,,2017-07-25,admin01,3856
-006-000000-0001,Networking Peripheral Commodity,,2017-07-25,admin01,0001
+013-000000-0000,Electrical Part Commodity,,2017-07-25,admin01,0000
+008-000000-0000,Networking Peripheral Commodity,,2017-07-25,admin01,0000

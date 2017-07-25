@@ -4,7 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -28,6 +34,9 @@ public final class view_database extends javax.swing.JFrame {
     ArrayList<Class_data> dataList = new ArrayList<>();
     
     EntityManager em;
+    
+    String num, cat, des, aut, con;
+    Date dat;
     
     String host_address = Host.getHost();
     
@@ -205,6 +214,11 @@ public final class view_database extends javax.swing.JFrame {
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();
+        tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_database);
         if (tbl_database.getColumnModel().getColumnCount() > 0) {
             tbl_database.getColumnModel().getColumn(0).setResizable(false);
@@ -253,10 +267,10 @@ public final class view_database extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_search, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-                .addGap(69, 69, 69))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,6 +403,24 @@ public final class view_database extends javax.swing.JFrame {
         ex.export();
         JOptionPane.showMessageDialog(this, "CSV File is created successfully.");
     }//GEN-LAST:event_btn_exportActionPerformed
+
+    private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
+        if (evt.getClickCount() == 2) {
+            int dataInd = tbl_database.getSelectedRow();
+            if (tbl_database.getRowSorter()!=null) {
+                        dataInd = tbl_database.getRowSorter().convertRowIndexToModel(dataInd);
+                    }
+            
+            num = tbl_database.getValueAt(dataInd, 0).toString();
+            cat = tbl_database.getValueAt(dataInd, 1).toString();
+            des = tbl_database.getValueAt(dataInd, 2).toString();
+            dat = (Date) tbl_database.getValueAt(dataInd, 3);
+            aut = tbl_database.getValueAt(dataInd, 4).toString();
+            con = tbl_database.getValueAt(dataInd, 5).toString();
+            
+            new mod_data_ad(num, cat, des, dat, aut, con).setVisible(true);
+        }
+    }//GEN-LAST:event_tbl_databaseMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
