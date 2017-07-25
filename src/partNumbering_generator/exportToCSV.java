@@ -46,7 +46,10 @@ public class exportToCSV {
                 for(int i=1; i<=columnCount; i++){
                     String columnName = metadata.getColumnName(i);
                     fw.append(columnName);
+                    fw.append(',');
                 }
+                
+                fw.append('\n');
                 
                 while(rs.next())
                 {
