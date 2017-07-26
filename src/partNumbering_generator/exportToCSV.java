@@ -3,14 +3,15 @@ package partNumbering_generator;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,11 +21,20 @@ public class exportToCSV {
     
     static private String host_address;
     
+    EntityManager em;
+    
     public exportToCSV(){
         
     }
     
     public void export(){
+        
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
         
         try{
             
@@ -33,46 +43,46 @@ public class exportToCSV {
             
             try{
                 FileWriter fw = new FileWriter("part_number_csv.csv");
-                Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
-                Connection conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                String query  = "SELECT * FROM PART_NUMBER_DATA";
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                
-                ResultSetMetaData metadata = rs.getMetaData();
-                int columnCount = metadata.getColumnCount();
-                
-                for(int i=1; i<=columnCount; i++){
-                    String columnName = metadata.getColumnName(i);
-                    fw.append(columnName);
-                    fw.append(',');
-                }
-                
+                Query q_fw = em.createNamedQuery("PartNumberData.findAll");
+                List<PartNumberData> list_data = q_fw.getResultList();
+
+                fw.append("Part Number");
+                fw.append(',');
+                fw.append("Category");
+                fw.append(',');
+                fw.append("Description");
+                fw.append(',');
+                fw.append("Generated Date");
+                fw.append(',');
+                fw.append("Author");
+                fw.append(',');
+                fw.append("Configuration");
                 fw.append('\n');
                 
-                while(rs.next())
+                for(PartNumberData d: list_data)
                 {
-                    fw.append(rs.getString(1));
+                    fw.append(d.getPartNumber());
                     fw.append(',');
-                    fw.append(rs.getString(2));
+                    fw.append(d.getCategory());
                     fw.append(',');
-                    fw.append(rs.getString(3));
+                    fw.append(d.getDescription());
                     fw.append(',');
-                    fw.append(rs.getString(4));
+                    fw.append(d.getGeneratedDate().toString());
                     fw.append(',');
-                    fw.append(rs.getString(5));
+                    fw.append(d.getAuthor());
                     fw.append(',');
-                    fw.append(rs.getString(6));
+                    fw.append(d.getConfiguration());
                     fw.append('\n');
                 }
                 fw.flush();
                 fw.close();
-                conn.close();
-            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "CSV File is created successfully.");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null,"The process cannot access the file because \n     it is being used by another process \nClose the file first before saving\n\n CSV failed to save.","ERROR OCCURED!",JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(exportToCSV.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(exportToCSV.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
 }

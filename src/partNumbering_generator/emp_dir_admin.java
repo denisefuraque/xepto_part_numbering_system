@@ -44,7 +44,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
-        }   
+        }
 
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         

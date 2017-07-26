@@ -306,7 +306,6 @@ public class view_database_user extends javax.swing.JFrame {
     private void btn_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportActionPerformed
         exportToCSV ex = new exportToCSV();
         ex.export();
-        JOptionPane.showMessageDialog(this, "CSV File is created successfully.");
     }//GEN-LAST:event_btn_exportActionPerformed
 
     public static void main(String args[]) {
