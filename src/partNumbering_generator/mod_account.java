@@ -27,6 +27,8 @@ public class mod_account extends javax.swing.JFrame {
     
     EntityManager em;
     
+    Admins logged_admin;
+    
     public mod_account(String _type, String mod_user, String mod_pass, String mod_fname, String mod_lname, String mod_job) {
         initComponents();
         
@@ -96,6 +98,7 @@ public class mod_account extends javax.swing.JFrame {
         em.getTransaction().commit();
         
         em.getEntityManagerFactory().getCache().evictAll();
+        em.clear();
         em.getTransaction().begin();
         Admins new_admin = new Admins();
         new_admin.setUsername(user);
@@ -398,16 +401,16 @@ public class mod_account extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_modActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        Admins admin = null;
+        Admins selected_admin = null;
         Employee emp = null;
         
         if(type.equals("admin")){
             em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Admins.findByUsername")
                     .setParameter("username", user);
-            admin = (Admins) q.getSingleResult();
+            selected_admin = (Admins) q.getSingleResult();
 
-            pass = admin.getPassword();
+            pass = selected_admin.getPassword();
         }
         else if(type.equals("user")){
             em.getEntityManagerFactory().getCache().evictAll();
@@ -418,6 +421,15 @@ public class mod_account extends javax.swing.JFrame {
             pass = emp.getPassword();
         }
         
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("Admins.findByUsername")
+                    .setParameter("username", Account.getUser());
+            logged_admin = (Admins) q.getSingleResult();
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
         String val1 = txt_user.getText();
         String val2 = txt_pass.getText();
         String val3 = txt_fname.getText();
@@ -467,17 +479,17 @@ public class mod_account extends javax.swing.JFrame {
             lbl_pass.setIcon(che);
             if(lbl_pass.getIcon() == che && lbl_user.getIcon() == che && lbl_lname.getIcon() == che && lbl_fname.getIcon() == che && lbl_job.getIcon() == che){
                 JPasswordField pwd = new JPasswordField();
-                int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Your Password",JOptionPane.OK_CANCEL_OPTION);
+                int action = JOptionPane.showConfirmDialog(null, pwd,"Enter " + logged_admin.getUsername() + "'s Password",JOptionPane.OK_CANCEL_OPTION);
                 switch(action){
                     case 0:
-                        if(pwd.getText().equals(txt_pass.getText())){
+                        if(pwd.getText().equals(logged_admin.getPassword())){
                             Object[] options = {"Yes","No"};
                             int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
                             switch (opt){
                                 case 0:
                                     try {
                                         if(type.equals("admin")){
-                                            updateAdmin(admin, val1, val2, val3, val4, val5);
+                                            updateAdmin(selected_admin, val1, val2, val3, val4, val5);
                                         }
                                         else if(type.equals("user")){
                                             updateUser(emp, val1, val2, val3, val4, val5);
@@ -519,23 +531,23 @@ public class mod_account extends javax.swing.JFrame {
             if(txt_pass.getText().length() >= 5){
                 lbl_pass.setIcon(che);
                 JPasswordField pwd = new JPasswordField();
-                int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Old Password",JOptionPane.OK_CANCEL_OPTION);
-                System.out.println(action + " " + pwd.getText());
+                int action = JOptionPane.showConfirmDialog(null, pwd,"Confirm New Password",JOptionPane.OK_CANCEL_OPTION);
+                //System.out.println(action + " " + pwd.getText());
                 switch(action){
                     case 0:
-                        if(pwd.getText().equals(pass)){
+                        if(pwd.getText().equals(txt_pass.getText())){
                             JPasswordField pwd1 = new JPasswordField();
-                            int action1 = JOptionPane.showConfirmDialog(null, pwd1,"Confirm New Password",JOptionPane.OK_CANCEL_OPTION);
+                            int action1 = JOptionPane.showConfirmDialog(null, pwd1,"Enter " + logged_admin.getUsername() + "'s Password",JOptionPane.OK_CANCEL_OPTION);
                             switch(action1){
                                 case 0:
-                                    if(pwd1.getText().equals(txt_pass.getText())){
+                                    if(pwd1.getText().equals(logged_admin.getPassword())){
                                         Object[] options = {"Yes","No"};
                                         int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
                                             switch (opt){
                                                 case 0:
                                                     try {
                                                         if(type.equals("admin")){
-                                                            updateAdmin(admin, val1, val2, val3, val4, val5);
+                                                            updateAdmin(selected_admin, val1, val2, val3, val4, val5);
                                                         }
                                                         else if(type.equals("user")){
                                                             updateUser(emp, val1, val2, val3, val4, val5);

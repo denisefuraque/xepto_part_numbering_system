@@ -376,6 +376,7 @@ public class login_frame extends javax.swing.JFrame {
                 }
             }
             if(valid_ip){
+                lbl_host.setText("Updating");
                 host_address = input_host;
                 Host.setHost(host_address);
                 JOptionPane.showMessageDialog(null, "Host Address changed to " + Host.getHost());
