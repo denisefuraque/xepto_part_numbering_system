@@ -32,4 +32,8 @@ public class PartNumber_EM {
     public static EntityManager getEM(){
         return em;
     }
+    
+    public static void clearEM(){
+        em.clear();
+    }
 }

@@ -844,6 +844,7 @@ public final class generator_frame extends javax.swing.JFrame {
         switch(n){
             case 0:
             this.setVisible(false);
+            PartNumber_EM.clearEM();
             new login_frame().setVisible(true);
 
             //clearing all inputted items

@@ -1,31 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
-  <NonVisualComponents>
-    <Component class="javax.persistence.EntityManager" name="partNumberingPUEntityManager">
-      <Properties>
-        <Property name="persistenceUnit" type="java.lang.String" value="partNumberingPU"/>
-      </Properties>
-    </Component>
-    <Component class="javax.persistence.Query" name="employeeQuery">
-      <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT e FROM Employee e"/>
-        <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
-          <ComponentRef name="partNumberingPUEntityManager"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="java.util.List" name="employeeList">
-      <Properties>
-        <Property name="query" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$QueryBeanProperty$QueryEditor">
-          <ComponentRef name="employeeQuery"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;partNumbering_generator.Employee&gt;"/>
-      </AuxValues>
-    </Component>
-  </NonVisualComponents>
   <Properties>
     <Property name="title" type="java.lang.String" value="Employee Directory - User - Part Number Generator"/>
   </Properties>
@@ -186,33 +161,8 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
-                  <BindingProperties>
-                    <BindingProperty name="elements" source="employeeList" target="tbl_database" targetPath="elements" updateStrategy="0" immediately="true">
-                      <Subbinding sourcePath="${username}">
-                        <BindingParameter name="NAME" value="Username"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-                      </Subbinding>
-                      <Subbinding sourcePath="${firstName}">
-                        <BindingParameter name="NAME" value="First Name"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-                      </Subbinding>
-                      <Subbinding sourcePath="${lastName}">
-                        <BindingParameter name="NAME" value="Last Name"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-                      </Subbinding>
-                      <Subbinding sourcePath="${jobTitle}">
-                        <BindingParameter name="NAME" value="Job Title"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                        <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-                      </Subbinding>
-                    </BindingProperty>
-                  </BindingProperties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbl_databaseMouseClicked"/>
-                    <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbl_databaseMousePressed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -285,9 +235,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Search"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_searchActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -359,9 +306,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Delete Account"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_deleteActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_save">
           <Properties>
