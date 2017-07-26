@@ -5,16 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -34,14 +27,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     ArrayList<class_admin> dataList = new ArrayList<>();
     
-    Connection con = null;
-    Statement st;
-    ResultSet rs;
-    
-    Connection conn = null;
-    Statement stmnt;
-    ResultSet reSet;
-    
     String value1 = "", value2 = "", value3 = "";
     
     String a_user, a_pass, a_fname, a_lname, a_job;
@@ -50,17 +35,10 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     EntityManager em;
     
-    int curRow = 0;
-    
     public emp_dir_admin() {
         initComponents();
         
-        try{
-            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, e.toString());
-        }    
+        em = PartNumber_EM.getEM();
 
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -94,46 +72,26 @@ public class emp_dir_admin extends javax.swing.JFrame {
         
         switch (n){
             case 0:
-                Connection connect = null;
-                Statement state = null;
-                ResultSet result = null; 
                 try{
-                    connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  ", "Admin01", "07032017");
-                    state = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                    String query = "SELECT * FROM ADMINS";
-                    result = state.executeQuery(query);
-                    
                     int SelectedRowIndex = tbl_database.getSelectedRow();
+                    
+                    String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
+                    
+                    em.getTransaction().begin();
+                    Query q = em.createNamedQuery("Admins.findByUsername")
+                            .setParameter("username", selected);
+                    Admins admin = (Admins) q.getSingleResult();
+                    em.remove(admin);
+                    em.flush();
+                    em.getTransaction().commit();
+                    
                     if (tbl_database.getRowSorter()!=null) {
                         SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
                     }
                     model.removeRow(SelectedRowIndex);
-                    curRow = SelectedRowIndex + 1;
-                    result.absolute(curRow);
-                    result.deleteRow();
                 }
-                catch(Exception ex){
-                    System.out.println(ex.getMessage());
-                }
-                finally{
-                    if(result != null){
-                        try{
-                            result.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
-                    }
-                    if(state != null){
-                        try{
-                            state.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
-                    }
-                    if(connect != null){
-                        try{
-                            connect.close();
-                        }
-                        catch (SQLException e) { /* ignored */}
-                    }
+                catch(Exception e){
+                    System.out.println(e.toString());
                 }
                 break;
             case 1:
@@ -141,18 +99,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
         }
     }
     
-    //function to connect sql
-    public Connection getConnection(){
-        
-        try{
-            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-        }
-        catch(SQLException ex){
-                  System.out.println(ex.getMessage());
-        }
-        return con;
-    }
-
     //function to return arraylist with particular data
     public ArrayList<class_admin> ListClass_Data(String ValToSearch){
         try{
@@ -198,11 +144,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        adminsQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT a FROM Admins a");
-        adminsList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : adminsQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -225,32 +167,12 @@ public class emp_dir_admin extends javax.swing.JFrame {
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
         tbl_database.setToolTipText("");
-
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, adminsList, tbl_database);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${username}"));
-        columnBinding.setColumnName("Username");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${firstName}"));
-        columnBinding.setColumnName("First Name");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lastName}"));
-        columnBinding.setColumnName("Last Name");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${jobTitle}"));
-        columnBinding.setColumnName("Job Title");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_databaseMouseClicked(evt);
-            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tbl_databaseMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbl_database);
@@ -403,8 +325,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -429,41 +349,24 @@ public class emp_dir_admin extends javax.swing.JFrame {
     private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
         if (evt.getClickCount() == 2) {
             int dataInd = tbl_database.getSelectedRow();
-            if (tbl_database.getRowSorter()!=null) {
-                        dataInd = tbl_database.getRowSorter().convertRowIndexToModel(dataInd);
-                    }
-            System.out.println(dataInd);
+            String username = (String) tbl_database.getValueAt(dataInd, 0);
+            
             try{
-                String host = "jdbc:derby://" + host_address + "/partNumbering";
-                String username = "Admin01";
-                String password = "07032017";
-                //Execute some sql and load the records into the resultset
-                try (Connection con0 = DriverManager.getConnection(host, username, password)) {
-                    //Execute some sql and load the records into the resultset
-                    Statement stmt0 = con0.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE );
-                    String sql = "SELECT * FROM ADMINS";
-                    //getting the data for the external
-                        try (ResultSet rs0 = stmt0.executeQuery(sql)) {
-                            //getting the data for the external
-                            rs0.absolute(dataInd+1);
-                            a_user = rs0.getString("username");
-                            a_pass = rs0.getString("password");
-                            a_fname = rs0.getString("first_name");
-                            a_lname = rs0.getString("last_name");
-                            a_job = rs0.getString("job_title");
-                            System.out.println(a_user + " | " + a_pass + " | " + a_fname + " " + a_lname + " | " + a_job);
-                            
-                            rs0.close();
-                            stmt0.closeOnCompletion();
-                            con0.close();
-                        }
-                        this.hide();
-                        new mod_user_admin(a_user, a_pass, a_fname, a_lname, a_job).setVisible(true);
-                    }
-                }
-                catch(SQLException err){
-                    JOptionPane.showMessageDialog(this, err.getMessage());
-                }
+                Query q_admins = em.createNamedQuery("Admins.findByUsername")
+                                .setParameter("username", username);
+                Admins admin = (Admins) q_admins.getSingleResult();
+                
+                this.hide();
+                new mod_user_admin(
+                        admin.getUsername(), 
+                        admin.getPassword(), 
+                        admin.getFirstName(), 
+                        admin.getLastName(), 
+                        admin.getJobTitle()).setVisible(true);
+            }
+            catch(Exception e){
+                
+            }
         }
     }//GEN-LAST:event_tbl_databaseMouseClicked
 
@@ -500,8 +403,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.util.List<partNumbering_generator.Admins> adminsList;
-    private javax.persistence.Query adminsQuery;
     private javax.swing.JPanel bg_pan;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_search;
@@ -511,9 +412,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_icon;
-    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

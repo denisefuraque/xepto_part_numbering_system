@@ -81,8 +81,11 @@ public final class view_database extends javax.swing.JFrame {
                     String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
                     em.getTransaction().begin();
-                    Query q = em.createNativeQuery("DELETE FROM PART_NUMBER_DATA WHERE PART_NUMBER = '" + selected_pn + "'");
-                    q.executeUpdate();
+                    Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                            .setParameter("partNumber", selected_pn);
+                    PartNumberData pnd = (PartNumberData) q.getSingleResult();
+                    em.remove(pnd);
+                    em.flush();
                     em.getTransaction().commit();
                     
                     if (tbl_database.getRowSorter()!=null) {
@@ -94,7 +97,7 @@ public final class view_database extends javax.swing.JFrame {
                 catch(Exception e){
                     System.out.println(e.toString());
                 }
-                
+                break;
             case 1:
                 break;
         }
@@ -346,10 +349,10 @@ public final class view_database extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btn_export, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE))
+                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE))
                 .addContainerGap())
         );
         bg_panLayout.setVerticalGroup(
