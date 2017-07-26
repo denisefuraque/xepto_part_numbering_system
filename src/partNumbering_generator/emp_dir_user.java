@@ -627,7 +627,7 @@ public class emp_dir_user extends javax.swing.JFrame {
                             con0.close();
                         }
                         this.hide();
-                        new mod_user_user(a_user, a_pass, a_fname, a_lname, a_job).setVisible(true);
+                        new mod_account("user", a_user, a_pass, a_fname, a_lname, a_job).setVisible(true);
                     }
                 }
                 catch(SQLException err){
