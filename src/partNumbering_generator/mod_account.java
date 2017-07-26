@@ -1,13 +1,7 @@
 
 package partNumbering_generator;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
@@ -139,6 +133,11 @@ public class mod_account extends javax.swing.JFrame {
         setTitle("User Information (ADMIN) - Part Number Generator");
         setMinimumSize(new java.awt.Dimension(600, 400));
         setSize(new java.awt.Dimension(600, 400));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan.setMaximumSize(new java.awt.Dimension(600, 400));
@@ -575,8 +574,22 @@ public class mod_account extends javax.swing.JFrame {
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
         this.setVisible(false);
-        new emp_dir_admin().setVisible(true);
+        if(type.equals("admin")){
+            new emp_dir_admin().setVisible(true);
+        }
+        else{
+            new emp_dir_user().setVisible(true);
+        }
     }//GEN-LAST:event_btn_backActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(type.equals("admin")){
+            new emp_dir_admin().setVisible(true);
+        }
+        else{
+            new emp_dir_user().setVisible(true);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

@@ -847,9 +847,7 @@ public final class generator_frame extends javax.swing.JFrame {
         switch(n){
             case 0:
             this.setVisible(false);
-
             em.clear();
-
             new login_frame().setVisible(true);
 
             //clearing all inputted items

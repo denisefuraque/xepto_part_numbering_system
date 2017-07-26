@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -82,7 +82,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                     
                     em.getTransaction().begin();
                     Query q = em.createNamedQuery("DataUsers.findByPartNumber")
-                            .setParameter("username", selected_pn);
+                            .setParameter("partNumber", selected_pn);
                     DataUsers data = (DataUsers) q.getSingleResult();
                     em.remove(data);
                     em.flush();

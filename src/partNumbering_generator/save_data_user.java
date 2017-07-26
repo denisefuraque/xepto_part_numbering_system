@@ -94,11 +94,7 @@ public class save_data_user extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        dataUsersQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT d FROM DataUsers d");
-        dataUsersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : dataUsersQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         database_pan = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -125,18 +121,6 @@ public class save_data_user extends javax.swing.JFrame {
 
         database_pan.setBackground(new java.awt.Color(204, 204, 204));
         database_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DATABASE", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
-
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, dataUsersList, tbl_database);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
-        columnBinding.setColumnName("Part Number");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
-        columnBinding.setColumnName("Category");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
-        columnBinding.setColumnName("Description");
-        columnBinding.setColumnClass(String.class);
-        bindingGroup.addBinding(jTableBinding);
 
         jScrollPane3.setViewportView(tbl_database);
 
@@ -300,8 +284,6 @@ public class save_data_user extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -394,8 +376,6 @@ public class save_data_user extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg_pan;
     private javax.swing.JButton btn_save;
-    private java.util.List<partNumbering_generator.DataUsers> dataUsersList;
-    private javax.persistence.Query dataUsersQuery;
     private javax.swing.JPanel database_pan;
     private javax.swing.JPanel header_pan;
     private javax.swing.JPanel information_pan;
@@ -406,11 +386,9 @@ public class save_data_user extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_icon;
     private javax.swing.JLabel lbl_partNumber;
-    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_cat;
     private javax.swing.JTextArea txt_des;
     private javax.swing.JTextField txt_partNum;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
