@@ -1,12 +1,9 @@
 
 package partNumbering_generator;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
@@ -28,7 +25,7 @@ public class save_data_user extends javax.swing.JFrame {
     
     EntityManager em;
     
-    public save_data_user(String partNum, String category) throws SQLException {
+    public save_data_user(String partNum, String category){
         
         initComponents();
    
@@ -384,11 +381,7 @@ public class save_data_user extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            try {
-                new save_data_user(null, null).setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(database_open.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            new save_data_user(null, null).setVisible(true);
         });
     }
 

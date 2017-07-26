@@ -1553,11 +1553,7 @@ public final class generator_frame extends javax.swing.JFrame {
             new database_open(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         }
         else{
-            try {
-                new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(generator_frame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         }
         
         cmb_scheme.setSelectedIndex(0);
