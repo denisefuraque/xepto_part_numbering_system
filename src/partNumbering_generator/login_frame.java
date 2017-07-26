@@ -156,7 +156,7 @@ public class login_frame extends javax.swing.JFrame {
         login_panLayout.setHorizontalGroup(
             login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+                .addContainerGap(13, Short.MAX_VALUE)
                 .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(login_panLayout.createSequentialGroup()
@@ -190,7 +190,7 @@ public class login_frame extends javax.swing.JFrame {
                 .addComponent(err_mes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_enter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         err_mes.setVisible(false);
@@ -286,6 +286,7 @@ public class login_frame extends javax.swing.JFrame {
             boolean validEmployee = false;
             
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q_admins = em.createNamedQuery("Admins.findByUsername")
                                 .setParameter("username", user);
                 Admins admin = (Admins) q_admins.getSingleResult();
@@ -299,6 +300,7 @@ public class login_frame extends javax.swing.JFrame {
             }
             
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q_emps = em.createNamedQuery("Employee.findByUsername")
                                 .setParameter("username", user);
                 Employee emp = (Employee) q_emps.getSingleResult();

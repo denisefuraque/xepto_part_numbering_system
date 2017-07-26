@@ -39,6 +39,7 @@ public class sign_up_frame extends javax.swing.JFrame {
     
     public boolean usernameInAdmin(){
         try{
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Admins.findByUsername")
                     .setParameter("username", username);
             q.getSingleResult();
@@ -51,6 +52,7 @@ public class sign_up_frame extends javax.swing.JFrame {
     
     public boolean usernameInUser(){
         try{
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Employee.findByUsername")
                     .setParameter("username", username);
             q.getSingleResult();
@@ -347,6 +349,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                                     txt_lname.getText(),
                                     txt_job.getText()
                                 );
+            em.getEntityManagerFactory().getCache().evictAll();            
             em.getTransaction().begin();
             em.persist(emp);
             em.flush();

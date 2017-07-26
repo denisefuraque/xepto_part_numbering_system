@@ -80,6 +80,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                     
                     String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
+                    em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();
                     Query q = em.createNamedQuery("DataUsers.findByPartNumber")
                             .setParameter("partNumber", selected_pn);
@@ -109,6 +110,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
         try{
             Class_data data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("DataUsers.findAll");
             List<DataUsers> list_data = q.getResultList();
             for(DataUsers d: list_data){
@@ -369,6 +371,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
                     data.setAuthor(value5);
                     data.setConfiguration(value6);
 
+                    em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();
                     em.persist(data);
                     em.flush();
@@ -380,7 +383,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
 
                 try{
                     int SelectedRowIndex = tbl_database.getSelectedRow();
-
+                    
+                    em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();
                     Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + value1 + "'");
                     q.executeUpdate();

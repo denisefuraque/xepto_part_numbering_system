@@ -81,6 +81,7 @@ public final class generator_frame extends javax.swing.JFrame {
             ext_code = new ArrayList<>();
             
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("ExternalReleasedDocuments.findAll");
                 List<ExternalReleasedDocuments> list = q.getResultList();
                 
@@ -104,6 +105,7 @@ public final class generator_frame extends javax.swing.JFrame {
             intPro_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("InternalProcessDocument.findAll");
                 List<InternalProcessDocument> list = q.getResultList();
                 
@@ -127,7 +129,8 @@ public final class generator_frame extends javax.swing.JFrame {
             intSpec_code = new ArrayList<>();
 
             try{
-                 Query q = em.createNamedQuery("InternalSpecificationDocument.findAll");
+                em.getEntityManagerFactory().getCache().evictAll();
+                Query q = em.createNamedQuery("InternalSpecificationDocument.findAll");
                 List<InternalSpecificationDocument> list = q.getResultList();
                 
                 for(InternalSpecificationDocument record: list){
@@ -150,6 +153,7 @@ public final class generator_frame extends javax.swing.JFrame {
             intRep_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("InternalReportDocuments.findAll");
                 List<InternalReportDocuments> list = q.getResultList();
                 
@@ -173,6 +177,7 @@ public final class generator_frame extends javax.swing.JFrame {
             mechPart_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("MechanicalPartCommodity.findAll");
                 List<MechanicalPartCommodity> list = q.getResultList();
                 
@@ -196,6 +201,7 @@ public final class generator_frame extends javax.swing.JFrame {
             compPeri_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("ComputerPeripheralsCommodity.findAll");
                 List<ComputerPeripheralsCommodity> list = q.getResultList();
                 
@@ -219,6 +225,7 @@ public final class generator_frame extends javax.swing.JFrame {
             elecPart_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("ElectricalPartCommodity.findAll");
                 List<ElectricalPartCommodity> list = q.getResultList();
                 
@@ -242,6 +249,7 @@ public final class generator_frame extends javax.swing.JFrame {
             netPart_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("NetworkingPeripheralCommodity.findAll");
                 List<NetworkingPeripheralCommodity> list = q.getResultList();
                 
@@ -265,6 +273,7 @@ public final class generator_frame extends javax.swing.JFrame {
             conPart_code = new ArrayList<>();
 
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q = em.createNamedQuery("ConsumableParts.findAll");
                 List<ConsumableParts> list = q.getResultList();
                 
@@ -847,7 +856,6 @@ public final class generator_frame extends javax.swing.JFrame {
         switch(n){
             case 0:
             this.setVisible(false);
-            em.clear();
             new login_frame().setVisible(true);
 
             //clearing all inputted items
@@ -1640,6 +1648,7 @@ public final class generator_frame extends javax.swing.JFrame {
         boolean isUserData = false;
         
         try{
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("DataUsers.findByPartNumber")
                     .setParameter("partNumber", gen_pn);
             DataUsers data = (DataUsers) q.getSingleResult();
@@ -1650,6 +1659,8 @@ public final class generator_frame extends javax.swing.JFrame {
         }
         
         try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            em.clear();
             Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
                     .setParameter("partNumber", gen_pn);
             PartNumberData data = (PartNumberData) q.getSingleResult();
@@ -1659,7 +1670,7 @@ public final class generator_frame extends javax.swing.JFrame {
                 valid_pn = true;
             }
         }
-        
+
         if(valid_pn){
             open_save_db_pan.setVisible(true);
         }

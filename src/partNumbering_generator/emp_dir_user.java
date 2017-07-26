@@ -91,6 +91,7 @@ public class emp_dir_user extends javax.swing.JFrame {
                     
                     String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
+                    em.getEntityManagerFactory().getCache().evictAll();
                     em.getTransaction().begin();
                     Query q = em.createNamedQuery("Employee.findByUsername")
                             .setParameter("username", selected);
@@ -118,6 +119,7 @@ public class emp_dir_user extends javax.swing.JFrame {
        try{
             class_user data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Employee.findAll");
             List<Employee> list_data = q.getResultList();
             for(Employee d: list_data){
@@ -358,12 +360,14 @@ public class emp_dir_user extends javax.swing.JFrame {
                 String username = (String) tbl_database.getValueAt(dataInd, 0);
                 //add selected data to admins
                 try{
+                    em.getEntityManagerFactory().getCache().evictAll();
                     Query q_user = em.createNamedQuery("Employee.findByUsername")
                                 .setParameter("username", username);
                     Employee emp = (Employee) q_user.getSingleResult();
                     
                     Admins admin = new Admins(emp.getUsername(), emp.getPassword(), emp.getFirstName(), emp.getLastName(), emp.getJobTitle());
-
+                    
+                    em.getEntityManagerFactory().getCache().evictAll();
                     em.getTransaction().begin();
                     em.persist(admin);
                     em.flush();
@@ -376,7 +380,8 @@ public class emp_dir_user extends javax.swing.JFrame {
                     int SelectedRowIndex = tbl_database.getSelectedRow();
                     
                     String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
-                    
+
+                    em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();
                     Query q = em.createNamedQuery("Employee.findByUsername")
                             .setParameter("username", selected);
@@ -411,6 +416,7 @@ public class emp_dir_user extends javax.swing.JFrame {
             String username = (String) tbl_database.getValueAt(dataInd, 0);
             
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q_user = em.createNamedQuery("Employee.findByUsername")
                                 .setParameter("username", username);
                 Employee emp = (Employee) q_user.getSingleResult();

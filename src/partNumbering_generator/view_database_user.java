@@ -69,6 +69,7 @@ public class view_database_user extends javax.swing.JFrame {
         try{
             Class_data data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("PartNumberData.findAll");
             List<PartNumberData> pnd = q.getResultList();
             for(PartNumberData d: pnd){

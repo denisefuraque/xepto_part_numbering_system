@@ -83,6 +83,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
                     
                     String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
+                    em.getEntityManagerFactory().getCache().evictAll();
                     em.getTransaction().begin();
                     Query q = em.createNamedQuery("Admins.findByUsername")
                             .setParameter("username", selected);
@@ -110,6 +111,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
         try{
             class_admin data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Admins.findAll");
             List<Admins> list_data = q.getResultList();
             for(Admins d: list_data){
@@ -358,6 +360,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
             String username = (String) tbl_database.getValueAt(dataInd, 0);
             
             try{
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q_admins = em.createNamedQuery("Admins.findByUsername")
                                 .setParameter("username", username);
                 Admins admin = (Admins) q_admins.getSingleResult();

@@ -80,6 +80,7 @@ public final class view_database extends javax.swing.JFrame {
                     
                     String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
+                    em.getEntityManagerFactory().getCache().evictAll();
                     em.getTransaction().begin();
                     Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
                             .setParameter("partNumber", selected_pn);
@@ -110,6 +111,7 @@ public final class view_database extends javax.swing.JFrame {
         try{
             Class_data data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("PartNumberData.findAll");
             List<PartNumberData> pnd = q.getResultList();
             for(PartNumberData d: pnd){

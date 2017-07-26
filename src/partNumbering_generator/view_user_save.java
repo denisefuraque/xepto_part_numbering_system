@@ -69,6 +69,7 @@ public class view_user_save extends javax.swing.JFrame {
         try{
             Class_data data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("DataUsers.findAll");
             List<DataUsers> list_data = q.getResultList();
             for(DataUsers d: list_data){

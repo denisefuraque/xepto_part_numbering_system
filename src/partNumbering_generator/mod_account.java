@@ -64,6 +64,7 @@ public class mod_account extends javax.swing.JFrame {
     
     public boolean usernameInAdmin(){
         try{
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Admins.findByUsername")
                     .setParameter("username", txt_user.getText());
             q.getSingleResult();
@@ -76,6 +77,7 @@ public class mod_account extends javax.swing.JFrame {
     
     public boolean usernameInUser(){
         try{
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("Employee.findByUsername")
                     .setParameter("username", txt_user.getText());
             q.getSingleResult();
@@ -87,11 +89,13 @@ public class mod_account extends javax.swing.JFrame {
     }
     
     public void updateAdmin(Admins old_admin, String user, String pass, String fName, String lName, String job) throws Exception{
+        em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();
         em.remove(old_admin);
         em.flush();
         em.getTransaction().commit();
         
+        em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();
         Admins new_admin = new Admins();
         new_admin.setUsername(user);
@@ -105,11 +109,13 @@ public class mod_account extends javax.swing.JFrame {
     }
     
     public void updateUser(Employee old_emp, String user, String pass, String fName, String lName, String job) throws Exception{
+        em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();
         em.remove(old_emp);
         em.flush();
         em.getTransaction().commit();
         
+        em.getEntityManagerFactory().getCache().evictAll();        
         em.getTransaction().begin();
         Employee new_emp = new Employee();
         new_emp.setUsername(user);
@@ -396,18 +402,20 @@ public class mod_account extends javax.swing.JFrame {
         Employee emp = null;
         
         if(type.equals("admin")){
-        Query q = em.createNamedQuery("Admins.findByUsername")
-                .setParameter("username", user);
-        admin = (Admins) q.getSingleResult();
-        
-        pass = admin.getPassword();
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("Admins.findByUsername")
+                    .setParameter("username", user);
+            admin = (Admins) q.getSingleResult();
+
+            pass = admin.getPassword();
         }
         else if(type.equals("user")){
-        Query q = em.createNamedQuery("Employee.findByUsername")
-                .setParameter("username", user);
-        emp = (Employee) q.getSingleResult();
-        
-        pass = emp.getPassword();
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("Employee.findByUsername")
+                    .setParameter("username", user);
+            emp = (Employee) q.getSingleResult();
+
+            pass = emp.getPassword();
         }
         
         String val1 = txt_user.getText();

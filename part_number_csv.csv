@@ -1,7 +1,4 @@
 Part Number,Category,Description,Generated Date,Author,Configuration
 100-000001-0000,Internal Process Documents,Process Specification - Part Numbering Specification - Revision A,Tue Jul 25 00:00:00 CST 2017,-,0000
-002-000000-0000,Consumable Parts,,Tue Jul 25 00:00:00 CST 2017,admin01,0000
-004-000000-0000,Networking Peripheral Commodity,,Tue Jul 25 00:00:00 CST 2017,user01,0000
-006-012444-3856,Networking Peripheral Commodity,,Tue Jul 25 00:00:00 CST 2017,admin01,3856
-006-000000-0001,Networking Peripheral Commodity,,Tue Jul 25 00:00:00 CST 2017,admin01,0001
-013-111111-1111,Electrical Part Commodity,,Tue Jul 25 00:00:00 CST 2017,q,1111
+008-000000-0000,Networking Peripheral Commodity,2272,2017-07-26,admin01,0000
+086-060617-0000,Internal Report Documents,,2017-07-26,admin01,0000

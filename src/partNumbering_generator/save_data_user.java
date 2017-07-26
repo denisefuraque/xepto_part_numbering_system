@@ -57,6 +57,7 @@ public class save_data_user extends javax.swing.JFrame {
             ArrayList<Class_data> dataList = new ArrayList<>();
             Class_data data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("DataUsers.findAll");
             List<DataUsers> pnd = q.getResultList();
             for(DataUsers d: pnd){
@@ -309,6 +310,7 @@ public class save_data_user extends javax.swing.JFrame {
                     data.setAuthor(aut);
                     data.setConfiguration(config);
 
+                    em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();
                     em.persist(data);
                     em.flush();

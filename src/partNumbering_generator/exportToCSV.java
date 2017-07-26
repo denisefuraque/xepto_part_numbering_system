@@ -43,6 +43,7 @@ public class exportToCSV {
             
             try{
                 FileWriter fw = new FileWriter("part_number_csv.csv");
+                em.getEntityManagerFactory().getCache().evictAll();
                 Query q_fw = em.createNamedQuery("PartNumberData.findAll");
                 List<PartNumberData> list_data = q_fw.getResultList();
 

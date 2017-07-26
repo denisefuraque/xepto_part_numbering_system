@@ -57,6 +57,7 @@ public class database_open extends javax.swing.JFrame {
             ArrayList<Class_data> dataList = new ArrayList<>();
             Class_data data;
             
+            em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("PartNumberData.findAll");
             List<PartNumberData> pnd = q.getResultList();
             for(PartNumberData d: pnd){
@@ -317,6 +318,7 @@ public class database_open extends javax.swing.JFrame {
                     data.setAuthor(aut);
                     data.setConfiguration(config);
 
+                    em.getEntityManagerFactory().getCache().evictAll();
                     em.getTransaction().begin();
                     em.persist(data);
                     em.flush();
