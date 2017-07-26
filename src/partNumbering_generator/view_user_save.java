@@ -5,12 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -28,17 +26,15 @@ public class view_user_save extends javax.swing.JFrame {
     
     ArrayList<Class_data> dataList = new ArrayList<>();
     
-    Connection con = null;
-    Statement st;
-    ResultSet rs;
-    
-    int curRow = 0;
-    
     String host_address = Host.getHost();
+    
+    EntityManager em;
     
     public view_user_save() {
         
         initComponents();
+        
+        em = PartNumber_EM.getEM();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -60,61 +56,29 @@ public class view_user_save extends javax.swing.JFrame {
         
         btn_search.addActionListener(al);
     }
-    
-    //function to connect sql
-    public Connection getConnection(){
-        
-        try{
-            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-        }
-        catch(SQLException ex){
-                  System.out.println(ex.getMessage());
-        }
-        return con;
-    }
 
     //function to return arraylist with particular data
     public ArrayList<Class_data> ListClass_Data(String ValToSearch){
-        
         try{
-            con = getConnection();
-            st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery = "SELECT * FROM DATA_USERS WHERE ('part_number' || 'category' || 'description' || 'generated_date' || 'author' || 'configuration') LIKE '%" + ValToSearch + "%'";
-            rs = st.executeQuery(searchQuery);
-            
             Class_data data;
             
-            while(rs.next()){
+            Query q = em.createNamedQuery("DataUsers.findAll");
+            List<DataUsers> list_data = q.getResultList();
+            for(DataUsers d: list_data){
                 data = new Class_data(
-                                    rs.getString("part_number"),
-                                    rs.getString("category"),
-                                    rs.getString("description"),
-                                    rs.getDate("generated_date"),
-                                    rs.getString("author"),
-                                    rs.getString("configuration")
-                                     );
+                                    d.getPartNumber(),
+                                    d.getCategory(),
+                                    d.getDescription(), 
+                                    d.getGeneratedDate(),
+                                    d.getAuthor(),
+                                    d.getConfiguration()
+                                    );
                 dataList.add(data);
             }
-        }        
-        catch(SQLException ex){
-                System.out.println(ex.getMessage());
-                }
-        finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-            }
+
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
         }
         return dataList;
     }
@@ -140,11 +104,7 @@ public class view_user_save extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        partNumberingPUEntityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        dataUsersQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager.createQuery("SELECT d FROM DataUsers d");
-        dataUsersList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : dataUsersQuery.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -165,18 +125,14 @@ public class view_user_save extends javax.swing.JFrame {
         data_pan.setMaximumSize(new java.awt.Dimension(445, 840));
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, dataUsersList, tbl_database);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
-        columnBinding.setColumnName("Part Number");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
-        columnBinding.setColumnName("Category");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
-        columnBinding.setColumnName("Description");
-        columnBinding.setColumnClass(String.class);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
+        tbl_database.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         jScrollPane1.setViewportView(tbl_database);
 
         javax.swing.GroupLayout data_panLayout = new javax.swing.GroupLayout(data_pan);
@@ -307,8 +263,6 @@ public class view_user_save extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -354,17 +308,13 @@ public class view_user_save extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg_pan;
     private javax.swing.JButton btn_search;
-    private java.util.List<partNumbering_generator.DataUsers> dataUsersList;
-    private javax.persistence.Query dataUsersQuery;
     private javax.swing.JPanel data_pan;
     private javax.swing.JPanel header_pan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_icon;
-    private javax.persistence.EntityManager partNumberingPUEntityManager;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }
