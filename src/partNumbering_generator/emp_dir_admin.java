@@ -44,7 +44,7 @@ public class emp_dir_admin extends javax.swing.JFrame {
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
-        }  
+        }   
 
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -363,7 +363,8 @@ public class emp_dir_admin extends javax.swing.JFrame {
                 Admins admin = (Admins) q_admins.getSingleResult();
                 
                 this.hide();
-                new mod_user_admin(
+                new mod_account(
+                        "admin",
                         admin.getUsername(), 
                         admin.getPassword(), 
                         admin.getFirstName(), 

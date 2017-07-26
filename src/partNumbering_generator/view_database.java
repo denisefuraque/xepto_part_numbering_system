@@ -152,13 +152,7 @@ public final class view_database extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
-        partNumberingPUEntityManager0 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("partNumberingPU").createEntityManager();
-        partNumberDataQuery = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager0.createQuery("SELECT p FROM PartNumberData p");
-        partNumberDataList = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : partNumberDataQuery.getResultList();
-        partNumberDataQuery1 = java.beans.Beans.isDesignTime() ? null : partNumberingPUEntityManager0.createQuery("SELECT p FROM PartNumberData p");
-        partNumberDataList1 = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : partNumberDataQuery1.getResultList();
         bg_pan = new javax.swing.JPanel();
         data_pan = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -185,33 +179,6 @@ public final class view_database extends javax.swing.JFrame {
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
         data_pan.setPreferredSize(new java.awt.Dimension(445, 840));
 
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, partNumberDataList1, tbl_database);
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${partNumber}"));
-        columnBinding.setColumnName("Part Number");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${category}"));
-        columnBinding.setColumnName("Category");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
-        columnBinding.setColumnName("Description");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${generatedDate}"));
-        columnBinding.setColumnName("Generated Date");
-        columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${author}"));
-        columnBinding.setColumnName("Author");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${configuration}"));
-        columnBinding.setColumnName("Configuration");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_databaseMouseClicked(evt);
@@ -383,8 +350,6 @@ public final class view_database extends javax.swing.JFrame {
             .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        bindingGroup.bind();
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -461,13 +426,7 @@ public final class view_database extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_icon;
-    private java.util.List<partNumbering_generator.PartNumberData> partNumberDataList;
-    private java.util.List<partNumbering_generator.PartNumberData> partNumberDataList1;
-    private javax.persistence.Query partNumberDataQuery;
-    private javax.persistence.Query partNumberDataQuery1;
-    private javax.persistence.EntityManager partNumberingPUEntityManager0;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
-    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

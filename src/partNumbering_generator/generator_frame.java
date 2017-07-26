@@ -2,14 +2,12 @@
 package partNumbering_generator;
 
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -44,7 +42,12 @@ public final class generator_frame extends javax.swing.JFrame {
         
         initComponents();
         
-        em = PartNumber_EM.getEM();
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }   
         
         setLocationRelativeTo(null);
         
@@ -844,7 +847,7 @@ public final class generator_frame extends javax.swing.JFrame {
         switch(n){
             case 0:
             this.setVisible(false);
-            PartNumber_EM.clearEM();
+            em.clear();
             new login_frame().setVisible(true);
 
             //clearing all inputted items
@@ -1554,11 +1557,7 @@ public final class generator_frame extends javax.swing.JFrame {
             new database_open(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         }
         else{
-            try {
-                new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(generator_frame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         }
         
         cmb_scheme.setSelectedIndex(0);

@@ -1,13 +1,10 @@
 package partNumbering_generator;
 
 import java.awt.Font;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,20 +15,21 @@ public class sign_up_frame extends javax.swing.JFrame {
     ImageIcon war = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-warning-icon (1).png"));
     ImageIcon che = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-check-icon (1).png"));
     
-    ArrayList<String> uAdmin = new ArrayList<>(), uUser = new ArrayList<>();
-    
-    String[] AdminArray, UserArray;
-    
-    String get, ret, yey;
-    
-    Connection connect, conn, con;
-    Statement stmnt;
-    ResultSet reSet;
+    String username;
     
     String host_address = Host.getHost();
     
+    EntityManager em;
+    
     public sign_up_frame() {
         initComponents();
+        
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }  
         
         setLocationRelativeTo(null);
         
@@ -39,47 +37,28 @@ public class sign_up_frame extends javax.swing.JFrame {
         
     }
     
-    public String getAdminNames(){
+    public boolean usernameInAdmin(){
         try{
-            Connection conn;
-            conn = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            PreparedStatement smt = conn.prepareStatement("SELECT USERNAME FROM ADMINS WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            smt.setString(1, get);
-            try (ResultSet resultset = smt.executeQuery()) {
-                if(resultset.next() == true){
-                    ret = "true";
-                    return ret;
-                }
-                smt.closeOnCompletion();
-            }
-            conn.close();
+            Query q = em.createNamedQuery("Admins.findByUsername")
+                    .setParameter("username", username);
+            q.getSingleResult();
+            return true;
         }
-        catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        catch(NoResultException e){
+            return false;
         }
-        ret = "false";
-        return ret;
     }
     
-    public String getUserNames(){
+    public boolean usernameInUser(){
         try{
-            Connection con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            PreparedStatement smt = con.prepareStatement("SELECT USERNAME FROM EMPLOYEE WHERE USERNAME = ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            smt.setString(1, get);
-            try (ResultSet resultset = smt.executeQuery()) {
-                if(resultset.next() == true){
-                    ret = "true";
-                    return ret;
-                }
-                smt.closeOnCompletion();
-            }
-            con.close();
+            Query q = em.createNamedQuery("Employee.findByUsername")
+                    .setParameter("username", username);
+            q.getSingleResult();
+            return true;
         }
-        catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+        catch(NoResultException e){
+            return false;
         }
-        ret = "false";
-        return ret;
     }
     
     @SuppressWarnings("unchecked")
@@ -361,43 +340,20 @@ public class sign_up_frame extends javax.swing.JFrame {
 
     private void btn_sign_upActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sign_upActionPerformed
         try{
-            connect = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-            stmnt = connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String querySql = "SELECT * FROM EMPLOYEE";
-            reSet = stmnt.executeQuery(querySql);
-
-            reSet.next();
-
-            reSet.moveToInsertRow();
-
-            reSet.updateString("username", txt_user.getText());
-            reSet.updateString("password", txt_conPass.getText());
-            reSet.updateString("first_name", txt_fname.getText());
-            reSet.updateString("last_name", txt_lname.getText());
-            reSet.updateString("job_title", txt_job.getText());
-
-            reSet.insertRow();
-            reSet.moveToCurrentRow();
+            Employee emp = new Employee(
+                                    txt_user.getText(),
+                                    txt_conPass.getText(),
+                                    txt_fname.getText(),
+                                    txt_lname.getText(),
+                                    txt_job.getText()
+                                );
+            em.getTransaction().begin();
+            em.persist(emp);
+            em.flush();
+            em.getTransaction().commit();
         }
         catch(Exception ex){
             System.out.println(ex.getMessage());
-        }
-        finally {
-            if (reSet != null) {
-                try {
-                    reSet.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (stmnt != null) {
-                try {
-                    stmnt.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (connect != null) {
-                try {
-                    connect.close();
-                } catch (SQLException e) { /* ignored */}
-            }
         }
         
         JLabel result = new JLabel("You can now log-in to use the generator!");
@@ -409,14 +365,14 @@ public class sign_up_frame extends javax.swing.JFrame {
 
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
 
-        get = txt_user.getText();
+        username = txt_user.getText();
         
-        if(getAdminNames().equals("true") || getUserNames().equals("true")){
+        if(usernameInAdmin() || usernameInUser()){
             lbl_user.setIcon(err);
             txt_user.requestFocus();
             txt_user.setToolTipText("Similar Username");
         }
-        else if("false".equals(getAdminNames()) || !txt_user.getText().isEmpty() || "false".equals(getUserNames())){
+        else if(!usernameInAdmin() || !txt_user.getText().isEmpty() || !usernameInUser()){
             lbl_user.setIcon(che);
             txt_user.setToolTipText("OK");
         }

@@ -416,7 +416,8 @@ public class emp_dir_user extends javax.swing.JFrame {
                 Employee emp = (Employee) q_user.getSingleResult();
                 
                 this.hide();
-                new mod_user_user(
+                new mod_account(
+                        "user",
                         emp.getUsername(), 
                         emp.getPassword(), 
                         emp.getFirstName(), 
