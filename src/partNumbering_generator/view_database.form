@@ -105,12 +105,12 @@
                           <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btn_delete" pref="175" max="32767" attributes="0"/>
+                              <Component id="btn_delete" max="32767" attributes="0"/>
                               <Component id="btn_export" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="header_pan" max="32767" attributes="0"/>
-                      <Component id="data_pan" alignment="0" pref="887" max="32767" attributes="0"/>
+                      <Component id="data_pan" alignment="0" pref="889" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>

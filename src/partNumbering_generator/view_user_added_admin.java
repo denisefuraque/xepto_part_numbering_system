@@ -76,8 +76,11 @@ public class view_user_added_admin extends javax.swing.JFrame {
                     String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
                     em.getTransaction().begin();
-                    Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + selected_pn + "'");
-                    q.executeUpdate();
+                    Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                            .setParameter("username", selected_pn);
+                    DataUsers data = (DataUsers) q.getSingleResult();
+                    em.remove(data);
+                    em.flush();
                     em.getTransaction().commit();
                     
                     if (tbl_database.getRowSorter()!=null) {

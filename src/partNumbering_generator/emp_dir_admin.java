@@ -35,8 +35,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     EntityManager em;
     
-    int curRow = 0;
-    
     public emp_dir_admin() {
         initComponents();
         
@@ -79,11 +77,11 @@ public class emp_dir_admin extends javax.swing.JFrame {
                     
                     String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
                     
-                    System.out.println(selected);
-                    
                     em.getTransaction().begin();
-                    Query q = em.createNativeQuery("DELETE FROM ADMINS WHERE USERNAME = '" + selected + "'");
-                    q.executeUpdate();
+                    Query q = em.createNamedQuery("Admins.findByUsername")
+                            .setParameter("username", selected);
+                    Admins admin = (Admins) q.getSingleResult();
+                    em.remove(admin);
                     em.flush();
                     em.getTransaction().commit();
                     
