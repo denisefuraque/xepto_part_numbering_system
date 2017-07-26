@@ -38,10 +38,10 @@ public class PartNumberData implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date generatedDate;
     @Basic(optional = false)
-    @Column(nullable = false, length = 100)
+    @Column(name = "AUTHOR", nullable = false, length = 100)
     private String author;
     @Basic(optional = false)
-    @Column(nullable = false, length = 6)
+    @Column(name = "CONFIGURATION", nullable = false, length = 6)
     private String configuration;
 
     @Transient

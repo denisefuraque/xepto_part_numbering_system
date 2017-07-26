@@ -399,7 +399,6 @@ public final class view_database extends javax.swing.JFrame {
     private void btn_exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exportActionPerformed
         exportToCSV ex = new exportToCSV();
         ex.export();
-        JOptionPane.showMessageDialog(this, "CSV File is created successfully.");
     }//GEN-LAST:event_btn_exportActionPerformed
 
     private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
