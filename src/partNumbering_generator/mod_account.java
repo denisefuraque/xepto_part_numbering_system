@@ -86,24 +86,37 @@ public class mod_account extends javax.swing.JFrame {
         }
     }
     
-    public void updateAdmin(Admins admin, String user, String pass, String fName, String lName, String job) throws Exception{
+    public void updateAdmin(Admins old_admin, String user, String pass, String fName, String lName, String job) throws Exception{
         em.getTransaction().begin();
-        admin.setUsername(user);
-        admin.setPassword(pass);
-        admin.setFirstName(fName);
-        admin.setLastName(lName);
-        admin.setJobTitle(job);
+        em.remove(old_admin);
+        em.flush();
+        em.getTransaction().commit();
+        
+        em.getTransaction().begin();
+        Admins new_admin = new Admins();
+        new_admin.setUsername(user);
+        new_admin.setPassword(pass);
+        new_admin.setFirstName(fName);
+        new_admin.setLastName(lName);
+        new_admin.setJobTitle(job);
+        em.persist(new_admin);
         em.flush();
         em.getTransaction().commit();
     }
     
-    public void updateUser(Employee emp, String user, String pass, String fName, String lName, String job) throws Exception{
+    public void updateUser(Employee old_emp, String user, String pass, String fName, String lName, String job) throws Exception{
         em.getTransaction().begin();
-        emp.setUsername(user);
-        emp.setPassword(pass);
-        emp.setFirstName(fName);
-        emp.setLastName(lName);
-        emp.setJobTitle(job);
+        em.remove(old_emp);
+        em.flush();
+        em.getTransaction().commit();
+        
+        em.getTransaction().begin();
+        Employee new_emp = new Employee();
+        new_emp.setUsername(user);
+        new_emp.setPassword(pass);
+        new_emp.setFirstName(fName);
+        new_emp.setLastName(lName);
+        new_emp.setJobTitle(job);
         em.flush();
         em.getTransaction().commit();
     }
