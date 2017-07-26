@@ -5,12 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -29,17 +27,15 @@ public class view_database_user extends javax.swing.JFrame {
     
     ArrayList<Class_data> dataList = new ArrayList<>();
     
-    Connection con = null;
-    Statement st;
-    ResultSet rs;
-    
-    int curRow = 0;
-    
     String host_address = Host.getHost();
+    
+    EntityManager em;
     
     public view_database_user() {
         
         initComponents();
+        
+        em = PartNumber_EM.getEM();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
@@ -62,62 +58,29 @@ public class view_database_user extends javax.swing.JFrame {
         btn_search.addActionListener(al);
     }
 
-    
-    //function to connect sql
-    public Connection getConnection(){
-        
-        try{
-            con = DriverManager.getConnection("jdbc:derby://" + host_address + "/partNumbering  " ,"Admin01","07032017");
-        }
-        catch(SQLException ex){
-                  System.out.println(ex.getMessage());
-        }
-        return con;
-    }
-
     //function to return arraylist with particular data
     public ArrayList<Class_data> ListClass_Data(String ValToSearch){
-        
         try{
-            con = getConnection();
-            st= con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String searchQuery = "SELECT* FROM PART_NUMBER_DATA WHERE ('part_number' || 'category' || 'description' || 'generated_date' || 'author' || 'configuration') LIKE '%" + ValToSearch + "%'";
-            rs = st.executeQuery(searchQuery);
-            
             Class_data data;
             
-            while(rs.next()){
+            Query q = em.createNamedQuery("PartNumberData.findAll");
+            List<PartNumberData> pnd = q.getResultList();
+            for(PartNumberData d: pnd){
                 data = new Class_data(
-                                    rs.getString("part_number"),
-                                    rs.getString("category"),
-                                    rs.getString("description"),
-                                    rs.getDate("generated_date"),
-                                    rs.getString("author"),
-                                    rs.getString("configuration")
-                                     );
+                                    d.getPartNumber(),
+                                    d.getCategory(),
+                                    d.getDescription(),
+                                    d.getGeneratedDate(),
+                                    d.getAuthor(),
+                                    d.getConfiguration()
+                                    );
                 dataList.add(data);
             }
-        }        
-        catch(SQLException ex){
-                System.out.println(ex.getMessage());
-                }
-        finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (SQLException e) { /* ignored */}
-            }
         }
+        catch(Exception e){
+            System.out.print(e.toString());
+        }
+
         return dataList;
     }
     
