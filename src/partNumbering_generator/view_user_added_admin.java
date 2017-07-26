@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -36,7 +37,12 @@ public class view_user_added_admin extends javax.swing.JFrame {
     public view_user_added_admin() {
         initComponents();
         
-        em = PartNumber_EM.getEM();
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }   
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         

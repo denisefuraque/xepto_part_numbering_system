@@ -2,14 +2,12 @@
 package partNumbering_generator;
 
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -44,7 +42,12 @@ public final class generator_frame extends javax.swing.JFrame {
         
         initComponents();
         
-        em = PartNumber_EM.getEM();
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }   
         
         setLocationRelativeTo(null);
         
@@ -844,6 +847,7 @@ public final class generator_frame extends javax.swing.JFrame {
         switch(n){
             case 0:
             this.setVisible(false);
+            em.clear();
             new login_frame().setVisible(true);
 
             //clearing all inputted items
