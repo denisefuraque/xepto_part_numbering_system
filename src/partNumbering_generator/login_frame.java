@@ -1,6 +1,10 @@
 package partNumbering_generator;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
@@ -8,6 +12,11 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class login_frame extends javax.swing.JFrame {
 
@@ -17,7 +26,6 @@ public class login_frame extends javax.swing.JFrame {
     public login_frame() {
         
         initComponents();
-        
         Host.fetchHost();
         host_address = Host.getHost();
         
@@ -25,6 +33,42 @@ public class login_frame extends javax.swing.JFrame {
 
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+            
+            try {
+                File f = new File("PART NUMBERING BOOKING.xlsx");
+                FileInputStream file = new FileInputStream(f);
+                XSSFWorkbook workbook = new XSSFWorkbook(file);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                int i=0;
+                Iterator<Row> rowIterator = sheet.rowIterator();
+                while (rowIterator.hasNext()) {
+                    XSSFRow row = (XSSFRow) rowIterator.next();
+                    Iterator<Cell> cellIterator = row.cellIterator();
+                    
+                    if(row.getCell(0)== null || row.getCell(0).getStringCellValue().isEmpty()){
+                        break;
+                    }
+                    
+                    while (cellIterator.hasNext()) {
+                        Cell cell = cellIterator.next();
+                        
+                        switch (cell.getCellType()) {
+                            case Cell.CELL_TYPE_NUMERIC:
+                                System.out.print(cell.getNumericCellValue() + "\t");
+                                break;
+                            
+                            case Cell.CELL_TYPE_STRING:
+                                System.out.print(cell.getStringCellValue() + "\t");
+                                break;
+                        }
+                    }
+                    System.out.println(sheet.getSheetName());
+                }
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
@@ -156,7 +200,7 @@ public class login_frame extends javax.swing.JFrame {
         login_panLayout.setHorizontalGroup(
             login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, login_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(login_panLayout.createSequentialGroup()
@@ -190,7 +234,7 @@ public class login_frame extends javax.swing.JFrame {
                 .addComponent(err_mes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_enter, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         err_mes.setVisible(false);

@@ -29,8 +29,10 @@ public class view_user_added_admin extends javax.swing.JFrame {
     
     EntityManager em;
     
-    String value1 = "", value2 = "", value3 = "", value5 = "", value6 = "";
-    Date value4;
+    List<String> partNumber, category, description, author, config;
+    List<Date> genDate;
+    int[] row;
+    int selectedRowCount;
     
     String host_address = Host.getHost();
     
@@ -48,6 +50,13 @@ public class view_user_added_admin extends javax.swing.JFrame {
         
         setLocationRelativeTo(null);
         
+        partNumber = new ArrayList<>();
+        category = new ArrayList<>();
+        description = new ArrayList<>();
+        genDate = new ArrayList<>();
+        author = new ArrayList<>();
+        config = new ArrayList<>();
+        
         //call function
         findData();
         
@@ -60,6 +69,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
             String expr = txt_search.getText();
             sorter.setRowFilter(RowFilter.regexFilter(expr));
             sorter.setSortKeys(null);
+            tbl_database.clearSelection();
         };
         
         btn_search.addActionListener(al);
@@ -178,8 +188,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tbl_databaseMousePressed(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseReleased(evt);
             }
         });
         jScrollPane2.setViewportView(tbl_database);
@@ -357,7 +367,10 @@ public class view_user_added_admin extends javax.swing.JFrame {
         
         Object[] options = { "Yes", "No"};
 
-        int opt = JOptionPane.showOptionDialog(this, "If you click YES, the data will be SAVED in the main database \n\tand it will be DELETED in this database permanently.\n\nAre you sure you want to SAVE this record?", "You are about to SAVE a RECORD!!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        int opt = JOptionPane.showOptionDialog(this, "If you click YES, " + selectedRowCount + 
+                " data will be SAVED in the main database \n\tand will be DELETED in this database.\n\nAre you sure you want to SAVE selected record/s?", 
+                "You are about to SAVE " + selectedRowCount + " RECORD/S!", 
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 
         switch(opt){
 
@@ -365,38 +378,37 @@ public class view_user_added_admin extends javax.swing.JFrame {
 
                 //add selected data to part number data
                 try{
-                    PartNumberData data = new PartNumberData(value1, value2);
-                    data.setDescription(value3);
-                    data.setGeneratedDate(value4);
-                    data.setAuthor(value5);
-                    data.setConfiguration(value6);
+                    for(int i=0; i<selectedRowCount; i++){
+                        PartNumberData data = new PartNumberData(partNumber.get(i), category.get(i));
+                        data.setDescription(description.get(i));
+                        data.setGeneratedDate(genDate.get(i));
+                        data.setAuthor(author.get(i));
+                        data.setConfiguration(config.get(i));
 
-                    em.getEntityManagerFactory().getCache().evictAll();                    
-                    em.getTransaction().begin();
-                    em.persist(data);
-                    em.flush();
-                    em.getTransaction().commit();
+                        em.getEntityManagerFactory().getCache().evictAll();                    
+                        em.getTransaction().begin();
+                        em.persist(data);
+                        em.flush();
+                        em.getTransaction().commit();                        
+                    }
                 }
                 catch(Exception e){
-                    System.out.println(e.toString());
+                    System.out.println(e.getMessage());
                 }
 
                 try{
-                    int SelectedRowIndex = tbl_database.getSelectedRow();
-                    
-                    em.getEntityManagerFactory().getCache().evictAll();                    
-                    em.getTransaction().begin();
-                    Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + value1 + "'");
-                    q.executeUpdate();
-                    em.getTransaction().commit();
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();                    
+                        em.getTransaction().begin();
+                        Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + partNumber.get(i) + "'");
+                        q.executeUpdate();
+                        em.getTransaction().commit();
 
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                        model.removeRow(row[i]);                        
                     }
-                    model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
-                    System.out.println(e.toString());
+                    System.out.println(e.getMessage());
                 }
 
             case 1:
@@ -405,18 +417,22 @@ public class view_user_added_admin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_saveActionPerformed
 
-    private void tbl_databaseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMousePressed
-        int row = tbl_database.getSelectedRow();
-        if (tbl_database.getRowSorter()!=null) {
-            row = tbl_database.getRowSorter().convertRowIndexToModel(row);
+    private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
+        selectedRowCount = tbl_database.getSelectedRowCount();
+        row = tbl_database.getSelectedRows();
+        for(int i=0; i<row.length; i++){
+            if (tbl_database.getRowSorter()!=null) {
+                row[i] = tbl_database.getRowSorter().convertRowIndexToModel(row[i]);
+            }
+            partNumber.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
+            category.add(tbl_database.getModel().getValueAt(row[i], 1).toString());
+            description.add(tbl_database.getModel().getValueAt(row[i], 2).toString());
+            genDate.add((Date) tbl_database.getModel().getValueAt(row[i], 3));
+            author.add(tbl_database.getModel().getValueAt(row[i], 4).toString());
+            config.add(tbl_database.getModel().getValueAt(row[i], 5).toString());
+            System.out.println(row[i]);
         }
-        value1 = tbl_database.getModel().getValueAt(row, 0).toString();
-        value2 = tbl_database.getModel().getValueAt(row, 1).toString();
-        value3 = tbl_database.getModel().getValueAt(row, 2).toString();
-        value4 = (Date) tbl_database.getModel().getValueAt(row, 3);
-        value5 = tbl_database.getModel().getValueAt(row, 4).toString();
-        value6 = tbl_database.getModel().getValueAt(row, 5).toString();
-    }//GEN-LAST:event_tbl_databaseMousePressed
+    }//GEN-LAST:event_tbl_databaseMouseReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

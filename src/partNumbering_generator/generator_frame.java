@@ -337,10 +337,12 @@ public final class generator_frame extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 550));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 550));
+        getContentPane().setLayout(null);
 
         bg_pan3.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan3.setMaximumSize(new java.awt.Dimension(800, 500));
         bg_pan3.setMinimumSize(new java.awt.Dimension(800, 500));
+        bg_pan3.setLayout(null);
 
         logo_pan3.setBackground(new java.awt.Color(0, 0, 102));
         logo_pan3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -373,6 +375,9 @@ public final class generator_frame extends javax.swing.JFrame {
                     .addComponent(lbl_png3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        bg_pan3.add(logo_pan3);
+        logo_pan3.setBounds(12, 6, 784, 70);
 
         input_pan.setBackground(new java.awt.Color(204, 204, 204));
         input_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input the following data", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -479,7 +484,7 @@ public final class generator_frame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(txt_year, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmb_month, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmb_month, 0, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmb_day, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -610,13 +615,16 @@ public final class generator_frame extends javax.swing.JFrame {
                     .addComponent(config_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_generate)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         seq_pan.setVisible(false);
         projDate_pan.setVisible(false);
         config_pan.setVisible(false);
         btn_generate.setEnabled(false);
+
+        bg_pan3.add(input_pan);
+        input_pan.setBounds(12, 88, 476, 387);
 
         generated_pan.setBackground(new java.awt.Color(204, 204, 204));
         generated_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Part Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -643,10 +651,13 @@ public final class generator_frame extends javax.swing.JFrame {
             .addGroup(generated_panLayout.createSequentialGroup()
                 .addGap(51, 51, 51)
                 .addComponent(lbl_genPartNum, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         lbl_genPartNum.setVisible(false);
+
+        bg_pan3.add(generated_pan);
+        generated_pan.setBounds(494, 88, 290, 181);
 
         open_save_db_pan.setBackground(new java.awt.Color(204, 204, 204));
         open_save_db_pan.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -677,8 +688,12 @@ public final class generator_frame extends javax.swing.JFrame {
             .addGroup(open_save_db_panLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(btn_open_save)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
+
+        bg_pan3.add(open_save_db_pan);
+        open_save_db_pan.setBounds(494, 275, 290, 80);
+        open_save_db_pan.setVisible(false);
 
         btn_new.setBackground(new java.awt.Color(204, 204, 255));
         btn_new.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -688,6 +703,9 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_newActionPerformed(evt);
             }
         });
+        bg_pan3.add(btn_new);
+        btn_new.setBounds(494, 361, 290, 34);
+        btn_new.setEnabled(false);
 
         btn_edit.setBackground(new java.awt.Color(204, 204, 255));
         btn_edit.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -697,6 +715,9 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_editActionPerformed(evt);
             }
         });
+        bg_pan3.add(btn_edit);
+        btn_edit.setBounds(494, 401, 290, 34);
+        btn_edit.setEnabled(false);
 
         btn_check.setBackground(new java.awt.Color(204, 204, 255));
         btn_check.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -706,51 +727,12 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_checkActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout bg_pan3Layout = new javax.swing.GroupLayout(bg_pan3);
-        bg_pan3.setLayout(bg_pan3Layout);
-        bg_pan3Layout.setHorizontalGroup(
-            bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_pan3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logo_pan3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(bg_pan3Layout.createSequentialGroup()
-                        .addComponent(input_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btn_new, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_check, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(open_save_db_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(generated_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        bg_pan3Layout.setVerticalGroup(
-            bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_pan3Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(logo_pan3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(bg_pan3Layout.createSequentialGroup()
-                        .addComponent(generated_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(open_save_db_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_new)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_edit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_check))
-                    .addComponent(input_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
-                .addContainerGap(34, Short.MAX_VALUE))
-        );
-
-        open_save_db_pan.setVisible(false);
-        btn_new.setEnabled(false);
-        btn_edit.setEnabled(false);
+        bg_pan3.add(btn_check);
+        btn_check.setBounds(494, 441, 290, 34);
         btn_check.setEnabled(false);
+
+        getContentPane().add(bg_pan3);
+        bg_pan3.setBounds(0, 0, 808, 509);
 
         mnu_user_gen.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
 
@@ -823,17 +805,6 @@ public final class generator_frame extends javax.swing.JFrame {
         mnu_user_gen.add(mnu_uAccount);
 
         setJMenuBar(mnu_user_gen);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_pan3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_pan3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
