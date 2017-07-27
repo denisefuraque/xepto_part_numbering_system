@@ -14,6 +14,8 @@ public class login_frame extends javax.swing.JFrame {
     String host_address;
     EntityManager em;
     
+    static splash s;
+    
     public login_frame() {
         
         initComponents();
@@ -25,6 +27,7 @@ public class login_frame extends javax.swing.JFrame {
 
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+            s.setVisible(false);
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
@@ -424,6 +427,9 @@ public class login_frame extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        s = new splash();
+        s.setVisible(true);
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new login_frame().setVisible(true);

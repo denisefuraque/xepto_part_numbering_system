@@ -479,7 +479,7 @@ public final class generator_frame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(txt_year, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmb_month, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmb_month, 0, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmb_day, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -625,7 +625,7 @@ public final class generator_frame extends javax.swing.JFrame {
         generated_pan.setPreferredSize(new java.awt.Dimension(290, 181));
         generated_pan.setRequestFocusEnabled(false);
 
-        lbl_genPartNum.setFont(new java.awt.Font("Miriam", 1, 35)); // NOI18N
+        lbl_genPartNum.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         lbl_genPartNum.setForeground(new java.awt.Color(255, 255, 255));
         lbl_genPartNum.setText("000-000000-0000");
 
@@ -669,7 +669,7 @@ public final class generator_frame extends javax.swing.JFrame {
             open_save_db_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(open_save_db_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btn_open_save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_open_save, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                 .addContainerGap())
         );
         open_save_db_panLayout.setVerticalGroup(
