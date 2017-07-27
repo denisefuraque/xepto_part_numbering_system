@@ -126,6 +126,7 @@ public class mod_account extends javax.swing.JFrame {
         new_emp.setFirstName(fName);
         new_emp.setLastName(lName);
         new_emp.setJobTitle(job);
+        em.persist(new_emp);
         em.flush();
         em.getTransaction().commit();
     }

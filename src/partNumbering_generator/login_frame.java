@@ -23,12 +23,8 @@ public class login_frame extends javax.swing.JFrame {
         
         lbl_host.setText("Host: " + host_address);
 
-        splash_screen s = new splash_screen();
-        s.setVisible(true);
-        
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
-            s.setVisible(false);
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
