@@ -419,6 +419,13 @@ public class view_user_added_admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
+        partNumber.clear();
+        category.clear();
+        description.clear();
+        genDate.clear();
+        author.clear();
+        config.clear();
+        
         selectedRowCount = tbl_database.getSelectedRowCount();
         row = tbl_database.getSelectedRows();
         for(int i=0; i<row.length; i++){

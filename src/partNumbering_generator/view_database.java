@@ -30,8 +30,11 @@ public final class view_database extends javax.swing.JFrame {
     
     EntityManager em;
     
-    String num, cat, des, aut, con;
-    Date dat;
+    List<String> partNumber;
+    String category, description, author, config;
+    Date genDate;
+    int[] row;
+    int selectedRowCount;
     
     String host_address = Host.getHost();
     
@@ -48,6 +51,8 @@ public final class view_database extends javax.swing.JFrame {
         }        
         
         setLocationRelativeTo(null);
+        
+        partNumber = new ArrayList<>();
         
         //call function
         findData();
@@ -76,27 +81,21 @@ public final class view_database extends javax.swing.JFrame {
         switch (n){
             case 0:
                 try{
-                    int SelectedRowIndex = tbl_database.getSelectedRow();
-                    
-                    String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
-                    
-                    em.getEntityManagerFactory().getCache().evictAll();
-                    em.getTransaction().begin();
-                    Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
-                            .setParameter("partNumber", selected_pn);
-                    PartNumberData pnd = (PartNumberData) q.getSingleResult();
-                    em.remove(pnd);
-                    em.flush();
-                    em.getTransaction().commit();
-                    
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
-                    }
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();    
+                        em.getTransaction().begin();
+                        Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                                .setParameter("partNumber", partNumber.get(i));
+                        PartNumberData d = (PartNumberData) q.getSingleResult();
+                        em.remove(d);
+                        em.flush();
+                        em.getTransaction().commit();
 
-                    model.removeRow(SelectedRowIndex);
+                        model.removeRow(row[i]-i);                        
+                    }
                 }
                 catch(Exception e){
-                    System.out.println(e.toString());
+                    System.out.println(e.toString()+selectedRowCount);
                 }
                 break;
             case 1:
@@ -182,6 +181,9 @@ public final class view_database extends javax.swing.JFrame {
         data_pan.setPreferredSize(new java.awt.Dimension(445, 840));
 
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseReleased(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_databaseMouseClicked(evt);
             }
@@ -370,22 +372,30 @@ public final class view_database extends javax.swing.JFrame {
 
     private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
         if (evt.getClickCount() == 2) {
-            int dataInd = tbl_database.getSelectedRow();
-            if (tbl_database.getRowSorter()!=null) {
-                        dataInd = tbl_database.getRowSorter().convertRowIndexToModel(dataInd);
-                    }
-            
-            num = tbl_database.getValueAt(dataInd, 0).toString();
-            cat = tbl_database.getValueAt(dataInd, 1).toString();
-            des = tbl_database.getValueAt(dataInd, 2).toString();
-            dat = (Date) tbl_database.getValueAt(dataInd, 3);
-            aut = tbl_database.getValueAt(dataInd, 4).toString();
-            con = tbl_database.getValueAt(dataInd, 5).toString();
+            category = tbl_database.getModel().getValueAt(row[0], 1).toString();
+            description = tbl_database.getModel().getValueAt(row[0], 2).toString();
+            genDate = (Date) tbl_database.getModel().getValueAt(row[0], 3);
+            author = tbl_database.getModel().getValueAt(row[0], 4).toString();
+            config = tbl_database.getModel().getValueAt(row[0], 5).toString();
             
             this.hide();
-            new mod_data_ad(num, cat, des, dat, aut, con).setVisible(true);
+            new mod_data_ad(partNumber.get(0), category, description, genDate, author, config).setVisible(true);
         }
     }//GEN-LAST:event_tbl_databaseMouseClicked
+
+    private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
+        partNumber.clear();
+        
+        selectedRowCount = tbl_database.getSelectedRowCount();
+        row = tbl_database.getSelectedRows();
+        for(int i=0; i<row.length; i++){
+            if (tbl_database.getRowSorter()!=null) {
+                row[i] = tbl_database.getRowSorter().convertRowIndexToModel(row[i]);
+            }
+            partNumber.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
+            System.out.println(row[i]);
+        }
+    }//GEN-LAST:event_tbl_databaseMouseReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
