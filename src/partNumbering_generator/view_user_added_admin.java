@@ -169,6 +169,7 @@ public class view_user_added_admin extends javax.swing.JFrame {
         btn_save = new javax.swing.JButton();
 
         setTitle("Data For Approval (Admin) - Part Number Generator");
+        setResizable(false);
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
 

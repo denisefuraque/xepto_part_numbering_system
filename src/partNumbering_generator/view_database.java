@@ -171,6 +171,7 @@ public final class view_database extends javax.swing.JFrame {
         setTitle("View Database (Admin) - Part Number Generator");
         setMaximumSize(new java.awt.Dimension(860, 530));
         setMinimumSize(new java.awt.Dimension(860, 530));
+        setResizable(false);
         setSize(new java.awt.Dimension(860, 530));
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));

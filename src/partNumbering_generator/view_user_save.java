@@ -125,6 +125,7 @@ public class view_user_save extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setTitle("Data For Approval (User) - Part Number Generator");
+        setResizable(false);
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
 

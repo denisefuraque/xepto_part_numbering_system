@@ -337,52 +337,44 @@ public final class generator_frame extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 550));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 550));
+        getContentPane().setLayout(null);
 
         bg_pan3.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan3.setMaximumSize(new java.awt.Dimension(800, 500));
         bg_pan3.setMinimumSize(new java.awt.Dimension(800, 500));
+        bg_pan3.setLayout(null);
 
         logo_pan3.setBackground(new java.awt.Color(0, 0, 102));
         logo_pan3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         logo_pan3.setMaximumSize(new java.awt.Dimension(780, 65));
         logo_pan3.setMinimumSize(new java.awt.Dimension(780, 65));
+        logo_pan3.setLayout(null);
 
         lbl_logo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/xepto logo - white bg.png"))); // NOI18N
+        logo_pan3.add(lbl_logo3);
+        lbl_logo3.setBounds(12, 13, 250, 40);
 
         lbl_png3.setFont(new java.awt.Font("Miriam Fixed", 1, 35)); // NOI18N
         lbl_png3.setForeground(new java.awt.Color(255, 255, 255));
         lbl_png3.setText("Part Number Generator");
+        logo_pan3.add(lbl_png3);
+        lbl_png3.setBounds(268, 13, 500, 40);
 
-        javax.swing.GroupLayout logo_pan3Layout = new javax.swing.GroupLayout(logo_pan3);
-        logo_pan3.setLayout(logo_pan3Layout);
-        logo_pan3Layout.setHorizontalGroup(
-            logo_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logo_pan3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbl_logo3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_png3, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        logo_pan3Layout.setVerticalGroup(
-            logo_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(logo_pan3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(logo_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbl_logo3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_png3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        bg_pan3.add(logo_pan3);
+        logo_pan3.setBounds(10, 6, 780, 66);
 
         input_pan.setBackground(new java.awt.Color(204, 204, 204));
         input_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input the following data", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
         input_pan.setMaximumSize(new java.awt.Dimension(484, 383));
         input_pan.setMinimumSize(new java.awt.Dimension(484, 383));
         input_pan.setPreferredSize(new java.awt.Dimension(484, 383));
+        input_pan.setLayout(null);
 
         lbl_cateogry.setFont(new java.awt.Font("Miriam Fixed", 1, 20)); // NOI18N
         lbl_cateogry.setForeground(new java.awt.Color(255, 255, 255));
         lbl_cateogry.setText("Commodity Name : ");
+        input_pan.add(lbl_cateogry);
+        lbl_cateogry.setBounds(141, 70, 221, 21);
 
         cmb_name.setBackground(new java.awt.Color(204, 204, 255));
         cmb_name.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -391,9 +383,12 @@ public final class generator_frame extends javax.swing.JFrame {
                 cmb_nameActionPerformed(evt);
             }
         });
+        input_pan.add(cmb_name);
+        cmb_name.setBounds(16, 97, 444, 33);
 
         seq_pan.setBackground(new java.awt.Color(204, 204, 204));
         seq_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sequence", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        seq_pan.setLayout(null);
 
         txt_seq.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_seq.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -404,25 +399,16 @@ public final class generator_frame extends javax.swing.JFrame {
                 txt_seqKeyTyped(evt);
             }
         });
+        seq_pan.add(txt_seq);
+        txt_seq.setBounds(16, 23, 175, 28);
 
-        javax.swing.GroupLayout seq_panLayout = new javax.swing.GroupLayout(seq_pan);
-        seq_pan.setLayout(seq_panLayout);
-        seq_panLayout.setHorizontalGroup(
-            seq_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(seq_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txt_seq, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        seq_panLayout.setVerticalGroup(
-            seq_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, seq_panLayout.createSequentialGroup()
-                .addComponent(txt_seq)
-                .addGap(5, 5, 5))
-        );
+        input_pan.add(seq_pan);
+        seq_pan.setBounds(16, 238, 207, 63);
+        seq_pan.setVisible(false);
 
         projDate_pan.setBackground(new java.awt.Color(204, 204, 204));
         projDate_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Project Date :", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        projDate_pan.setLayout(null);
 
         txt_year.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_year.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -433,6 +419,8 @@ public final class generator_frame extends javax.swing.JFrame {
                 txt_yearKeyTyped(evt);
             }
         });
+        projDate_pan.add(txt_year);
+        txt_year.setBounds(16, 50, 130, 28);
 
         cmb_month.setBackground(new java.awt.Color(204, 204, 255));
         cmb_month.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -447,6 +435,8 @@ public final class generator_frame extends javax.swing.JFrame {
                 cmb_monthActionPerformed(evt);
             }
         });
+        projDate_pan.add(cmb_month);
+        cmb_month.setBounds(152, 50, 140, 28);
 
         cmb_day.setBackground(new java.awt.Color(204, 204, 255));
         cmb_day.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -461,54 +451,31 @@ public final class generator_frame extends javax.swing.JFrame {
                 cmb_dayActionPerformed(evt);
             }
         });
+        projDate_pan.add(cmb_day);
+        cmb_day.setBounds(298, 50, 130, 28);
 
         lbl_year.setFont(new java.awt.Font("Miriam Fixed", 0, 20)); // NOI18N
         lbl_year.setText("year");
+        projDate_pan.add(lbl_year);
+        lbl_year.setBounds(55, 23, 48, 21);
 
         lbl_month.setFont(new java.awt.Font("Miriam Fixed", 0, 20)); // NOI18N
         lbl_month.setText("month");
+        projDate_pan.add(lbl_month);
+        lbl_month.setBounds(202, 23, 60, 21);
 
         lbl_day.setFont(new java.awt.Font("Miriam Fixed", 0, 20)); // NOI18N
         lbl_day.setText("day");
+        projDate_pan.add(lbl_day);
+        lbl_day.setBounds(333, 23, 36, 21);
 
-        javax.swing.GroupLayout projDate_panLayout = new javax.swing.GroupLayout(projDate_pan);
-        projDate_pan.setLayout(projDate_panLayout);
-        projDate_panLayout.setHorizontalGroup(
-            projDate_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(projDate_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txt_year, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmb_month, 0, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmb_day, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, projDate_panLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(lbl_year)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbl_month)
-                .addGap(71, 71, 71)
-                .addComponent(lbl_day)
-                .addGap(69, 69, 69))
-        );
-        projDate_panLayout.setVerticalGroup(
-            projDate_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(projDate_panLayout.createSequentialGroup()
-                .addGroup(projDate_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_day)
-                    .addComponent(lbl_month)
-                    .addComponent(lbl_year))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(projDate_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_year)
-                    .addComponent(cmb_day, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cmb_month))
-                .addContainerGap())
-        );
+        input_pan.add(projDate_pan);
+        projDate_pan.setBounds(16, 136, 444, 96);
+        projDate_pan.setVisible(false);
 
         config_pan.setBackground(new java.awt.Color(204, 204, 204));
         config_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Configuration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        config_pan.setLayout(null);
 
         txt_config.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_config.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -519,24 +486,13 @@ public final class generator_frame extends javax.swing.JFrame {
                 txt_configKeyTyped(evt);
             }
         });
-
-        javax.swing.GroupLayout config_panLayout = new javax.swing.GroupLayout(config_pan);
-        config_pan.setLayout(config_panLayout);
-        config_panLayout.setHorizontalGroup(
-            config_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(config_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txt_config)
-                .addContainerGap())
-        );
-        config_panLayout.setVerticalGroup(
-            config_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, config_panLayout.createSequentialGroup()
-                .addComponent(txt_config)
-                .addGap(5, 5, 5))
-        );
-
+        config_pan.add(txt_config);
+        txt_config.setBounds(16, 23, 199, 28);
         txt_config.setEditable(false);
+
+        input_pan.add(config_pan);
+        config_pan.setBounds(229, 238, 231, 63);
+        config_pan.setVisible(false);
 
         btn_generate.setBackground(new java.awt.Color(204, 204, 255));
         btn_generate.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -546,6 +502,9 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_generateActionPerformed(evt);
             }
         });
+        input_pan.add(btn_generate);
+        btn_generate.setBounds(16, 312, 444, 31);
+        btn_generate.setEnabled(false);
 
         cmb_scheme.setBackground(new java.awt.Color(204, 204, 255));
         cmb_scheme.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -564,59 +523,11 @@ public final class generator_frame extends javax.swing.JFrame {
                 cmb_schemeActionPerformed(evt);
             }
         });
+        input_pan.add(cmb_scheme);
+        cmb_scheme.setBounds(16, 34, 444, 30);
 
-        javax.swing.GroupLayout input_panLayout = new javax.swing.GroupLayout(input_pan);
-        input_pan.setLayout(input_panLayout);
-        input_panLayout.setHorizontalGroup(
-            input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(input_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(input_panLayout.createSequentialGroup()
-                        .addComponent(btn_generate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, input_panLayout.createSequentialGroup()
-                        .addGroup(input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(projDate_pan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmb_name, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmb_scheme, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(input_panLayout.createSequentialGroup()
-                        .addGroup(input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(input_panLayout.createSequentialGroup()
-                                .addComponent(seq_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(config_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(input_panLayout.createSequentialGroup()
-                                .addGap(125, 125, 125)
-                                .addComponent(lbl_cateogry)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(10, 10, 10))))
-        );
-        input_panLayout.setVerticalGroup(
-            input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(input_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cmb_scheme, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_cateogry)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmb_name, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(projDate_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(seq_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(config_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_generate)
-                .addContainerGap(37, Short.MAX_VALUE))
-        );
-
-        seq_pan.setVisible(false);
-        projDate_pan.setVisible(false);
-        config_pan.setVisible(false);
-        btn_generate.setEnabled(false);
+        bg_pan3.add(input_pan);
+        input_pan.setBounds(10, 83, 476, 387);
 
         generated_pan.setBackground(new java.awt.Color(204, 204, 204));
         generated_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Part Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -624,35 +535,25 @@ public final class generator_frame extends javax.swing.JFrame {
         generated_pan.setMinimumSize(new java.awt.Dimension(290, 181));
         generated_pan.setPreferredSize(new java.awt.Dimension(290, 181));
         generated_pan.setRequestFocusEnabled(false);
+        generated_pan.setLayout(null);
 
-        lbl_genPartNum.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        lbl_genPartNum.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
         lbl_genPartNum.setForeground(new java.awt.Color(255, 255, 255));
         lbl_genPartNum.setText("000-000000-0000");
-
-        javax.swing.GroupLayout generated_panLayout = new javax.swing.GroupLayout(generated_pan);
-        generated_pan.setLayout(generated_panLayout);
-        generated_panLayout.setHorizontalGroup(
-            generated_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generated_panLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbl_genPartNum)
-                .addContainerGap())
-        );
-        generated_panLayout.setVerticalGroup(
-            generated_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(generated_panLayout.createSequentialGroup()
-                .addGap(51, 51, 51)
-                .addComponent(lbl_genPartNum, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
-
+        lbl_genPartNum.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        generated_pan.add(lbl_genPartNum);
+        lbl_genPartNum.setBounds(30, 70, 230, 39);
         lbl_genPartNum.setVisible(false);
+
+        bg_pan3.add(generated_pan);
+        generated_pan.setBounds(492, 83, 290, 181);
 
         open_save_db_pan.setBackground(new java.awt.Color(204, 204, 204));
         open_save_db_pan.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         open_save_db_pan.setMaximumSize(new java.awt.Dimension(290, 80));
         open_save_db_pan.setMinimumSize(new java.awt.Dimension(290, 80));
         open_save_db_pan.setPreferredSize(new java.awt.Dimension(290, 80));
+        open_save_db_pan.setLayout(null);
 
         btn_open_save.setBackground(new java.awt.Color(204, 204, 255));
         btn_open_save.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -662,23 +563,12 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_open_saveActionPerformed(evt);
             }
         });
+        open_save_db_pan.add(btn_open_save);
+        btn_open_save.setBounds(12, 26, 266, 31);
 
-        javax.swing.GroupLayout open_save_db_panLayout = new javax.swing.GroupLayout(open_save_db_pan);
-        open_save_db_pan.setLayout(open_save_db_panLayout);
-        open_save_db_panLayout.setHorizontalGroup(
-            open_save_db_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(open_save_db_panLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btn_open_save, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        open_save_db_panLayout.setVerticalGroup(
-            open_save_db_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(open_save_db_panLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(btn_open_save)
-                .addContainerGap(21, Short.MAX_VALUE))
-        );
+        bg_pan3.add(open_save_db_pan);
+        open_save_db_pan.setBounds(492, 270, 290, 80);
+        open_save_db_pan.setVisible(false);
 
         btn_new.setBackground(new java.awt.Color(204, 204, 255));
         btn_new.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -688,6 +578,9 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_newActionPerformed(evt);
             }
         });
+        bg_pan3.add(btn_new);
+        btn_new.setBounds(492, 356, 290, 31);
+        btn_new.setEnabled(false);
 
         btn_edit.setBackground(new java.awt.Color(204, 204, 255));
         btn_edit.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -697,6 +590,9 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_editActionPerformed(evt);
             }
         });
+        bg_pan3.add(btn_edit);
+        btn_edit.setBounds(492, 393, 290, 31);
+        btn_edit.setEnabled(false);
 
         btn_check.setBackground(new java.awt.Color(204, 204, 255));
         btn_check.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -706,51 +602,12 @@ public final class generator_frame extends javax.swing.JFrame {
                 btn_checkActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout bg_pan3Layout = new javax.swing.GroupLayout(bg_pan3);
-        bg_pan3.setLayout(bg_pan3Layout);
-        bg_pan3Layout.setHorizontalGroup(
-            bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_pan3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logo_pan3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(bg_pan3Layout.createSequentialGroup()
-                        .addComponent(input_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btn_new, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_check, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(open_save_db_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(generated_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        bg_pan3Layout.setVerticalGroup(
-            bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bg_pan3Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(logo_pan3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(bg_pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(bg_pan3Layout.createSequentialGroup()
-                        .addComponent(generated_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(open_save_db_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_new)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_edit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_check))
-                    .addComponent(input_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
-                .addContainerGap(34, Short.MAX_VALUE))
-        );
-
-        open_save_db_pan.setVisible(false);
-        btn_new.setEnabled(false);
-        btn_edit.setEnabled(false);
+        bg_pan3.add(btn_check);
+        btn_check.setBounds(492, 430, 290, 31);
         btn_check.setEnabled(false);
+
+        getContentPane().add(bg_pan3);
+        bg_pan3.setBounds(0, 0, 800, 504);
 
         mnu_user_gen.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
 
@@ -823,17 +680,6 @@ public final class generator_frame extends javax.swing.JFrame {
         mnu_user_gen.add(mnu_uAccount);
 
         setJMenuBar(mnu_user_gen);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_pan3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_pan3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

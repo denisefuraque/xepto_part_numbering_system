@@ -126,6 +126,7 @@ public class view_database_user extends javax.swing.JFrame {
         btn_export = new javax.swing.JButton();
 
         setTitle("View Database (User) - Part Number Generator");
+        setResizable(false);
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
 

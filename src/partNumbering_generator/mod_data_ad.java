@@ -1,7 +1,6 @@
 
 package partNumbering_generator;
 
-import java.util.Arrays;
 import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -327,7 +326,10 @@ public class mod_data_ad extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_modActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-
+        Admins selected_admin = null;
+        Employee emp = null;
+        
+        
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
