@@ -81,32 +81,30 @@ public class view_user_added_admin extends javax.swing.JFrame {
         
         Object[] options = {"Yes",
                             "No"};
-        int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this Delete operation \n\nAre you sure you want to delete? ","You are about to DELETE a Record!",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,null, options, options[0]);
+        int n = JOptionPane.showOptionDialog(this, "If you click YES, you won't be able to undo this Delete operation \n\nAre you sure you want to delete? ",
+                "You are about to DELETE " + selectedRowCount + " Record!",
+                JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE,null, options, options[0]);
         
         switch (n){
             case 0:
                 try{
-                    int SelectedRowIndex = tbl_database.getSelectedRow();
-                    
-                    String selected_pn = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
-                    
-                    em.getEntityManagerFactory().getCache().evictAll();                    
-                    em.getTransaction().begin();
-                    Query q = em.createNamedQuery("DataUsers.findByPartNumber")
-                            .setParameter("partNumber", selected_pn);
-                    DataUsers data = (DataUsers) q.getSingleResult();
-                    em.remove(data);
-                    em.flush();
-                    em.getTransaction().commit();
-                    
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();    
+                        em.getTransaction().begin();
+                        Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                                .setParameter("partNumber", partNumber.get(i));
+                        DataUsers d = (DataUsers) q.getSingleResult();
+                        em.remove(d);
+                        em.flush();
+                        em.getTransaction().commit();
+
+                        model.removeRow(row[i]-i);                        
                     }
-                    model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
-                    System.out.println(e.toString());
+                    System.out.println(e.toString()+selectedRowCount);
                 }
+                break;
                 
             case 1:
                 break;
@@ -393,22 +391,25 @@ public class view_user_added_admin extends javax.swing.JFrame {
                     }
                 }
                 catch(Exception e){
-                    System.out.println(e.getMessage());
+                    System.out.println(e.toString());
                 }
 
                 try{
                     for(int i=0; i<selectedRowCount; i++){
-                        em.getEntityManagerFactory().getCache().evictAll();                    
+                        em.getEntityManagerFactory().getCache().evictAll();    
                         em.getTransaction().begin();
-                        Query q = em.createNativeQuery("DELETE FROM DATA_USERS WHERE PART_NUMBER = '" + partNumber.get(i) + "'");
-                        q.executeUpdate();
+                        Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                                .setParameter("partNumber", partNumber.get(i));
+                        DataUsers d = (DataUsers) q.getSingleResult();
+                        em.remove(d);
+                        em.flush();
                         em.getTransaction().commit();
 
-                        model.removeRow(row[i]);                        
+                        model.removeRow(row[i]-i);                        
                     }
                 }
                 catch(Exception e){
-                    System.out.println(e.getMessage());
+                    System.out.println(e.toString());
                 }
 
             case 1:

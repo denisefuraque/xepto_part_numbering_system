@@ -584,7 +584,7 @@ public final class generator_frame extends javax.swing.JFrame {
                         .addGroup(input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(projDate_pan, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmb_name, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmb_scheme, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmb_scheme, 0, 442, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(input_panLayout.createSequentialGroup()
                         .addGroup(input_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -615,7 +615,7 @@ public final class generator_frame extends javax.swing.JFrame {
                     .addComponent(config_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_generate)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         seq_pan.setVisible(false);
@@ -732,7 +732,7 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_check.setEnabled(false);
 
         getContentPane().add(bg_pan3);
-        bg_pan3.setBounds(0, 0, 808, 509);
+        bg_pan3.setBounds(0, 0, 800, 500);
 
         mnu_user_gen.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
 
