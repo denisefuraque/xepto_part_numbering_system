@@ -23,13 +23,17 @@ public class login_frame extends javax.swing.JFrame {
         
         lbl_host.setText("Host: " + host_address);
 
+        splash_screen s = new splash_screen();
+        s.setVisible(true);
+        
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+            s.setVisible(false);
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
         }     
-        
+
         setLocationRelativeTo(null);
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
@@ -376,24 +380,28 @@ public class login_frame extends javax.swing.JFrame {
                 }
             }
             if(valid_ip){
-                lbl_host.setText("Updating");
+                String prev_host = Host.getHost();
+                lbl_host.setText("Updating..."); 
+                JOptionPane.showMessageDialog(null, "The program will try to connect to " + input_host + ".\nPlease wait until the host changes before logging in. \n\nPress 'OK' to start connecting.");                 
                 host_address = input_host;
                 Host.setHost(host_address);
-                JOptionPane.showMessageDialog(null, "Host Address changed to " + Host.getHost());
-                lbl_host.setText("Host: " + Host.getHost());
                 
                 try{
                     em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+                    JOptionPane.showMessageDialog(null, "Host Address changed to " + Host.getHost());
+                    lbl_host.setText("Host: " + Host.getHost());
                 }
                 catch(Exception e){
-                    JOptionPane.showMessageDialog(null, e.toString());
-                }
+                    Host.setHost(prev_host);
+                    JOptionPane.showMessageDialog(null, "Cannot connect to " + host_address + ".\nReverting to " + prev_host + ".");
+                    lbl_host.setText("Host: " + prev_host);   
+                }           
             }
             else if(!ip_matcher.matches()){
                 JOptionPane.showMessageDialog(null, "Please enter a valid IPv4 address.",
                     "Invalid address format", JOptionPane.ERROR_MESSAGE);
             }
-        }while(!valid_ip);
+        }while(!valid_ip); 
     }//GEN-LAST:event_btn_changeHostActionPerformed
 
     public static void main(String args[]) {
