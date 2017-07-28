@@ -375,7 +375,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
                 //add selected data to part number data
                 try{
                     for(int i=0; i<selectedRowCount; i++){
-                        PartNumberData data = new PartNumberData(partNumber.get(i), category.get(i));
+                        PartNumberData data = new PartNumberData();
+                        data.setPartNumber(partNumber.get(i));
+                        data.setCategory(category.get(i));
                         data.setDescription(description.get(i));
                         data.setGeneratedDate(genDate.get(i));
                         data.setAuthor(author.get(i));

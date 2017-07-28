@@ -302,7 +302,9 @@ public class save_data_user extends javax.swing.JFrame {
 
                 //add selected data to data users
                 try{
-                    DataUsers data = new DataUsers(pn, cat);
+                    DataUsers data = new DataUsers();
+                    data.setPartNumber(pn);
+                    data.setCategory(cat);
                     data.setDescription(txt_des.getText());
                     data.setGeneratedDate(sqlDate);
                     data.setAuthor(aut);

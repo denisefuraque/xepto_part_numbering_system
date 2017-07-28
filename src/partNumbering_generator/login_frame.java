@@ -3,11 +3,16 @@ package partNumbering_generator;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
@@ -35,6 +40,8 @@ public class login_frame extends javax.swing.JFrame {
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
             s.setVisible(false);
+            
+            //importXLSX("pnb.xlsx");
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
@@ -44,6 +51,116 @@ public class login_frame extends javax.swing.JFrame {
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
 
+    }
+    
+    private void importXLSX(String filename){
+        try {
+            XSSFSheet sheet;
+            XSSFRow row;
+            Cell cell;
+            String value, category;
+            int cellCount;
+            Iterator<Row> iterRow;
+            Iterator<Cell> iterCell;
+            ArrayList<String> data = new ArrayList<>();
+            Date date = new Date();
+            boolean headerRow = true;
+            
+            FileInputStream file = new FileInputStream(new File(filename));
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            
+            sheet = workbook.getSheetAt(26);
+            category = "External Released Documents";
+
+            iterRow = sheet.iterator();
+            while(iterRow.hasNext()){
+                row = (XSSFRow) iterRow.next();
+                
+                if(row.getCell(0) == null){
+                    break;
+                }
+                else if(headerRow){
+                    headerRow = false;
+                    continue;
+                }
+                
+                data.clear();
+                cellCount = 1;
+                iterCell = row.iterator();
+                while(iterCell.hasNext() && cellCount<=5){
+                    cell = iterCell.next();
+                    value = "";
+
+                    switch(cell.getCellType()){
+                        case Cell.CELL_TYPE_NUMERIC:
+                            value = String.valueOf(cell.getNumericCellValue());
+                            break;
+                        case Cell.CELL_TYPE_STRING:
+                            value = cell.getStringCellValue();
+                            break;
+                    }
+                    data.add(value);
+                    cellCount++;
+                }
+                if(!data.isEmpty() && !data.get(0).equals("")){
+                    if(isPnAvailable(data.get(0))){
+                        DataUsers dataUser = new DataUsers();
+                        dataUser.setAuthor("Mhel Lontoc");
+                        dataUser.setCategory(category);
+                        dataUser.setDescription(data.get(1));
+                        dataUser.setConfiguration(data.get(0).substring(data.get(0).length()-4));                    
+                        dataUser.setGeneratedDate(date);
+                        dataUser.setManufacturer(data.get(2));
+                        dataUser.setMpn(data.get(3));
+                        dataUser.setPartNumber(data.get(0));   
+                        dataUser.setWhereUsed(data.get(4));
+
+                        em.getEntityManagerFactory().getCache().evictAll();
+                        em.getTransaction().begin();
+                        em.persist(dataUser);
+                        em.flush();
+                        em.getTransaction().commit();
+                    }
+                    else{
+                        System.out.println(data.get(0));
+                    }
+                }
+            }
+            file.close();
+        } 
+        catch (Exception ex) {
+            Logger.getLogger(login_frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private boolean isPnAvailable(String pn){
+        boolean valid_pn = false;
+        boolean isUserData = false;
+
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                    .setParameter("partNumber", pn);
+            q.getSingleResult();
+            isUserData = true;
+        }
+        catch(NoResultException e){
+
+        }
+
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            em.clear();
+            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                    .setParameter("partNumber", pn);
+            q.getSingleResult();
+        }
+        catch(NoResultException e){
+            if(!isUserData){
+                return true;
+            }
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")

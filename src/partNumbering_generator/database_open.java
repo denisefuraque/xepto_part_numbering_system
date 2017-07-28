@@ -310,7 +310,9 @@ public class database_open extends javax.swing.JFrame {
 
                 //add selected data to part number data
                 try{
-                    PartNumberData data = new PartNumberData(pn, cat);
+                    PartNumberData data = new PartNumberData();
+                    data.setPartNumber(pn);
+                    data.setCategory(cat);
                     data.setDescription(txt_des.getText());
                     data.setGeneratedDate(sqlDate);
                     data.setAuthor(aut);
