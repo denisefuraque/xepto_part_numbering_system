@@ -23,6 +23,8 @@ public class login_frame extends javax.swing.JFrame {
     String host_address;
     EntityManager em;
     
+    static splash s;
+    
     public login_frame() {
         initComponents();
         Host.fetchHost();
@@ -32,45 +34,7 @@ public class login_frame extends javax.swing.JFrame {
 
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
-            
-            try {
-                File f = new File("PART NUMBERING BOOKING.xlsx");
-                FileInputStream file = new FileInputStream(f);
-                XSSFWorkbook workbook = new XSSFWorkbook(file);
-                Iterator<XSSFSheet> sheetIterator = workbook.xssfSheetIterator();
-                while(sheetIterator.hasNext()){
-                    XSSFSheet sheet = sheetIterator.next();
-                    int i=0;
-                    Iterator<Row> rowIterator = sheet.rowIterator();
-                    while (rowIterator.hasNext()) {
-                        XSSFRow row = (XSSFRow) rowIterator.next();
-                        Iterator<Cell> cellIterator = row.cellIterator();
-
-                        if(row.getCell(0)== null || row.getCell(0).getStringCellValue().isEmpty()){
-                            break;
-                        }
-
-                        while (cellIterator.hasNext()) {
-                            Cell cell = cellIterator.next();
-
-                            switch (cell.getCellType()) {
-                                case Cell.CELL_TYPE_NUMERIC:
-                                    System.out.print(cell.getNumericCellValue() + "\t");
-                                    break;
-
-                                case Cell.CELL_TYPE_STRING:
-                                    System.out.print(cell.getStringCellValue() + "\t");
-                                    break;
-                            }
-                        }
-                        System.out.println(sheet.getSheetName());
-                    }
-                }
-                file.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            
+            s.setVisible(false);
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
@@ -470,6 +434,9 @@ public class login_frame extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        s = new splash();
+        s.setVisible(true);
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new login_frame().setVisible(true);

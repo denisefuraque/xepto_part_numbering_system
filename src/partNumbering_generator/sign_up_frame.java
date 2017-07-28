@@ -247,7 +247,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                                         .addComponent(lbl_lname))
                                     .addComponent(lbl_job)
                                     .addComponent(lbl_conPass))
-                                .addGap(0, 195, Short.MAX_VALUE)))
+                                .addGap(0, 158, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1)
                         .addGap(13, 13, 13))
@@ -256,10 +256,7 @@ public class sign_up_frame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_sign_up, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
-            .addGroup(main_panLayout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addComponent(lbl_head)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(lbl_head, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         main_panLayout.setVerticalGroup(
             main_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
