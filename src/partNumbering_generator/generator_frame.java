@@ -867,7 +867,6 @@ public final class generator_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_nameActionPerformed
 
     private void txt_yearKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_yearKeyPressed
-
         char[] year_arr = txt_year.getText().toCharArray();
 
         if(evt.getKeyCode()==KeyEvent.VK_ENTER)
@@ -1659,7 +1658,7 @@ public final class generator_frame extends javax.swing.JFrame {
 
     private void txt_seqKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_seqKeyTyped
         if (txt_seq.getText().length() >= 6 )
-        evt.consume();
+            evt.consume();
         txt_config.setEditable(true);
     }//GEN-LAST:event_txt_seqKeyTyped
 

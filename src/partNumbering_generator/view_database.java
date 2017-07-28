@@ -379,7 +379,7 @@ public final class view_database extends javax.swing.JFrame {
             config = tbl_database.getModel().getValueAt(row[0], 5).toString();
             
             this.hide();
-            new mod_data_ad(partNumber.get(0), category, description, genDate, author, config).setVisible(true);
+            new mod_pn(partNumber.get(0), category, description, genDate, author, config).setVisible(true);
         }
     }//GEN-LAST:event_tbl_databaseMouseClicked
 

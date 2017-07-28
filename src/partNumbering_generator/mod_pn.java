@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  * @author Denise Furaque
  */
-public class mod_data_ad extends javax.swing.JFrame {
+public class mod_pn extends javax.swing.JFrame {
 
     String pn, cat, des, aut, con;
     Date date;
@@ -23,7 +23,7 @@ public class mod_data_ad extends javax.swing.JFrame {
     ImageIcon war = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-warning-icon (1).png"));
     ImageIcon che = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-check-icon (1).png"));
     
-    public mod_data_ad(String part, String category, String description, Date genDate, String author, String configuration) {
+    public mod_pn(String part, String category, String description, Date genDate, String author, String configuration) {
         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage());
@@ -77,7 +77,6 @@ public class mod_data_ad extends javax.swing.JFrame {
         txt_aut = new javax.swing.JTextField();
         txt_config = new javax.swing.JTextField();
         btn_mod = new javax.swing.JButton();
-        btn_save = new javax.swing.JButton();
         btn_back = new javax.swing.JButton();
 
         setTitle("Part Number Information (Admin) - Part Number Generator");
@@ -195,7 +194,7 @@ public class mod_data_ad extends javax.swing.JFrame {
                             .addComponent(lbl_aut))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(in_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                             .addComponent(txt_date, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
                             .addComponent(txt_aut, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
                             .addComponent(txt_config, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))))
@@ -245,16 +244,6 @@ public class mod_data_ad extends javax.swing.JFrame {
             }
         });
 
-        btn_save.setBackground(new java.awt.Color(204, 204, 255));
-        btn_save.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
-        btn_save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/Actions-document-save-as-icon.png"))); // NOI18N
-        btn_save.setText("Save");
-        btn_save.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_saveActionPerformed(evt);
-            }
-        });
-
         btn_back.setBackground(new java.awt.Color(204, 204, 255));
         btn_back.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/Go-back-icon.png"))); // NOI18N
@@ -274,12 +263,9 @@ public class mod_data_ad extends javax.swing.JFrame {
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(in_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(bg_panLayout.createSequentialGroup()
-                        .addComponent(btn_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_back, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 40, Short.MAX_VALUE)))
+                        .addComponent(btn_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         bg_panLayout.setVerticalGroup(
@@ -290,12 +276,9 @@ public class mod_data_ad extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_mod)
-                    .addComponent(btn_save)
                     .addComponent(btn_back))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        btn_save.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -312,23 +295,9 @@ public class mod_data_ad extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modActionPerformed
-        txt_pn.setEditable(true);
-        txt_cat.setEditable(true);
-        txt_des.setEditable(true);
-        txt_date.setEditable(true);
-        txt_aut.setEditable(true);
-        txt_config.setEditable(true);
-
-        txt_pn.requestFocus();
-        txt_pn.selectAll();
-
-        btn_mod.setEnabled(false);
-        btn_save.setEnabled(true);
+        this.setVisible(false);
+        new generate_modify(pn, cat, des, date, aut, con).setVisible(true);
     }//GEN-LAST:event_btn_modActionPerformed
-
-    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-
-    }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
         this.setVisible(false);
@@ -352,19 +321,20 @@ public class mod_data_ad extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mod_data_ad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_pn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mod_data_ad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_pn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mod_data_ad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_pn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mod_data_ad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mod_pn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new mod_data_ad(null, null, null, null, null, null).setVisible(true);
+            new mod_pn(null, null, null, null, null, null).setVisible(true);
         });
     }
 
@@ -372,7 +342,6 @@ public class mod_data_ad extends javax.swing.JFrame {
     private javax.swing.JPanel bg_pan;
     private javax.swing.JButton btn_back;
     private javax.swing.JButton btn_mod;
-    private javax.swing.JButton btn_save;
     private javax.swing.JPanel in_pan;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_aut;
