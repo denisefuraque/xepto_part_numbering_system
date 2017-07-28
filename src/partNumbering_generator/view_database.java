@@ -85,6 +85,11 @@ public final class view_database extends javax.swing.JFrame {
                         Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
                                 .setParameter("partNumber", partNumber.get(i));
                         PartNumberData d = (PartNumberData) q.getSingleResult();
+                        
+                        Trash trash = new Trash(d.getPartNumber(), d.getCategory(), d.getDescription(), 
+                                d.getGeneratedDate(), d.getAuthor(), d.getConfiguration());
+                        trash.addToDb();
+                        
                         em.remove(d);
                         em.flush();
                         em.getTransaction().commit();

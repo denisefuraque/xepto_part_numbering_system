@@ -45,7 +45,7 @@ public class login_frame extends javax.swing.JFrame {
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(null, e.toString());
-        }     
+        } 
 
         setLocationRelativeTo(null);
         
