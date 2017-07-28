@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
@@ -150,55 +151,63 @@ public class generate_modify extends javax.swing.JFrame {
     
     public void getComCode(){
         String comCode = pn.substring(0, 3);
-        System.out.println(comCode);
         
-        int comNameSelected = cmb_name.getSelectedIndex();
-
+        String[] conPart = conPart_code.toArray(new String[conPart_code.size()]);
+        String[] netPart = netPart_code.toArray(new String[netPart_code.size()]);
+        String[] elecPart = elecPart_code.toArray(new String[elecPart_code.size()]);
+        String[] compPeri = compPeri_code.toArray(new String[compPeri_code.size()]);
+        String[] mechPart = mechPart_code.toArray(new String[mechPart_code.size()]);
+        String[] ext = ext_code.toArray(new String[ext_code.size()]);
+        String[] intRep = intRep_code.toArray(new String[intRep_code.size()]);
+        String[] intSpec = intSpec_code.toArray(new String[intSpec_code.size()]);
+        String[] intPro = intPro_code.toArray(new String[intPro_code.size()]);
+        
         switch (cmb_scheme.getSelectedIndex()) {
             case 0:
-                for(int i=0; i<= conPart_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = conPart_code.get(i);
+                for(int i=0; i< conPart_code.size(); i++){
+                    if(conPart[i].equals(comCode)){
+                        cmb_name.setSelectedIndex(i);
+                    }
                 }   break;
             case 1:
-                for(int i=0; i<= netPart_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = netPart_code.get(i);
+                for(int i=0; i< netPart_code.size(); i++){
+                    if(netPart[i].equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;
             case 2:
-                for(int i=0; i<= elecPart_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = elecPart_code.get(i);
+                for(int i=0; i< elecPart_code.size(); i++){
+                    if(elecPart[i].equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;
             case 3:
-                for(int i=0; i <= compPeri_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = compPeri_code.get(i);
+                for(int i=0; i < compPeri_code.size(); i++){
+                    if(compPeri[i].equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;             
             case 4:
-                for(int i=0; i <= mechPart_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = mechPart_code.get(i);
+                for(int i=0; i < mechPart_code.size(); i++){
+                    if(mechPart[i].equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break; 
             case 5:
-                for(int i=0; i <= ext_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = ext_code.get(i);
+                for(int i=0; i < ext_code.size(); i++){
+                    if(ext[i].equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;
             case 6:
-                for(int i=0; i <= intRep_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = intRep_code.get(i);
+                for(int i=0; i < intRep_code.size(); i++){
+                    if(intRep[i].equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;
             case 7:
-                for(int i=0; i <= intSpec_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = intSpec_code.get(i);
+                for(int i=0; i < intSpec_code.size(); i++){
+                    if(intSpec.equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;
             case 8:
-                for(int i=0; i <= intPro_code.size(); i++){
-                    if(i == comNameSelected)
-                        commodity_code = intPro_code.get(i);
+                for(int i=0; i < intPro_code.size(); i++){
+                    if(intPro.equals(comCode))
+                        cmb_name.setSelectedIndex(i);
                 }   break;
         }
     }
@@ -499,8 +508,12 @@ public class generate_modify extends javax.swing.JFrame {
         lbl_oldpn = new javax.swing.JLabel();
         sep = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(750, 450));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         bg_pan3.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan3.setMaximumSize(new java.awt.Dimension(800, 500));
@@ -613,6 +626,8 @@ public class generate_modify extends javax.swing.JFrame {
                 .addGap(4, 4, 4))
         );
 
+        txt_year.setText("2017");
+
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setMinimumSize(new java.awt.Dimension(38, 122));
 
@@ -656,6 +671,8 @@ public class generate_modify extends javax.swing.JFrame {
             .addComponent(txt_seq)
         );
 
+        txt_seq.setText("000000");
+
         config_pan.setBackground(new java.awt.Color(204, 204, 204));
         config_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Configuration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
         config_pan.setMinimumSize(new java.awt.Dimension(38, 58));
@@ -684,7 +701,7 @@ public class generate_modify extends javax.swing.JFrame {
             .addComponent(txt_config)
         );
 
-        txt_config.setEditable(false);
+        txt_config.setText("0000");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -774,6 +791,7 @@ public class generate_modify extends javax.swing.JFrame {
         btn_save.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/Actions-document-save-as-icon.png"))); // NOI18N
         btn_save.setText("Save");
+        btn_save.setEnabled(false);
         btn_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_saveActionPerformed(evt);
@@ -839,6 +857,10 @@ public class generate_modify extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmb_schemeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_schemeActionPerformed
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        String yr = Integer.toString(year);
+        
         switch (cmb_scheme.getSelectedIndex()) {
             case 0:
                 //deleting previous cmb_name values
@@ -857,8 +879,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set year == 0000
-                txt_year.setText("0000");
-                txt_seq.setText("");
+                txt_year.setText(yr);
+                txt_seq.setText("000000");
                 break;
             case 1:
                 //deleting previous cmb_name values
@@ -877,8 +899,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set year == 0000
-                txt_year.setText("0000");
-                txt_seq.setText("");
+                txt_year.setText(yr);
+                txt_seq.setText("000000");
                 break;
             case 2:
                 //deleting previous cmb_name values
@@ -897,8 +919,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set year == 0000
-                txt_year.setText("0000");
-                txt_seq.setText("");
+                txt_year.setText(yr);
+                txt_seq.setText("000000");
                 break;
             case 3:
                 //deleting previous cmb_name values
@@ -917,8 +939,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set year == 0000
-                txt_year.setText("0000");
-                txt_seq.setText("");
+                txt_year.setText(yr);
+                txt_seq.setText("000000");
                 break;
             case 4:
                 //deleting previous cmb_name values
@@ -937,8 +959,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set year == 0000
-                txt_year.setText("0000");
-                txt_seq.setText("");
+                txt_year.setText(yr);
+                txt_seq.setText("000000");
                 break;
             case 5:
                 //deleting previous cmb_name values
@@ -957,8 +979,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set seq == 000000
+                txt_year.setText(yr);
                 txt_seq.setText("000000");
-                txt_year.setText("");
                 break;
             case 6:
                 //deleting previous cmb_name values
@@ -977,8 +999,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set seq == 000000
+                txt_year.setText(yr);
                 txt_seq.setText("000000");
-                txt_year.setText("");
                 break;
             case 7:
                 //deleting previous cmb_name values
@@ -997,8 +1019,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
                 
                 //set seq == 000000
+                txt_year.setText(yr);
                 txt_seq.setText("000000");
-                txt_year.setText("");
                 break;
             case 8:
                 //deleting previous cmb_name values
@@ -1017,8 +1039,8 @@ public class generate_modify extends javax.swing.JFrame {
                 config_pan.setVisible(true);
 
                 //set seq == 000000
+                txt_year.setText(yr);
                 txt_seq.setText("000000");
-                txt_year.setText("");
                 break;
             default:
             //populating cmbbox with the name from the array
@@ -1115,16 +1137,16 @@ public class generate_modify extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_configKeyTyped
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-
+        this.setVisible(false);
+        new mod_pn(lbl_genPartNum.getText(), cmb_scheme.getSelectedItem().toString(), txt_des.getText(), date, cmb_aut.getSelectedItem().toString(), txt_config.getText()).setVisible(true);
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
         this.setVisible(false);
-        new mod_pn(null, null, null, null, null, null).setVisible(true);
+        new mod_pn(pn, cat, des, date, aut, con).setVisible(true);
     }//GEN-LAST:event_btn_backActionPerformed
 
     private void btn_generateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generateActionPerformed
-
         Calendar now = Calendar.getInstance();
         int year = now.get(Calendar.YEAR);
         System.out.println(String.valueOf(year));
@@ -1135,167 +1157,21 @@ public class generate_modify extends javax.swing.JFrame {
 
         if(txt_year.getText().length() != 4){
             JOptionPane.showMessageDialog(this, "Year must have 4 digits!! \n\nTry Again.", "Wrong Input", JOptionPane.ERROR_MESSAGE);
-
-            //setEnable all input_pan objects
-
-            cmb_scheme.setEnabled(true);
-            cmb_name.setEnabled(true);
-            cmb_month.setEnabled(true);
-            cmb_day.setEnabled(true);
-            txt_year.setEnabled(true);
-            txt_seq.setEnabled(true);
-            txt_config.setEnabled(true);
-
-            //hide open_save btn
-
-            //open_save_db_pan.setVisible(false);
-
-            //generate button enabled
-
-            btn_generate.setEnabled(true);
-
-            //setEnable(false) to all buttons outside input_pan
-
-            //btn_new.setEnabled(false);
-            //btn_edit.setEnabled(false);
-            //btn_check.setEnabled(false);
         }
         else if(Integer.parseInt(txt_year.getText())>year){
             JOptionPane.showMessageDialog(this, "Wrong inputted year! \n\nTry Again.", "Wrong Input", JOptionPane.ERROR_MESSAGE);
-
-            //setEnable all input_pan objects
-
-            cmb_scheme.setEnabled(true);
-            cmb_name.setEnabled(true);
-            cmb_month.setEnabled(true);
-            cmb_day.setEnabled(true);
-            txt_year.setEnabled(true);
-            txt_seq.setEnabled(true);
-            txt_config.setEnabled(true);
-
-            //hide open_save btn
-
-            //open_save_db_pan.setVisible(false);
-
-            //generate button enabled
-
-            btn_generate.setEnabled(true);
-
-            //setEnable(false) to all buttons outside input_pan
-
-            //btn_new.setEnabled(false);
-            //btn_edit.setEnabled(false);
-            //btn_check.setEnabled(false);
         }
         else if(Integer.parseInt(txt_year.getText()) == year && cmb_month.getSelectedIndex() > month){
             JOptionPane.showMessageDialog(this, "Wrong inputted month of the current year! \n\nTry Again.", "Wrong Input", JOptionPane.ERROR_MESSAGE);
-
-            //setEnable all input_pan objects
-
-            cmb_scheme.setEnabled(true);
-            cmb_name.setEnabled(true);
-            cmb_month.setEnabled(true);
-            cmb_day.setEnabled(true);
-            txt_year.setEnabled(true);
-            txt_seq.setEnabled(true);
-            txt_config.setEnabled(true);
-
-            //hide open_save btn
-
-            //open_save_db_pan.setVisible(false);
-
-            //generate button enabled
-
-            btn_generate.setEnabled(true);
-
-            //setEnable(false) to all buttons outside input_pan
-
-            //btn_new.setEnabled(false);
-            //btn_edit.setEnabled(false);
-            //btn_check.setEnabled(false);
         }
         else if(Integer.parseInt(txt_year.getText()) == year && cmb_month.getSelectedIndex() == month && Integer.parseInt(cmb_day.getSelectedItem().toString()) > day){
             JOptionPane.showMessageDialog(this, "Wrong inputted day of the current month & year! \n\nTry Again.", "Wrong Input", JOptionPane.ERROR_MESSAGE);
-
-            //setEnable all input_pan objects
-
-            cmb_scheme.setEnabled(true);
-            cmb_name.setEnabled(true);
-            cmb_month.setEnabled(true);
-            cmb_day.setEnabled(true);
-            txt_year.setEnabled(true);
-            txt_seq.setEnabled(true);
-            txt_config.setEnabled(true);
-
-            //hide open_save btn
-
-            //open_save_db_pan.setVisible(false);
-
-            //generate button enabled
-
-            btn_generate.setEnabled(true);
-
-            //setEnable(false) to all buttons outside input_pan
-
-            //btn_new.setEnabled(false);
-            //btn_edit.setEnabled(false);
-            //btn_check.setEnabled(false);
         }
         else if(txt_seq.getText().length() != 6){
             JOptionPane.showMessageDialog(this, "Sequence Number must have 6 digits!! \n\nTry Again.", "Wrong Input", JOptionPane.ERROR_MESSAGE);
-
-            //setEnable all input_pan objects
-
-            cmb_scheme.setEnabled(true);
-            cmb_name.setEnabled(true);
-            cmb_month.setEnabled(true);
-            cmb_day.setEnabled(true);
-            txt_year.setEnabled(true);
-            txt_seq.setEnabled(true);
-            txt_config.setEnabled(true);
-
-            //hide open_save btn
-
-            //open_save_db_pan.setVisible(false);
-
-            //generate button enabled
-
-            btn_generate.setEnabled(true);
-
-            //setEnable(false) to all buttons outside input_pan
-
-            //btn_new.setEnabled(false);
-            //btn_edit.setEnabled(false);
-            //btn_check.setEnabled(false);
-
         }
         else if(txt_config.getText().length() != 4){
             JOptionPane.showMessageDialog(this, "Configuration Number must have 4 digits!! \n\nTry Again.", "Wrong Input", JOptionPane.ERROR_MESSAGE);
-
-            //setEnable all input_pan objects
-
-            cmb_scheme.setEnabled(true);
-            cmb_name.setEnabled(true);
-            cmb_month.setEnabled(true);
-            cmb_day.setEnabled(true);
-            txt_year.setEnabled(true);
-            txt_seq.setEnabled(true);
-            txt_config.setEnabled(true);
-
-            //hide open_save btn
-
-            //open_save_db_pan.setVisible(false);
-
-            //generate button enabled
-
-            btn_generate.setEnabled(true);
-
-            //setEnable(false) to all buttons outside input_pan
-
-            //btn_new.setEnabled(false);
-            //btn_edit.setEnabled(false);
-            //btn_check.setEnabled(false);
-
         }
         else{
             //for commodity code
@@ -1413,26 +1289,55 @@ public class generate_modify extends javax.swing.JFrame {
             }
 
             //generated_panel
+            lbl_oldpn.setForeground(Color.red);
             sep.setVisible(true);
             lbl_genPartNum.setVisible(true);
             lbl_genPartNum.setText(suffix);
+        }
+        
+        
+        String gen_pn = lbl_genPartNum.getText();
+        
+        boolean valid_pn = false;
+        boolean isUserData = false;
+        
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                    .setParameter("partNumber", gen_pn);
+            DataUsers data = (DataUsers) q.getSingleResult();
+            isUserData = true;
+        }
+        catch(NoResultException e){
+            
+        }
+        
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            em.clear();
+            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                    .setParameter("partNumber", gen_pn);
+            PartNumberData data = (PartNumberData) q.getSingleResult();
+        }
+        catch(NoResultException e){
+            if(!isUserData){
+                valid_pn = true;
+            }
+        }
 
-            //setEnabled(false) to all the input_pan objects
-            btn_generate.setEnabled(false);
-            cmb_scheme.setEnabled(false);
-            cmb_name.setEnabled(false);
-            cmb_month.setEnabled(false);
-            cmb_day.setEnabled(false);
-            txt_year.setEnabled(false);
-            txt_config.setEnabled(false);
-            txt_seq.setEnabled(false);
-
-            //setEnable(true) to all buttons outside input_pan
-            //btn_new.setEnabled(true);
-            //btn_edit.setEnabled(true);
-            //btn_check.setEnabled(true);
+        if(valid_pn){
+            btn_save.setEnabled(true);
+            lbl_genPartNum.setForeground(Color.white);
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Similar Part Number!!! \n Try Again.","Error", JOptionPane.ERROR_MESSAGE);
+            lbl_genPartNum.setForeground(Color.BLUE);
         }
     }//GEN-LAST:event_btn_generateActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        new mod_pn(pn, cat, des, date, aut, con).setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

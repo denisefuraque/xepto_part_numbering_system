@@ -2,7 +2,6 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[750, 450]"/>
     </Property>
@@ -11,6 +10,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -273,6 +275,9 @@
                         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_yearKeyPressed"/>
                         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_yearKeyTyped"/>
                       </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txt_year.setText(&quot;2017&quot;);"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="cmb_month">
                       <Properties>
@@ -487,6 +492,9 @@
                             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_seqKeyPressed"/>
                             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_seqKeyTyped"/>
                           </Events>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txt_seq.setText(&quot;000000&quot;);"/>
+                          </AuxValues>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -539,7 +547,7 @@
                             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_configKeyTyped"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txt_config.setEditable(false);"/>
+                            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="txt_config.setText(&quot;0000&quot;);"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -677,6 +685,7 @@
                   <Image iconType="3" name="/partNumbering_generator/Actions-document-save-as-icon.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Save"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_saveActionPerformed"/>
