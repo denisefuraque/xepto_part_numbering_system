@@ -92,6 +92,11 @@ public class view_user_added_admin extends javax.swing.JFrame {
                         Query q = em.createNamedQuery("DataUsers.findByPartNumber")
                                 .setParameter("partNumber", partNumber.get(i));
                         DataUsers d = (DataUsers) q.getSingleResult();
+                        
+                        Trash trash = new Trash(d.getPartNumber(), d.getCategory(), d.getDescription(), 
+                                d.getGeneratedDate(), d.getAuthor(), d.getConfiguration());
+                        trash.addToDb();
+                        
                         em.remove(d);
                         em.flush();
                         em.getTransaction().commit();
