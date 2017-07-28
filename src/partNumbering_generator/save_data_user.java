@@ -22,8 +22,6 @@ public class save_data_user extends javax.swing.JFrame {
 
     String pn, cat;
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     public save_data_user(String partNum, String category){

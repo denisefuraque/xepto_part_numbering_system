@@ -37,6 +37,7 @@ public class splash extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(550, 350));
         setUndecorated(true);
 
+        bg_pan.setMaximumSize(new java.awt.Dimension(550, 350));
         bg_pan.setMinimumSize(new java.awt.Dimension(550, 350));
         bg_pan.setLayout(null);
 

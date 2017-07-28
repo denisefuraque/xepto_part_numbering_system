@@ -28,8 +28,6 @@ public class view_database_user extends javax.swing.JFrame {
     
     ArrayList<Class_data> dataList = new ArrayList<>();
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     public view_database_user() {

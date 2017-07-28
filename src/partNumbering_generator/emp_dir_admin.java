@@ -32,8 +32,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     String a_user, a_pass, a_fname, a_lname, a_job;
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     public emp_dir_admin() {

@@ -34,8 +34,6 @@ public final class generator_frame extends javax.swing.JFrame {
     String monthText;
     String dayText;
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     public generator_frame() {

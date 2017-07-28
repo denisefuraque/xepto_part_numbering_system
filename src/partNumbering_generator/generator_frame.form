@@ -383,7 +383,7 @@
                           <Component id="projDate_pan" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="16" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -443,7 +443,7 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txt_year" alignment="0" pref="29" max="32767" attributes="0"/>
+                                  <Component id="txt_year" alignment="0" max="32767" attributes="0"/>
                                   <Component id="cmb_day" alignment="1" max="32767" attributes="0"/>
                                   <Component id="cmb_month" alignment="0" max="32767" attributes="0"/>
                               </Group>

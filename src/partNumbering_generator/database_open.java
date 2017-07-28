@@ -22,8 +22,6 @@ public class database_open extends javax.swing.JFrame {
     
     String pn, cat;
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     public database_open(String partNum, String category){

@@ -36,8 +36,6 @@ public final class view_database extends javax.swing.JFrame {
     int[] row;
     int selectedRowCount;
     
-    String host_address = Host.getHost();
-    
     public view_database() {
         initComponents();
         

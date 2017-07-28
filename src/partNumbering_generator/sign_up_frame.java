@@ -17,8 +17,6 @@ public class sign_up_frame extends javax.swing.JFrame {
     
     String username;
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     public sign_up_frame() {

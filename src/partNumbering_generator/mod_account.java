@@ -23,8 +23,6 @@ public class mod_account extends javax.swing.JFrame {
     ImageIcon war = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-warning-icon (1).png"));
     ImageIcon che = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-check-icon (1).png"));
     
-    String host_address = Host.getHost();
-    
     EntityManager em;
     
     Admins logged_admin;
