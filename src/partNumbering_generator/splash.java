@@ -5,12 +5,7 @@
  */
 package partNumbering_generator;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JPanel;
 
 /**
  *
@@ -42,6 +37,7 @@ public class splash extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(550, 350));
         setUndecorated(true);
 
+        bg_pan.setMinimumSize(new java.awt.Dimension(550, 350));
         bg_pan.setLayout(null);
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/xepto-trans.png"))); // NOI18N
