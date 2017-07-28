@@ -324,7 +324,6 @@ public final class generator_frame extends javax.swing.JFrame {
         open_save_db_pan = new javax.swing.JPanel();
         btn_open_save = new javax.swing.JButton();
         btn_generate = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
         mnu_user_gen = new javax.swing.JMenuBar();
         mnu_uData = new javax.swing.JMenu();
         mnu_uData_view = new javax.swing.JMenuItem();
@@ -349,17 +348,18 @@ public final class generator_frame extends javax.swing.JFrame {
 
         logo_pan3.setBackground(new java.awt.Color(0, 0, 102));
         logo_pan3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        logo_pan3.setMaximumSize(new java.awt.Dimension(780, 65));
         logo_pan3.setMinimumSize(new java.awt.Dimension(780, 65));
         logo_pan3.setLayout(null);
 
         lbl_logo3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/xepto logo - white bg.png"))); // NOI18N
+        lbl_logo3.setMaximumSize(new java.awt.Dimension(32767, 32767));
         logo_pan3.add(lbl_logo3);
         lbl_logo3.setBounds(12, 13, 250, 40);
 
         lbl_png3.setFont(new java.awt.Font("Miriam Fixed", 1, 35)); // NOI18N
         lbl_png3.setForeground(new java.awt.Color(255, 255, 255));
         lbl_png3.setText("Part Number Generator");
+        lbl_png3.setMaximumSize(new java.awt.Dimension(32767, 32767));
         logo_pan3.add(lbl_png3);
         lbl_png3.setBounds(268, 13, 492, 40);
 
@@ -376,6 +376,7 @@ public final class generator_frame extends javax.swing.JFrame {
         lbl_cateogry.setFont(new java.awt.Font("Miriam Fixed", 1, 20)); // NOI18N
         lbl_cateogry.setForeground(new java.awt.Color(255, 255, 255));
         lbl_cateogry.setText("Commodity Name : ");
+        lbl_cateogry.setMaximumSize(new java.awt.Dimension(32767, 32767));
         input_pan.add(lbl_cateogry);
         lbl_cateogry.setBounds(141, 70, 221, 21);
 
@@ -393,7 +394,6 @@ public final class generator_frame extends javax.swing.JFrame {
         cmb_scheme.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         cmb_scheme.setMaximumRowCount(4);
         cmb_scheme.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Consumable Parts", "Networking Peripheral Commodity", "Electrical Part Commodity", "Computer Peripherals Commodity", "Mechanical Part Commodity", "External Released Documents", "Internal Report Documents", "Internal Specification Document", "Internal Process Document" }));
-        cmb_scheme.setMaximumSize(new java.awt.Dimension(360, 49));
         cmb_scheme.setMinimumSize(new java.awt.Dimension(360, 49));
         cmb_scheme.setPreferredSize(new java.awt.Dimension(360, 49));
         cmb_scheme.addItemListener(new java.awt.event.ItemListener() {
@@ -413,6 +413,7 @@ public final class generator_frame extends javax.swing.JFrame {
 
         projDate_pan.setBackground(new java.awt.Color(204, 204, 204));
         projDate_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Project Date :", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        projDate_pan.setMinimumSize(new java.awt.Dimension(444, 90));
 
         txt_year.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_year.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -501,6 +502,7 @@ public final class generator_frame extends javax.swing.JFrame {
 
         seq_pan.setBackground(new java.awt.Color(204, 204, 204));
         seq_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sequence", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        seq_pan.setMinimumSize(new java.awt.Dimension(38, 58));
 
         txt_seq.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_seq.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -528,6 +530,7 @@ public final class generator_frame extends javax.swing.JFrame {
 
         config_pan.setBackground(new java.awt.Color(204, 204, 204));
         config_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Configuration", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        config_pan.setMinimumSize(new java.awt.Dimension(38, 58));
 
         txt_config.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         txt_config.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -604,7 +607,6 @@ public final class generator_frame extends javax.swing.JFrame {
 
         generated_pan.setBackground(new java.awt.Color(204, 204, 204));
         generated_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Part Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
-        generated_pan.setMaximumSize(new java.awt.Dimension(290, 181));
         generated_pan.setMinimumSize(new java.awt.Dimension(290, 181));
         generated_pan.setPreferredSize(new java.awt.Dimension(290, 181));
         generated_pan.setRequestFocusEnabled(false);
@@ -613,6 +615,7 @@ public final class generator_frame extends javax.swing.JFrame {
         lbl_genPartNum.setFont(new java.awt.Font("Tahoma", 1, 25)); // NOI18N
         lbl_genPartNum.setForeground(new java.awt.Color(255, 255, 255));
         lbl_genPartNum.setText("000-000000-0000");
+        lbl_genPartNum.setMaximumSize(new java.awt.Dimension(32767, 32767));
         generated_pan.add(lbl_genPartNum);
         lbl_genPartNum.setBounds(30, 70, 240, 39);
         lbl_genPartNum.setVisible(false);
@@ -623,6 +626,7 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_new.setBackground(new java.awt.Color(204, 204, 255));
         btn_new.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_new.setText("New Record");
+        btn_new.setMaximumSize(new java.awt.Dimension(32767, 32767));
         btn_new.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_newActionPerformed(evt);
@@ -635,6 +639,9 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_edit.setBackground(new java.awt.Color(204, 204, 255));
         btn_edit.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_edit.setText("Edit Record");
+        btn_edit.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        btn_edit.setMinimumSize(new java.awt.Dimension(133, 31));
+        btn_edit.setPreferredSize(new java.awt.Dimension(133, 31));
         btn_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_editActionPerformed(evt);
@@ -647,6 +654,9 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_check.setBackground(new java.awt.Color(204, 204, 255));
         btn_check.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_check.setText("Check Database");
+        btn_check.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        btn_check.setMinimumSize(new java.awt.Dimension(133, 31));
+        btn_check.setPreferredSize(new java.awt.Dimension(133, 31));
         btn_check.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_checkActionPerformed(evt);
@@ -658,7 +668,6 @@ public final class generator_frame extends javax.swing.JFrame {
 
         open_save_db_pan.setBackground(new java.awt.Color(204, 204, 204));
         open_save_db_pan.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        open_save_db_pan.setMaximumSize(new java.awt.Dimension(290, 80));
         open_save_db_pan.setMinimumSize(new java.awt.Dimension(290, 80));
         open_save_db_pan.setPreferredSize(new java.awt.Dimension(290, 80));
         open_save_db_pan.setLayout(null);
@@ -666,13 +675,16 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_open_save.setBackground(new java.awt.Color(204, 204, 255));
         btn_open_save.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_open_save.setText("Open Database & Save");
+        btn_open_save.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        btn_open_save.setMinimumSize(new java.awt.Dimension(133, 31));
+        btn_open_save.setPreferredSize(new java.awt.Dimension(133, 31));
         btn_open_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_open_saveActionPerformed(evt);
             }
         });
         open_save_db_pan.add(btn_open_save);
-        btn_open_save.setBounds(12, 23, 274, 31);
+        btn_open_save.setBounds(12, 23, 270, 31);
 
         bg_pan3.add(open_save_db_pan);
         open_save_db_pan.setBounds(492, 400, 298, 80);
@@ -681,6 +693,9 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_generate.setBackground(new java.awt.Color(204, 204, 255));
         btn_generate.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_generate.setText("Generate");
+        btn_generate.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        btn_generate.setMinimumSize(new java.awt.Dimension(133, 31));
+        btn_generate.setPreferredSize(new java.awt.Dimension(133, 31));
         btn_generate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_generateActionPerformed(evt);
@@ -692,20 +707,6 @@ public final class generator_frame extends javax.swing.JFrame {
 
         getContentPane().add(bg_pan3);
         bg_pan3.setBounds(0, 0, 800, 520);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 130, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(20, 510, 450, 130);
 
         mnu_user_gen.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
 
@@ -1709,7 +1710,6 @@ public final class generator_frame extends javax.swing.JFrame {
     private javax.swing.JPanel config_pan;
     private javax.swing.JPanel generated_pan;
     private javax.swing.JPanel input_pan;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_cateogry;
     private javax.swing.JLabel lbl_day;
