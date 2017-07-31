@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-public final class trash_pn_db extends javax.swing.JFrame {
+public final class trash_account_db extends javax.swing.JFrame {
     
     DefaultTableModel model = new DefaultTableModel(){
         @Override
@@ -26,19 +26,19 @@ public final class trash_pn_db extends javax.swing.JFrame {
         }
     };
     
-    ArrayList<Class_data> dataList = new ArrayList<>();
+    ArrayList<class_admin> dataList = new ArrayList<>();
     
     EntityManager em;
     
-    String account_type, db;
+    String restoreType;
     
-    List<String> partNumber;
+    List<String> user;
     String category, description, author, config;
     Date genDate;
     int[] row;
     int selectedRowCount;
     
-    public trash_pn_db() {
+    public trash_account_db() {
         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
@@ -52,16 +52,7 @@ public final class trash_pn_db extends javax.swing.JFrame {
         
         setLocationRelativeTo(null);
         
-        account_type = Account.getType();
-        
-        if(account_type.equals("admin")){
-            db = "database";
-        }
-        else if(account_type.equals("user")){
-            db = "database for approval";
-        }
-        
-        partNumber = new ArrayList<>();
+        user = new ArrayList<>();
         
         //call function
         findData();
@@ -83,50 +74,51 @@ public final class trash_pn_db extends javax.swing.JFrame {
     
     //opens a joptionpane to confirm whether the user is sure to delete the record
     private void btn_retrieve_confirmationActionPerformed(java.awt.event.ActionEvent evt){
+        restoreType = cmb_restoreType.getSelectedItem().toString();
+        System.out.println(restoreType);
+        
         Object[] options = {"Yes",
                             "No"};
-        int n = JOptionPane.showOptionDialog(this, "Records selected will be restored in the " + db + ".\n\nClick 'Yes' to proceed.",
-                "Retrieve part number records",
+        int n = JOptionPane.showOptionDialog(this, "Records selected will be restored as " + restoreType + ".\n\nClick 'Yes' to proceed.",
+                "Retrieve account records",
                 JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
         switch (n){
             case 0:
                 try{
-                    String invalidPn = "";
+                    String invalidUsername = "";
                     int deleted = 0;
                     for(int i=0; i<selectedRowCount; i++){
                         em.getEntityManagerFactory().getCache().evictAll();    
-                        Query q = em.createNamedQuery("TrashPn.findByPartNumber")
-                                .setParameter("partNumber", partNumber.get(i));
-                        TrashPn d = (TrashPn) q.setMaxResults(1).getSingleResult();
+                        Query q = em.createNamedQuery("TrashUsers.findByUsername")
+                                .setParameter("username", user.get(i));
+                        TrashUsers d = (TrashUsers) q.setMaxResults(1).getSingleResult();
                         
-                        if(!Validity.check_pn(d.getPartNumber())){
-                            invalidPn += "\n" + d.getPartNumber();
+                        if(!Validity.check_username(d.getUsername())){
+                            invalidUsername += "\n" + d.getUsername();
                             continue;
                         }
                         
-                        if(account_type.equals("admin")){
-                            PartNumberData data = new PartNumberData();
-                            data.setPartNumber(d.getPartNumber());
-                            data.setCategory(d.getCategory());
-                            data.setDescription(d.getDescription());
-                            data.setGeneratedDate(d.getGeneratedDate());
-                            data.setAuthor(d.getAuthor());
-                            data.setConfiguration(d.getConfiguration());
+                        if(restoreType.equals("admin")){
+                            Admins data = new Admins();
+                            data.setFirstName(d.getFirstName());
+                            data.setJobTitle(d.getJobTitle());
+                            data.setLastName(d.getLastName());
+                            data.setPassword(d.getPassword());
+                            data.setUsername(d.getUsername());
                                                     
-                            em.getEntityManagerFactory().getCache().evictAll();                    
+                            em.getEntityManagerFactory().getCache().evictAll();
                             em.getTransaction().begin();
                             em.persist(data);
                             em.flush();
                             em.getTransaction().commit();  
                         }
-                        else if(account_type.equals("user")){
-                            DataUsers data = new DataUsers();
-                            data.setPartNumber(d.getPartNumber());
-                            data.setCategory(d.getCategory());
-                            data.setDescription(d.getDescription());
-                            data.setGeneratedDate(d.getGeneratedDate());
-                            data.setAuthor(d.getAuthor());
-                            data.setConfiguration(d.getConfiguration());
+                        else if(restoreType.equals("user")){
+                            Employee data = new Employee();
+                            data.setFirstName(d.getFirstName());
+                            data.setJobTitle(d.getJobTitle());
+                            data.setLastName(d.getLastName());
+                            data.setPassword(d.getPassword());
+                            data.setUsername(d.getUsername());
                                                     
                             em.getEntityManagerFactory().getCache().evictAll();                    
                             em.getTransaction().begin();
@@ -141,16 +133,16 @@ public final class trash_pn_db extends javax.swing.JFrame {
                         em.remove(d);
                         em.flush();
                         em.getTransaction().commit();
-
-                        model.removeRow(row[i]-deleted);
+                        
+                        model.removeRow(row[i]-deleted);   
                         deleted++;
                     }
                     
-                    if(!invalidPn.equals("")){
-                        JOptionPane.showMessageDialog(null, "The following part numbers are already used in the database."
+                    if(!invalidUsername.equals("")){
+                        JOptionPane.showMessageDialog(null, "The following usernames are already in the database."
                                 + "\nThese records are not restored.\n"
-                                + invalidPn,
-                                "Part numbers present in the database", JOptionPane.ERROR_MESSAGE);
+                                + invalidUsername,
+                                "Usernames present in the database", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 catch(Exception e){
@@ -164,28 +156,26 @@ public final class trash_pn_db extends javax.swing.JFrame {
     }
 
     //function to return arraylist with particular data
-    public ArrayList<Class_data> ListClass_Data(){
-        
+    public ArrayList<class_admin> ListClass_Data(){
         try{
-            Class_data data;
+            class_admin data;
             
             em.getEntityManagerFactory().getCache().evictAll();
-            Query q = em.createNamedQuery("TrashPn.findAll");
-            List<TrashPn> trash = q.getResultList();
-            for(TrashPn d: trash){
-                data = new Class_data(
-                                    d.getPartNumber(),
-                                    d.getCategory(),
-                                    d.getDescription(),
-                                    d.getGeneratedDate(),
-                                    d.getAuthor(),
-                                    d.getConfiguration()
+            Query q = em.createNamedQuery("TrashUsers.findAll");
+            List<TrashUsers> list_data = q.getResultList();
+            for(TrashUsers d: list_data){
+                data = new class_admin(
+                                    d.getUsername(),
+                                    d.getFirstName(),
+                                    d.getLastName(),
+                                    d.getJobTitle(),
+                                    d.getPassword()
                                     );
                 dataList.add(data);
             }
         }
         catch(Exception e){
-            System.out.print(e.toString());
+            System.out.println(e.toString());
         }
         
         return dataList;
@@ -193,17 +183,15 @@ public final class trash_pn_db extends javax.swing.JFrame {
     
     //function to Display data in JTable
     public void findData(){
-        ArrayList<Class_data> data = ListClass_Data();
-        model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
-        Object[] row = new Object[6];
+        ArrayList<class_admin> data = ListClass_Data();
+        model.setColumnIdentifiers(new Object[]{"Username", "First Name", "Last Name", "Job"});
+        Object[] row = new Object[4];
         
         for (int i = 0; i < data.size(); i++){
-            row[0] = data.get(i).getPn();
-            row[1] = data.get(i).getCat();
-            row[2] = data.get(i).getDes();
-            row[3] = data.get(i).getDate();
-            row[4] = data.get(i).getAut();
-            row[5] = data.get(i).getConfig();
+            row[0] = data.get(i).getUname();
+            row[1]= data.get(i).getFname();
+            row[2] = data.get(i).getLname();
+            row[3] = data.get(i).getJob();
             model.addRow(row);
         }
         tbl_database.setModel(model);
@@ -220,10 +208,13 @@ public final class trash_pn_db extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         txt_search = new javax.swing.JTextField();
         btn_search = new javax.swing.JButton();
-        btn_retrieve = new javax.swing.JButton();
         header_pan = new javax.swing.JPanel();
         lbl_icon = new javax.swing.JLabel();
-        lbl_header = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        btn_retrieve = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cmb_restoreType = new javax.swing.JComboBox<>();
 
         setTitle("View Database (Admin) - Part Number Generator");
         setMinimumSize(new java.awt.Dimension(860, 530));
@@ -290,18 +281,19 @@ public final class trash_pn_db extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_search, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_search))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         txt_search.addKeyListener(new KeyAdapter() {
@@ -315,23 +307,14 @@ public final class trash_pn_db extends javax.swing.JFrame {
             }
         });
 
-        btn_retrieve.setBackground(new java.awt.Color(204, 204, 255));
-        btn_retrieve.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
-        btn_retrieve.setText("Retrieve Record");
-        btn_retrieve.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_retrieveActionPerformed(evt);
-            }
-        });
-
         header_pan.setBackground(new java.awt.Color(0, 0, 153));
         header_pan.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lbl_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/xepto logo - white bg.png"))); // NOI18N
 
-        lbl_header.setFont(new java.awt.Font("Miriam Fixed", 1, 35)); // NOI18N
-        lbl_header.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_header.setText("Deleted Part Numbers");
+        jLabel1.setFont(new java.awt.Font("Miriam Fixed", 1, 35)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Deleted Accounts");
 
         javax.swing.GroupLayout header_panLayout = new javax.swing.GroupLayout(header_pan);
         header_pan.setLayout(header_panLayout);
@@ -341,7 +324,7 @@ public final class trash_pn_db extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbl_icon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_header, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE))
         );
         header_panLayout.setVerticalGroup(
             header_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,8 +332,51 @@ public final class trash_pn_db extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(header_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbl_icon)
-                    .addComponent(lbl_header))
+                    .addComponent(jLabel1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Retrieve", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+
+        btn_retrieve.setBackground(new java.awt.Color(204, 204, 255));
+        btn_retrieve.setFont(new java.awt.Font("Miriam", 0, 18)); // NOI18N
+        btn_retrieve.setText("Retrieve Record");
+        btn_retrieve.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_retrieveActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setText("Restore as ");
+
+        cmb_restoreType.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cmb_restoreType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "user", "admin" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_retrieve, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmb_restoreType, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cmb_restoreType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_retrieve, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout bg_panLayout = new javax.swing.GroupLayout(bg_pan);
@@ -361,11 +387,11 @@ public final class trash_pn_db extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(bg_panLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_retrieve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 907, Short.MAX_VALUE))
+                    .addComponent(data_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 931, Short.MAX_VALUE))
                 .addContainerGap())
         );
         bg_panLayout.setVerticalGroup(
@@ -374,19 +400,22 @@ public final class trash_pn_db extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(header_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(data_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 373, Short.MAX_VALUE)
+                .addComponent(data_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 374, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_retrieve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,11 +430,11 @@ public final class trash_pn_db extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_retrieveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_retrieveActionPerformed
-        //new view_database().setVisible(true);
+
     }//GEN-LAST:event_btn_retrieveActionPerformed
 
     private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
-        partNumber.clear();
+        user.clear();
         
         selectedRowCount = tbl_database.getSelectedRowCount();
         row = tbl_database.getSelectedRows();
@@ -413,7 +442,7 @@ public final class trash_pn_db extends javax.swing.JFrame {
             if (tbl_database.getRowSorter()!=null) {
                 row[i] = tbl_database.getRowSorter().convertRowIndexToModel(row[i]);
             }
-            partNumber.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
+            user.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
             System.out.println(row[i]);
         }
     }//GEN-LAST:event_tbl_databaseMouseReleased
@@ -432,20 +461,22 @@ public final class trash_pn_db extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(trash_pn_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(trash_account_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(trash_pn_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(trash_account_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(trash_pn_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(trash_account_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(trash_pn_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(trash_account_db.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new trash_pn_db().setVisible(true);
+            new trash_account_db().setVisible(true);
         });
     }
 
@@ -453,13 +484,22 @@ public final class trash_pn_db extends javax.swing.JFrame {
     private javax.swing.JPanel bg_pan;
     private javax.swing.JButton btn_retrieve;
     private javax.swing.JButton btn_search;
+    private javax.swing.JButton btn_search1;
+    private javax.swing.JButton btn_search2;
+    private javax.swing.JComboBox<String> cmb_restoreType;
     private javax.swing.JPanel data_pan;
     private javax.swing.JPanel header_pan;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl_header;
     private javax.swing.JLabel lbl_icon;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_search;
+    private javax.swing.JTextField txt_search1;
+    private javax.swing.JTextField txt_search2;
     // End of variables declaration//GEN-END:variables
 }

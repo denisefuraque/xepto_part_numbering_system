@@ -35,32 +35,6 @@ public class sign_up_frame extends javax.swing.JFrame {
         
     }
     
-    public boolean usernameInAdmin(){
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            Query q = em.createNamedQuery("Admins.findByUsername")
-                    .setParameter("username", username);
-            q.getSingleResult();
-            return true;
-        }
-        catch(NoResultException e){
-            return false;
-        }
-    }
-    
-    public boolean usernameInUser(){
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            Query q = em.createNamedQuery("Employee.findByUsername")
-                    .setParameter("username", username);
-            q.getSingleResult();
-            return true;
-        }
-        catch(NoResultException e){
-            return false;
-        }
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -365,13 +339,14 @@ public class sign_up_frame extends javax.swing.JFrame {
     private void btn_checkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_checkActionPerformed
 
         username = txt_user.getText();
+        boolean validUsername = Validity.check_username(username);
         
-        if(usernameInAdmin() || usernameInUser()){
+        if(!validUsername){
             lbl_user.setIcon(err);
             txt_user.requestFocus();
             txt_user.setToolTipText("Similar Username");
         }
-        else if(!usernameInAdmin() || !txt_user.getText().isEmpty() || !usernameInUser()){
+        else if(validUsername || !txt_user.getText().isEmpty()){
             lbl_user.setIcon(che);
             txt_user.setToolTipText("OK");
         }

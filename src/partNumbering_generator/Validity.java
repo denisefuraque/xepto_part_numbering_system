@@ -53,4 +53,39 @@ public class Validity {
         }
         return false;
     }
+    
+    public static boolean check_username(String username){
+        try{
+            em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.toString());
+        }         
+        
+        boolean isUser = false;
+        
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("Employee.findByUsername")
+                    .setParameter("username", username);
+            q.getSingleResult();
+            isUser = true;
+        }
+        catch(NoResultException e){
+        }
+        
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            em.clear();
+            Query q = em.createNamedQuery("Admins.findByUsername")
+                    .setParameter("username", username);
+            q.getSingleResult();
+        }
+        catch(NoResultException e){
+            if(!isUser){
+                return true;
+            }
+        }
+        return false;
+    }
 }

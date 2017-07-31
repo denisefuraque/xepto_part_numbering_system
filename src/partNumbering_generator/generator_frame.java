@@ -57,10 +57,12 @@ public final class generator_frame extends javax.swing.JFrame {
         
         if(account_type.equals("admin")){
             mnu_uAccount_dir.setVisible(true);
+            mnu_trash_account.setVisible(true);
             this.setTitle("Part Numbering Generator - Admin (" + Account.getUser() + ")" );
         }
         else{
             mnu_uAccount_dir.setVisible(false);
+            mnu_trash_account.setVisible(false);
             this.setTitle("Part Numbering Generator - User (" + Account.getUser() + ")" );
         }
         
@@ -1672,7 +1674,7 @@ public final class generator_frame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnu_trash_pnActionPerformed
 
     private void mnu_trash_accountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_trash_accountActionPerformed
-        
+        new trash_account_db().setVisible(true);
     }//GEN-LAST:event_mnu_trash_accountActionPerformed
 
     /**
