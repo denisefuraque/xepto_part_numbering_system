@@ -65,13 +65,16 @@ public class save_data_user extends javax.swing.JFrame {
                                     d.getDescription(), 
                                     d.getGeneratedDate(),
                                     d.getAuthor(),
-                                    d.getConfiguration()
+                                    d.getConfiguration(),
+                                    d.getManufacturer(),
+                                    d.getMpn(),
+                                    d.getWhereUsed()
                                     );
                 dataList.add(data);
             }
             
-            model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
-            Object[] row = new Object[6];
+            model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Date Generated", "Author", "Configuration", "Manufacturer", "MPN", "Where Used"});
+            Object[] row = new Object[9];
 
             for (int i = 0; i < dataList.size(); i++){
                 row[0] = dataList.get(i).getPn();
@@ -80,6 +83,9 @@ public class save_data_user extends javax.swing.JFrame {
                 row[3] = dataList.get(i).getDate();
                 row[4] = dataList.get(i).getAut();
                 row[5] = dataList.get(i).getConfig();
+                row[6] = dataList.get(i).getManu();
+                row[7] = dataList.get(i).getMpn();
+                row[8] = dataList.get(i).getWhere();
                 model.addRow(row);
             }
             tbl_database.setModel(model);
@@ -110,8 +116,15 @@ public class save_data_user extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_des = new javax.swing.JTextArea();
         btn_save = new javax.swing.JButton();
+        lbl_manu = new javax.swing.JLabel();
+        txt_manu = new javax.swing.JTextField();
+        lbl_mpn = new javax.swing.JLabel();
+        txt_mpn = new javax.swing.JTextField();
+        lbl_wu = new javax.swing.JLabel();
+        txt_wu = new javax.swing.JTextField();
 
         setTitle("Save Record (User) - Part Number Generator");
+        setMinimumSize(new java.awt.Dimension(680, 645));
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan.setMaximumSize(new java.awt.Dimension(690, 563));
@@ -129,13 +142,13 @@ public class save_data_user extends javax.swing.JFrame {
             database_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(database_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
+                .addComponent(jScrollPane3)
                 .addContainerGap())
         );
         database_panLayout.setVerticalGroup(
             database_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(database_panLayout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -170,6 +183,7 @@ public class save_data_user extends javax.swing.JFrame {
 
         information_pan.setBackground(new java.awt.Color(204, 204, 204));
         information_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "INFORMATION", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        information_pan.setMinimumSize(new java.awt.Dimension(479, 324));
 
         lbl_partNumber.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         lbl_partNumber.setText("Part Number : ");
@@ -198,31 +212,69 @@ public class save_data_user extends javax.swing.JFrame {
             }
         });
 
+        lbl_manu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        lbl_manu.setText("Manufacturer : ");
+
+        txt_manu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        txt_manu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_manuActionPerformed(evt);
+            }
+        });
+
+        lbl_mpn.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        lbl_mpn.setText("MPN : ");
+
+        txt_mpn.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        txt_mpn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_mpnActionPerformed(evt);
+            }
+        });
+
+        lbl_wu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        lbl_wu.setText("Where - Used : ");
+
+        txt_wu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        txt_wu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_wuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout information_panLayout = new javax.swing.GroupLayout(information_pan);
         information_pan.setLayout(information_panLayout);
         information_panLayout.setHorizontalGroup(
             information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(information_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_description)
-                    .addComponent(lbl_partNumber)
-                    .addComponent(lbl_category))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(txt_cat)
-                    .addComponent(txt_partNum))
+                    .addGroup(information_panLayout.createSequentialGroup()
+                        .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lbl_description)
+                                .addComponent(lbl_partNumber)
+                                .addComponent(lbl_category))
+                            .addComponent(lbl_manu, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_mpn, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_wu, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_manu)
+                            .addComponent(jScrollPane2)
+                            .addComponent(txt_cat)
+                            .addComponent(txt_partNum)
+                            .addComponent(txt_mpn)
+                            .addComponent(txt_wu)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
         );
         information_panLayout.setVerticalGroup(
             information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_partNumber)
                     .addComponent(txt_partNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -237,9 +289,21 @@ public class save_data_user extends javax.swing.JFrame {
                     .addGroup(information_panLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_manu)
+                    .addComponent(txt_manu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_mpn)
+                    .addComponent(txt_mpn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_wu)
+                    .addComponent(txt_wu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_save)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
         txt_partNum.setEditable(false);
@@ -251,14 +315,11 @@ public class save_data_user extends javax.swing.JFrame {
             bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bg_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(bg_panLayout.createSequentialGroup()
-                        .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(header_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(database_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(information_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(information_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(database_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         bg_panLayout.setVerticalGroup(
             bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,7 +330,7 @@ public class save_data_user extends javax.swing.JFrame {
                 .addComponent(database_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(information_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -280,7 +341,7 @@ public class save_data_user extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg_pan, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(bg_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
         );
 
         pack();
@@ -309,6 +370,9 @@ public class save_data_user extends javax.swing.JFrame {
                     data.setGeneratedDate(sqlDate);
                     data.setAuthor(aut);
                     data.setConfiguration(config);
+                    data.setManufacturer(txt_manu.getText());
+                    data.setMpn(txt_mpn.getText());
+                    data.setWhereUsed(txt_wu.getText());
 
                     em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();
@@ -341,6 +405,18 @@ public class save_data_user extends javax.swing.JFrame {
         this.setVisible(false);
         
     }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void txt_manuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_manuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_manuActionPerformed
+
+    private void txt_mpnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_mpnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_mpnActionPerformed
+
+    private void txt_wuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_wuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_wuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -387,10 +463,16 @@ public class save_data_user extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_category;
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_icon;
+    private javax.swing.JLabel lbl_manu;
+    private javax.swing.JLabel lbl_mpn;
     private javax.swing.JLabel lbl_partNumber;
+    private javax.swing.JLabel lbl_wu;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_cat;
     private javax.swing.JTextArea txt_des;
+    private javax.swing.JTextField txt_manu;
+    private javax.swing.JTextField txt_mpn;
     private javax.swing.JTextField txt_partNum;
+    private javax.swing.JTextField txt_wu;
     // End of variables declaration//GEN-END:variables
 }

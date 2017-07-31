@@ -302,7 +302,18 @@ public class mod_pn extends javax.swing.JFrame {
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
         this.setVisible(false);
-        new view_database().setVisible(true);
+        if(ty.equals("admin_main")){
+            new view_database().setVisible(true);
+        }
+        else if(ty.equals("user_main")){
+            new view_database_user().setVisible(true);
+        }
+        else if(ty.equals("user_tba")){
+            new view_user_save().setVisible(true);
+        }
+        else if(ty.equals("admin_tba")){
+            new view_user_added_admin().setVisible(true);
+        }
     }//GEN-LAST:event_btn_backActionPerformed
 
     /**
