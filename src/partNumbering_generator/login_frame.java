@@ -103,7 +103,7 @@ public class login_frame extends javax.swing.JFrame {
                     cellCount++;
                 }
                 if(!data.isEmpty() && !data.get(0).equals("")){
-                    if(isPnAvailable(data.get(0))){
+                    if(Validity.check_pn(data.get(0))){
                         DataUsers dataUser = new DataUsers();
                         dataUser.setAuthor("Mhel Lontoc");
                         dataUser.setCategory(category);
@@ -133,35 +133,6 @@ public class login_frame extends javax.swing.JFrame {
         }
     }
     
-    private boolean isPnAvailable(String pn){
-        boolean valid_pn = false;
-        boolean isUserData = false;
-
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
-                    .setParameter("partNumber", pn);
-            q.getSingleResult();
-            isUserData = true;
-        }
-        catch(NoResultException e){
-
-        }
-
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            em.clear();
-            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
-                    .setParameter("partNumber", pn);
-            q.getSingleResult();
-        }
-        catch(NoResultException e){
-            if(!isUserData){
-                return true;
-            }
-        }
-        return false;
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

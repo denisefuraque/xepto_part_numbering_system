@@ -62,7 +62,7 @@
                 </Property>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+                <MenuItem class="javax.swing.JMenuItem" name="mnu_trash_pn">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Dialog" size="17" style="0"/>
@@ -72,8 +72,11 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Part Number"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnu_trash_pnActionPerformed"/>
+                  </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+                <MenuItem class="javax.swing.JMenuItem" name="mnu_trash_account">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Dialog" size="17" style="0"/>
@@ -83,6 +86,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Account"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnu_trash_accountActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>

@@ -34,6 +34,8 @@ public final class generator_frame extends javax.swing.JFrame {
     String monthText;
     String dayText;
     
+    String account_type;
+    
     EntityManager em;
     
     public generator_frame() {
@@ -49,9 +51,11 @@ public final class generator_frame extends javax.swing.JFrame {
         
         setLocationRelativeTo(null);
         
+        account_type = Account.getType();
+        
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
-        if(Account.getType().equals("admin")){
+        if(account_type.equals("admin")){
             mnu_uAccount_dir.setVisible(true);
             this.setTitle("Part Numbering Generator - Admin (" + Account.getUser() + ")" );
         }
@@ -327,8 +331,8 @@ public final class generator_frame extends javax.swing.JFrame {
         mnu_uData_view = new javax.swing.JMenuItem();
         mnu_uData_add = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mnu_trash_pn = new javax.swing.JMenuItem();
+        mnu_trash_account = new javax.swing.JMenuItem();
         mnu_uAccount = new javax.swing.JMenu();
         mnu_uAccount_dir = new javax.swing.JMenu();
         mnu_admin = new javax.swing.JMenuItem();
@@ -740,15 +744,25 @@ public final class generator_frame extends javax.swing.JFrame {
         jMenu1.setText("Trash Bin");
         jMenu1.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
 
-        jMenuItem1.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/database_retrieve.png"))); // NOI18N
-        jMenuItem1.setText("Part Number");
-        jMenu1.add(jMenuItem1);
+        mnu_trash_pn.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
+        mnu_trash_pn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/database_retrieve.png"))); // NOI18N
+        mnu_trash_pn.setText("Part Number");
+        mnu_trash_pn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnu_trash_pnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnu_trash_pn);
 
-        jMenuItem2.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/user_retrieve.png"))); // NOI18N
-        jMenuItem2.setText("Account");
-        jMenu1.add(jMenuItem2);
+        mnu_trash_account.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
+        mnu_trash_account.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/user_retrieve.png"))); // NOI18N
+        mnu_trash_account.setText("Account");
+        mnu_trash_account.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnu_trash_accountActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnu_trash_account);
 
         mnu_uData.add(jMenu1);
 
@@ -803,7 +817,7 @@ public final class generator_frame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnu_uData_viewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_uData_viewActionPerformed
-        if(Account.getType().equals("admin")){
+        if(account_type.equals("admin")){
             new view_database().setVisible(true);
         }
         else{
@@ -1488,7 +1502,7 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_edit.setEnabled(false);
         btn_check.setEnabled(false);
             
-        if(Account.getType().equals("admin")){
+        if(account_type.equals("admin")){
             new database_open(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         }
         else{
@@ -1571,32 +1585,7 @@ public final class generator_frame extends javax.swing.JFrame {
         
         String gen_pn = lbl_genPartNum.getText();
         
-        boolean valid_pn = false;
-        boolean isUserData = false;
-        
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
-                    .setParameter("partNumber", gen_pn);
-            DataUsers data = (DataUsers) q.getSingleResult();
-            isUserData = true;
-        }
-        catch(NoResultException e){
-            
-        }
-        
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            em.clear();
-            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
-                    .setParameter("partNumber", gen_pn);
-            PartNumberData data = (PartNumberData) q.getSingleResult();
-        }
-        catch(NoResultException e){
-            if(!isUserData){
-                valid_pn = true;
-            }
-        }
+        boolean valid_pn = Validity.check_pn(gen_pn);
 
         if(valid_pn){
             open_save_db_pan.setVisible(true);
@@ -1626,7 +1615,7 @@ public final class generator_frame extends javax.swing.JFrame {
 
     private void mnu_uData_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_uData_addActionPerformed
             
-        if(Account.getType().equals("admin")){
+        if(account_type.equals("admin")){
             new view_user_added_admin().setVisible(true);
         }
         else{
@@ -1677,6 +1666,14 @@ public final class generator_frame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_txt_seqKeyPressed
+
+    private void mnu_trash_pnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_trash_pnActionPerformed
+        new trash_pn_db().setVisible(true);
+    }//GEN-LAST:event_mnu_trash_pnActionPerformed
+
+    private void mnu_trash_accountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnu_trash_accountActionPerformed
+        
+    }//GEN-LAST:event_mnu_trash_accountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1729,8 +1726,6 @@ public final class generator_frame extends javax.swing.JFrame {
     private javax.swing.JPanel generated_pan;
     private javax.swing.JPanel input_pan;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_cateogry;
     private javax.swing.JLabel lbl_day;
@@ -1742,6 +1737,8 @@ public final class generator_frame extends javax.swing.JFrame {
     private javax.swing.JPanel logo_pan3;
     private javax.swing.JPanel merge_pan;
     private javax.swing.JMenuItem mnu_admin;
+    private javax.swing.JMenuItem mnu_trash_account;
+    private javax.swing.JMenuItem mnu_trash_pn;
     private javax.swing.JMenu mnu_uAccount;
     private javax.swing.JMenu mnu_uAccount_dir;
     private javax.swing.JMenuItem mnu_uAccount_logout;
