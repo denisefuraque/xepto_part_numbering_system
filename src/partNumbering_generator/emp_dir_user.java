@@ -35,11 +35,12 @@ public class emp_dir_user extends javax.swing.JFrame {
     ArrayList<class_user> dataList = new ArrayList<>();
     ArrayList<String> datapass = new ArrayList<>();
 
-    String a_user, a_pass, a_fname, a_lname, a_job;
+    List<String> user;
+    String pass, fname, lname, job;
+    int[] row;
+    int selectedRowCount;
         
     EntityManager em;
-    
-    int curRow = 0;
     
     public emp_dir_user() {
         
@@ -55,6 +56,8 @@ public class emp_dir_user extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
         setLocationRelativeTo(null);
+        
+        user = new ArrayList<>();
         
         //call function
         findData();
@@ -85,28 +88,23 @@ public class emp_dir_user extends javax.swing.JFrame {
         switch (n){
             case 0:
                 try{
-                    int SelectedRowIndex = tbl_database.getSelectedRow();
-                    
-                    String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
-                    
-                    em.getEntityManagerFactory().getCache().evictAll();
-                    em.getTransaction().begin();
-                    Query q = em.createNamedQuery("Employee.findByUsername")
-                            .setParameter("username", selected);
-                    Employee emp = (Employee) q.getSingleResult();
-                    
-                    Trash trash = new Trash(emp.getUsername(), emp.getFirstName(), emp.getLastName(),
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();    
+                        em.getTransaction().begin();
+                        Query q = em.createNamedQuery("Employee.findByUsername")
+                                .setParameter("username", user.get(i));
+                        Employee emp = (Employee) q.getSingleResult();
+                        
+                        Trash trash = new Trash(emp.getUsername(), emp.getFirstName(), emp.getLastName(),
                             emp.getJobTitle(), emp.getPassword());
-                    trash.addToDb();
-                    
-                    em.remove(emp);
-                    em.flush();
-                    em.getTransaction().commit();
-                    
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                        trash.addToDb();
+                        
+                        em.remove(emp);
+                        em.flush();
+                        em.getTransaction().commit();
+
+                        model.removeRow(row[i]-i);                        
                     }
-                    model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
                     System.out.println(e.toString());
@@ -187,6 +185,9 @@ public class emp_dir_user extends javax.swing.JFrame {
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseReleased(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_databaseMouseClicked(evt);
             }
@@ -361,47 +362,29 @@ public class emp_dir_user extends javax.swing.JFrame {
         switch(opt){
 
             case 0:
-                int dataInd = tbl_database.getSelectedRow();
-                if (tbl_database.getRowSorter()!=null) {
-                            dataInd = tbl_database.getRowSorter().convertRowIndexToModel(dataInd);
-                        }
-                String username = (String) tbl_database.getValueAt(dataInd, 0);
-                //add selected data to admins
                 try{
-                    em.getEntityManagerFactory().getCache().evictAll();
-                    Query q_user = em.createNamedQuery("Employee.findByUsername")
-                                .setParameter("username", username);
-                    Employee emp = (Employee) q_user.getSingleResult();
-                    
-                    Admins admin = new Admins(emp.getUsername(), emp.getPassword(), emp.getFirstName(), emp.getLastName(), emp.getJobTitle());
-                    
-                    em.getEntityManagerFactory().getCache().evictAll();
-                    em.getTransaction().begin();
-                    em.persist(admin);
-                    em.flush();
-                    em.getTransaction().commit();
-                }
-                catch(Exception e){
-                    System.out.println(e.toString());
-                }
-            try{
-                    int SelectedRowIndex = tbl_database.getSelectedRow();
-                    
-                    String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();
+                        Query q_user = em.createNamedQuery("Employee.findByUsername")
+                                    .setParameter("username", user.get(i));
+                        Employee emp = (Employee) q_user.getSingleResult();
 
-                    em.getEntityManagerFactory().getCache().evictAll();                    
-                    em.getTransaction().begin();
-                    Query q = em.createNamedQuery("Employee.findByUsername")
-                            .setParameter("username", selected);
-                    Employee emp = (Employee) q.getSingleResult();
-                    em.remove(emp);
-                    em.flush();
-                    em.getTransaction().commit();
-                    
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                        Admins admin = new Admins(emp.getUsername(), emp.getPassword(), emp.getFirstName(), emp.getLastName(), emp.getJobTitle());
+
+                        em.getEntityManagerFactory().getCache().evictAll();
+                        em.getTransaction().begin();
+                        em.persist(admin);
+                        em.flush();
+                        em.getTransaction().commit();
+
+                        em.getEntityManagerFactory().getCache().evictAll();                    
+                        em.getTransaction().begin();
+                        em.remove(emp);
+                        em.flush();
+                        em.getTransaction().commit();
+
+                        model.removeRow(row[i]-i); 
                     }
-                    model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
                     System.out.println(e.toString());
@@ -447,6 +430,20 @@ public class emp_dir_user extends javax.swing.JFrame {
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
+        user.clear();
+        
+        selectedRowCount = tbl_database.getSelectedRowCount();
+        row = tbl_database.getSelectedRows();
+        for(int i=0; i<row.length; i++){
+            if (tbl_database.getRowSorter()!=null) {
+                row[i] = tbl_database.getRowSorter().convertRowIndexToModel(row[i]);
+            }
+            user.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
+            System.out.println(row[i]+" "+user.get(i));
+        }
+    }//GEN-LAST:event_tbl_databaseMouseReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
