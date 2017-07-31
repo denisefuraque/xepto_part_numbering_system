@@ -28,9 +28,10 @@ public class emp_dir_admin extends javax.swing.JFrame {
     
     ArrayList<class_admin> dataList = new ArrayList<>();
     
-    String value1 = "", value2 = "", value3 = "";
-    
-    String a_user, a_pass, a_fname, a_lname, a_job;
+    List<String> user;
+    String pass, fname, lname, job;
+    int[] row;
+    int selectedRowCount;
     
     EntityManager em;
     
@@ -47,6 +48,8 @@ public class emp_dir_admin extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
         setLocationRelativeTo(null);
+        
+        user = new ArrayList<>();
         
         //call function
         findData();
@@ -77,28 +80,23 @@ public class emp_dir_admin extends javax.swing.JFrame {
         switch (n){
             case 0:
                 try{
-                    int SelectedRowIndex = tbl_database.getSelectedRow();
-                    
-                    String selected = (String) tbl_database.getValueAt(SelectedRowIndex, 0);
-                    
-                    em.getEntityManagerFactory().getCache().evictAll();
-                    em.getTransaction().begin();
-                    Query q = em.createNamedQuery("Admins.findByUsername")
-                            .setParameter("username", selected);
-                    Admins admin = (Admins) q.getSingleResult();
-                    
-                    Trash trash = new Trash(admin.getUsername(), admin.getFirstName(), admin.getLastName(),
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();    
+                        em.getTransaction().begin();
+                        Query q = em.createNamedQuery("Admins.findByUsername")
+                                .setParameter("username", user.get(i));
+                        Admins admin = (Admins) q.getSingleResult();
+                        
+                        Trash trash = new Trash(admin.getUsername(), admin.getFirstName(), admin.getLastName(),
                             admin.getJobTitle(), admin.getPassword());
-                    trash.addToDb();
-                    
-                    em.remove(admin);
-                    em.flush();
-                    em.getTransaction().commit();
-                    
-                    if (tbl_database.getRowSorter()!=null) {
-                        SelectedRowIndex = tbl_database.getRowSorter().convertRowIndexToModel(SelectedRowIndex);
+                        trash.addToDb();
+                        
+                        em.remove(admin);
+                        em.flush();
+                        em.getTransaction().commit();
+
+                        model.removeRow(row[i]-i);                        
                     }
-                    model.removeRow(SelectedRowIndex);
                 }
                 catch(Exception e){
                     System.out.println(e.toString());
@@ -179,8 +177,8 @@ public class emp_dir_admin extends javax.swing.JFrame {
 
         tbl_database.setToolTipText("");
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tbl_databaseMousePressed(evt);
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseReleased(evt);
             }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_databaseMouseClicked(evt);
@@ -347,16 +345,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btn_deleteActionPerformed
 
-    private void tbl_databaseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMousePressed
-        int row = tbl_database.getSelectedRow();
-        if (tbl_database.getRowSorter()!=null) {
-            row = tbl_database.getRowSorter().convertRowIndexToModel(row);
-        }
-        value1 = tbl_database.getModel().getValueAt(row, 0).toString();
-        value2 = tbl_database.getModel().getValueAt(row, 1).toString();
-        value3 = tbl_database.getModel().getValueAt(row, 2).toString();
-    }//GEN-LAST:event_tbl_databaseMousePressed
-
     private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
         if (evt.getClickCount() == 2) {
             int dataInd = tbl_database.getSelectedRow();
@@ -382,6 +370,20 @@ public class emp_dir_admin extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tbl_databaseMouseClicked
+
+    private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
+        user.clear();
+        
+        selectedRowCount = tbl_database.getSelectedRowCount();
+        row = tbl_database.getSelectedRows();
+        for(int i=0; i<row.length; i++){
+            if (tbl_database.getRowSorter()!=null) {
+                row[i] = tbl_database.getRowSorter().convertRowIndexToModel(row[i]);
+            }
+            user.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
+            System.out.println(row[i]+" "+user.get(i));
+        }
+    }//GEN-LAST:event_tbl_databaseMouseReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
