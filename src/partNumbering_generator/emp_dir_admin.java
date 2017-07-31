@@ -82,7 +82,6 @@ public class emp_dir_admin extends javax.swing.JFrame {
                 try{
                     for(int i=0; i<selectedRowCount; i++){
                         em.getEntityManagerFactory().getCache().evictAll();    
-                        em.getTransaction().begin();
                         Query q = em.createNamedQuery("Admins.findByUsername")
                                 .setParameter("username", user.get(i));
                         Admins admin = (Admins) q.getSingleResult();
@@ -91,6 +90,8 @@ public class emp_dir_admin extends javax.swing.JFrame {
                             admin.getJobTitle(), admin.getPassword());
                         trash.addToDb();
                         
+                        em.getEntityManagerFactory().getCache().evictAll(); 
+                        em.getTransaction().begin();
                         em.remove(admin);
                         em.flush();
                         em.getTransaction().commit();

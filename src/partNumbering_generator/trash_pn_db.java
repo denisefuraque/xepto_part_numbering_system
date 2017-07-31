@@ -30,6 +30,8 @@ public final class trash_pn_db extends javax.swing.JFrame {
     
     EntityManager em;
     
+    String account_type;
+    
     List<String> partNumber;
     String category, description, author, config;
     Date genDate;
@@ -49,6 +51,8 @@ public final class trash_pn_db extends javax.swing.JFrame {
         }        
         
         setLocationRelativeTo(null);
+        
+        account_type = Account.getType();
         
         partNumber = new ArrayList<>();
         
@@ -73,39 +77,86 @@ public final class trash_pn_db extends javax.swing.JFrame {
     //opens a joptionpane to confirm whether the user is sure to delete the record
     private void btn_retrieve_confirmationActionPerformed(java.awt.event.ActionEvent evt){
         
+        String db = "";
+        
+        if(account_type.equals("admin")){
+            db = "database";
+        }
+        else if(account_type.equals("user")){
+            db = "database for approval";
+        }
+        
         Object[] options = {"Yes",
                             "No"};
-        int n = JOptionPane.showOptionDialog(this, "Records selected will be put in " + "\n\nClick 'Yes' to proceed.",
+        int n = JOptionPane.showOptionDialog(this, "Records selected will be restored in the " + db + ".\n\nClick 'Yes' to proceed.",
                 "Retrieve part number records",
                 JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE,null, options, options[0]);
         switch (n){
             case 0:
-//                try{
-//                    for(int i=0; i<selectedRowCount; i++){
-//                        em.getEntityManagerFactory().getCache().evictAll();    
-//                        em.getTransaction().begin();
-//                        Query q = em.createNamedQuery("TrashPn.findByPartNumber")
-//                                .setParameter("partNumber", partNumber.get(i));
-//                        TrashPn d = (TrashPn) q.getSingleResult();
-//                        
-//                        if(!Validity.check_pn(d.getPartNumber())){
-//                            
-//                        }
-//                        
-//                        Trash trash = new Trash(d.getPartNumber(), d.getCategory(), d.getDescription(), 
-//                                d.getGeneratedDate(), d.getAuthor(), d.getConfiguration());
-//                        trash.addToDb();
-//                        
-//                        em.remove(d);
-//                        em.flush();
-//                        em.getTransaction().commit();
-//
-//                        model.removeRow(row[i]-i);                        
-//                    }
-//                }
-//                catch(Exception e){
-//                    System.out.println(e.toString()+selectedRowCount);
-//                }
+                try{
+                    String invalidPn = "";
+                    for(int i=0; i<selectedRowCount; i++){
+                        em.getEntityManagerFactory().getCache().evictAll();    
+                        Query q = em.createNamedQuery("TrashPn.findByPartNumber")
+                                .setParameter("partNumber", partNumber.get(i));
+                        TrashPn d = (TrashPn) q.setMaxResults(1).getSingleResult();
+                        
+                        if(!Validity.check_pn(d.getPartNumber())){
+                            invalidPn += "\n" + d.getPartNumber();
+                            continue;
+                        }
+                        
+                        if(account_type.equals("admin")){
+                            PartNumberData data = new PartNumberData();
+                            data.setPartNumber(d.getPartNumber());
+                            data.setCategory(d.getCategory());
+                            data.setDescription(d.getDescription());
+                            data.setGeneratedDate(d.getGeneratedDate());
+                            data.setAuthor(d.getAuthor());
+                            data.setConfiguration(d.getConfiguration());
+                                                    
+                            em.getEntityManagerFactory().getCache().evictAll();                    
+                            em.getTransaction().begin();
+                            em.persist(data);
+                            em.flush();
+                            em.getTransaction().commit();  
+                        }
+                        else if(account_type.equals("user")){
+                            DataUsers data = new DataUsers();
+                            data.setPartNumber(d.getPartNumber());
+                            data.setCategory(d.getCategory());
+                            data.setDescription(d.getDescription());
+                            data.setGeneratedDate(d.getGeneratedDate());
+                            data.setAuthor(d.getAuthor());
+                            data.setConfiguration(d.getConfiguration());
+                                                    
+                            em.getEntityManagerFactory().getCache().evictAll();                    
+                            em.getTransaction().begin();
+                            em.persist(data);
+                            em.flush();
+                            em.getTransaction().commit(); 
+                        }
+
+                        
+                        em.getEntityManagerFactory().getCache().evictAll(); 
+                        em.getTransaction().begin();
+                        em.remove(d);
+                        em.flush();
+                        em.getTransaction().commit();
+
+                        model.removeRow(row[i]-i);                        
+                    }
+                    
+                    if(!invalidPn.equals("")){
+                        JOptionPane.showMessageDialog(null, "The following part numbers are already used in the database."
+                                + "\nThese records are not restored.\n"
+                                + invalidPn,
+                                "Part numbers present in the database", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                catch(Exception e){
+                    System.out.println(e.toString());
+                }
                 break;
             case 1:
                 break;
@@ -121,8 +172,8 @@ public final class trash_pn_db extends javax.swing.JFrame {
             
             em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("TrashPn.findAll");
-            List<PartNumberData> pnd = q.getResultList();
-            for(PartNumberData d: pnd){
+            List<TrashPn> trash = q.getResultList();
+            for(TrashPn d: trash){
                 data = new Class_data(
                                     d.getPartNumber(),
                                     d.getCategory(),

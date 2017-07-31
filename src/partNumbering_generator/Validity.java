@@ -32,7 +32,7 @@ public class Validity {
             em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("DataUsers.findByPartNumber")
                     .setParameter("partNumber", pn);
-            DataUsers data = (DataUsers) q.getSingleResult();
+            q.getSingleResult();
             isUserData = true;
         }
         catch(NoResultException e){
@@ -44,7 +44,7 @@ public class Validity {
             em.clear();
             Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
                     .setParameter("partNumber", pn);
-            PartNumberData data = (PartNumberData) q.getSingleResult();
+            q.getSingleResult();
         }
         catch(NoResultException e){
             if(!isUserData){

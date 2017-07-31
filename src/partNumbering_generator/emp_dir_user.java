@@ -5,14 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -90,7 +84,6 @@ public class emp_dir_user extends javax.swing.JFrame {
                 try{
                     for(int i=0; i<selectedRowCount; i++){
                         em.getEntityManagerFactory().getCache().evictAll();    
-                        em.getTransaction().begin();
                         Query q = em.createNamedQuery("Employee.findByUsername")
                                 .setParameter("username", user.get(i));
                         Employee emp = (Employee) q.getSingleResult();
@@ -99,6 +92,8 @@ public class emp_dir_user extends javax.swing.JFrame {
                             emp.getJobTitle(), emp.getPassword());
                         trash.addToDb();
                         
+                        em.getEntityManagerFactory().getCache().evictAll(); 
+                        em.getTransaction().begin();
                         em.remove(emp);
                         em.flush();
                         em.getTransaction().commit();
