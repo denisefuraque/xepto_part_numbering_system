@@ -33,7 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TrashPn.findByGeneratedDate", query = "SELECT t FROM TrashPn t WHERE t.generatedDate = :generatedDate")
     , @NamedQuery(name = "TrashPn.findByAuthor", query = "SELECT t FROM TrashPn t WHERE t.author = :author")
     , @NamedQuery(name = "TrashPn.findByConfiguration", query = "SELECT t FROM TrashPn t WHERE t.configuration = :configuration")
-    , @NamedQuery(name = "TrashPn.findById", query = "SELECT t FROM TrashPn t WHERE t.id = :id")})
+    , @NamedQuery(name = "TrashPn.findById", query = "SELECT t FROM TrashPn t WHERE t.id = :id")
+    , @NamedQuery(name = "TrashPn.findByManufacturer", query = "SELECT t FROM TrashPn t WHERE t.manufacturer = :manufacturer")
+    , @NamedQuery(name = "TrashPn.findByMpn", query = "SELECT t FROM TrashPn t WHERE t.mpn = :mpn")
+    , @NamedQuery(name = "TrashPn.findByWhereUsed", query = "SELECT t FROM TrashPn t WHERE t.whereUsed = :whereUsed")})
 public class TrashPn implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +62,12 @@ public class TrashPn implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    @Column(name = "MANUFACTURER")
+    private String manufacturer;
+    @Column(name = "MPN")
+    private String mpn;
+    @Column(name = "WHERE_USED")
+    private String whereUsed;
 
     public TrashPn() {
     }
@@ -130,6 +139,30 @@ public class TrashPn implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getMpn() {
+        return mpn;
+    }
+
+    public void setMpn(String mpn) {
+        this.mpn = mpn;
+    }
+
+    public String getWhereUsed() {
+        return whereUsed;
+    }
+
+    public void setWhereUsed(String whereUsed) {
+        this.whereUsed = whereUsed;
     }
 
     @Override

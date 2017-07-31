@@ -21,12 +21,13 @@ public class Trash {
     private int id;
     private String type;
     
-    private String pn, category, description, author, config;
+    private String pn, category, description, author, config, manufacturer, mpn, whereUsed;
     private Date genDate;
     
     private String username, fName, lName, job, pass;
     
-    public Trash(String _pn, String _category, String _description, Date _genDate, String _author, String _config){
+    public Trash(String _pn, String _category, String _description, Date _genDate, String _author, String _config,
+            String _manufacturer, String _mpn, String _whereUsed){
         try{
             em = Persistence.createEntityManagerFactory("partNumberingPU", Host.getPersistence()).createEntityManager();
         }
@@ -51,6 +52,9 @@ public class Trash {
         genDate = _genDate;
         author = _author;
         config = _config;
+        manufacturer = _manufacturer;
+        mpn = _mpn;
+        whereUsed = _whereUsed;
     }
     
     public Trash(String _username, String _fName, String _lName, String _job, String _pass){
@@ -90,6 +94,9 @@ public class Trash {
                 trash.setGeneratedDate(genDate);
                 trash.setAuthor(author);
                 trash.setConfiguration(config);
+                trash.setManufacturer(manufacturer);
+                trash.setMpn(mpn);
+                trash.setWhereUsed(whereUsed);
 
                 em.getEntityManagerFactory().getCache().evictAll();                    
                 em.getTransaction().begin();

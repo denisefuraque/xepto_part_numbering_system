@@ -87,7 +87,8 @@ public final class view_database extends javax.swing.JFrame {
                         PartNumberData d = (PartNumberData) q.getSingleResult();
                         
                         Trash trash = new Trash(d.getPartNumber(), d.getCategory(), d.getDescription(), 
-                                d.getGeneratedDate(), d.getAuthor(), d.getConfiguration());
+                                d.getGeneratedDate(), d.getAuthor(), d.getConfiguration(),
+                                d.getManufacturer(), d.getMpn(), d.getWhereUsed());
                         trash.addToDb();
                         
                         em.remove(d);

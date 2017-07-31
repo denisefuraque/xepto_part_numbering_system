@@ -112,6 +112,9 @@ public final class trash_pn_db extends javax.swing.JFrame {
                             data.setGeneratedDate(d.getGeneratedDate());
                             data.setAuthor(d.getAuthor());
                             data.setConfiguration(d.getConfiguration());
+                            data.setManufacturer(d.getManufacturer());
+                            data.setMpn(d.getMpn());
+                            data.setWhereUsed(d.getWhereUsed());
                                                     
                             em.getEntityManagerFactory().getCache().evictAll();                    
                             em.getTransaction().begin();
@@ -127,6 +130,9 @@ public final class trash_pn_db extends javax.swing.JFrame {
                             data.setGeneratedDate(d.getGeneratedDate());
                             data.setAuthor(d.getAuthor());
                             data.setConfiguration(d.getConfiguration());
+                            data.setManufacturer(d.getManufacturer());
+                            data.setMpn(d.getMpn());
+                            data.setWhereUsed(d.getWhereUsed());
                                                     
                             em.getEntityManagerFactory().getCache().evictAll();                    
                             em.getTransaction().begin();
