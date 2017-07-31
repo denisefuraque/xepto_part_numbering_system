@@ -326,6 +326,9 @@ public final class generator_frame extends javax.swing.JFrame {
         mnu_uData = new javax.swing.JMenu();
         mnu_uData_view = new javax.swing.JMenuItem();
         mnu_uData_add = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         mnu_uAccount = new javax.swing.JMenu();
         mnu_uAccount_dir = new javax.swing.JMenu();
         mnu_admin = new javax.swing.JMenuItem();
@@ -364,9 +367,6 @@ public final class generator_frame extends javax.swing.JFrame {
         bg_pan3.add(logo_pan3);
         logo_pan3.setBounds(10, 6, 780, 65);
 
-        bg_pan3.add(logo_pan3);
-        logo_pan3.setBounds(12, 6, 784, 70);
-
         input_pan.setBackground(new java.awt.Color(204, 204, 204));
         input_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Input the following data", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
         input_pan.setMaximumSize(new java.awt.Dimension(484, 383));
@@ -379,7 +379,7 @@ public final class generator_frame extends javax.swing.JFrame {
         lbl_cateogry.setText("Commodity Name : ");
         lbl_cateogry.setMaximumSize(new java.awt.Dimension(32767, 32767));
         input_pan.add(lbl_cateogry);
-        lbl_cateogry.setBounds(141, 70, 221, 21);
+        lbl_cateogry.setBounds(141, 70, 224, 24);
 
         cmb_name.setBackground(new java.awt.Color(204, 204, 255));
         cmb_name.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -493,7 +493,7 @@ public final class generator_frame extends javax.swing.JFrame {
                     .addComponent(lbl_year))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(projDate_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_year, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(txt_year)
                     .addComponent(cmb_day, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(cmb_month))
                 .addGap(4, 4, 4))
@@ -595,7 +595,7 @@ public final class generator_frame extends javax.swing.JFrame {
                 .addComponent(projDate_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         projDate_pan.setVisible(false);
@@ -605,9 +605,6 @@ public final class generator_frame extends javax.swing.JFrame {
 
         bg_pan3.add(input_pan);
         input_pan.setBounds(10, 83, 476, 397);
-
-        bg_pan3.add(input_pan);
-        input_pan.setBounds(12, 88, 476, 387);
 
         generated_pan.setBackground(new java.awt.Color(204, 204, 204));
         generated_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Part Number", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
@@ -627,10 +624,6 @@ public final class generator_frame extends javax.swing.JFrame {
         bg_pan3.add(generated_pan);
         generated_pan.setBounds(492, 83, 298, 160);
 
-        bg_pan3.add(open_save_db_pan);
-        open_save_db_pan.setBounds(494, 275, 290, 80);
-        open_save_db_pan.setVisible(false);
-
         btn_new.setBackground(new java.awt.Color(204, 204, 255));
         btn_new.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_new.setText("New Record");
@@ -641,7 +634,7 @@ public final class generator_frame extends javax.swing.JFrame {
             }
         });
         bg_pan3.add(btn_new);
-        btn_new.setBounds(492, 289, 298, 31);
+        btn_new.setBounds(492, 289, 298, 34);
         btn_new.setEnabled(false);
 
         btn_edit.setBackground(new java.awt.Color(204, 204, 255));
@@ -716,10 +709,9 @@ public final class generator_frame extends javax.swing.JFrame {
         getContentPane().add(bg_pan3);
         bg_pan3.setBounds(0, 0, 800, 520);
 
-        getContentPane().add(bg_pan3);
-        bg_pan3.setBounds(0, 0, 800, 500);
-
         mnu_user_gen.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        mnu_user_gen.setMaximumSize(new java.awt.Dimension(32769, 32769));
+        mnu_user_gen.setMinimumSize(new java.awt.Dimension(158, 24));
 
         mnu_uData.setText("Database");
         mnu_uData.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -743,6 +735,22 @@ public final class generator_frame extends javax.swing.JFrame {
             }
         });
         mnu_uData.add(mnu_uData_add);
+
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/trash.png"))); // NOI18N
+        jMenu1.setText("Trash Bin");
+        jMenu1.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
+
+        jMenuItem1.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/database_retrieve.png"))); // NOI18N
+        jMenuItem1.setText("Part Number");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setFont(new java.awt.Font("Dialog", 0, 17)); // NOI18N
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/user_retrieve.png"))); // NOI18N
+        jMenuItem2.setText("Account");
+        jMenu1.add(jMenuItem2);
+
+        mnu_uData.add(jMenu1);
 
         mnu_user_gen.add(mnu_uData);
 
@@ -1720,6 +1728,9 @@ public final class generator_frame extends javax.swing.JFrame {
     private javax.swing.JPanel config_pan;
     private javax.swing.JPanel generated_pan;
     private javax.swing.JPanel input_pan;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_cateogry;
     private javax.swing.JLabel lbl_day;
