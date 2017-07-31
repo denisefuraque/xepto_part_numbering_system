@@ -1481,7 +1481,7 @@ public final class generator_frame extends javax.swing.JFrame {
         btn_check.setEnabled(false);
             
         if(Account.getType().equals("admin")){
-            new database_open(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
+            new save_data_admin(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);
         }
         else{
             new save_data_user(lbl_genPartNum.getText(),cmb_scheme.getSelectedItem().toString()).setVisible(true);

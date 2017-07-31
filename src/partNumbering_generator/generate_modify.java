@@ -48,6 +48,7 @@ public class generate_modify extends javax.swing.JFrame {
     Date date;
     
     Admins logged_admin;
+    String message;
     
     public generate_modify(String type, String part, String category, String description, Date genDate, String author, String configuration) {
         
@@ -1216,46 +1217,47 @@ public class generate_modify extends javax.swing.JFrame {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        
-        if(pn.equals(val1)){
-        }
-        else if(!pn.equals(val1)){
-            JPasswordField pwd = new JPasswordField();
-            int action = JOptionPane.showConfirmDialog(null, pwd,"Enter " + logged_admin.getUsername() + "'s Password",JOptionPane.OK_CANCEL_OPTION);
-            switch(action){
-                case 0:
-                    if(pwd.getText().equals(logged_admin.getPassword())){
-                        Object[] options = {"Yes","No"};
-                        int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
-                        switch (opt){
-                            case 0:
-                                try {
-                                    if(ty.equals("main")){
-                                        updateMain(pn_data, val1, val2, val3, date, val4, val5);
-                                    }
-                                    else if(ty.equals("tba")){
-                                        updateTba(tba_data, val1, val2, val3, date, val4, val5);
-                                    }
-                                    JOptionPane.showMessageDialog(null, "Database has been Updated !");
-                                } catch (Exception e){
-                                    JOptionPane.showMessageDialog(null, e);
+        System.out.println(message);
+        if("ok".equals(message)){
+        JPasswordField pwd = new JPasswordField();
+        int action = JOptionPane.showConfirmDialog(null, pwd,"Enter " + logged_admin.getUsername() + "'s Password",JOptionPane.OK_CANCEL_OPTION);
+        switch(action){
+            case 0:
+                if(pwd.getText().equals(logged_admin.getPassword())){
+                    Object[] options = {"Yes","No"};
+                    int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                    switch (opt){
+                        case 0:
+                            try {
+                                if(ty.equals("main")){
+                                    updateMain(pn_data, val1, val2, val3, date, val4, val5);
                                 }
-                                break;
-                            case 1:
-                                break;
-                        }
+                                else if(ty.equals("tba")){
+                                    updateTba(tba_data, val1, val2, val3, date, val4, val5);
+                                }
+                                JOptionPane.showMessageDialog(null, "Database has been Updated !");
+                            } catch (Exception e){
+                                JOptionPane.showMessageDialog(null, e);
+                            }
+                            break;
+                        case 1:
+                            break;
                     }
-                    else{
-                        JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
-                        btn_save.doClick();
-                        }
-                    break;
-                case 1:
-                    break;
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    btn_save.doClick();
+                    }
+                break;
+            case 1:
+                break;
             }
-        }
         this.setVisible(false);
         new mod_pn(ty, lbl_genPartNum.getText(), cmb_scheme.getSelectedItem().toString(), txt_des.getText(), date, cmb_aut.getSelectedItem().toString(), txt_config.getText()).setVisible(true);
+        }
+        else if("no".equals(message)){
+            
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
@@ -1418,6 +1420,7 @@ public class generate_modify extends javax.swing.JFrame {
         if(gen_pn.equals(pn)){
             btn_save.setEnabled(true);
             lbl_genPartNum.setForeground(Color.white);
+            message = "ok";
         }
         else{
             boolean valid_pn = false;
@@ -1447,10 +1450,12 @@ public class generate_modify extends javax.swing.JFrame {
             }
 
             if(valid_pn){
+                message = "ok";
                 btn_save.setEnabled(true);
                 lbl_genPartNum.setForeground(Color.white);
             }
             else{
+                message = "no";
                 JOptionPane.showMessageDialog(this, "Similar Part Number!!! \n Try Again.","Error", JOptionPane.ERROR_MESSAGE);
                 lbl_genPartNum.setForeground(Color.BLUE);
             }
