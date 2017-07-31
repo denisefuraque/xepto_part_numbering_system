@@ -65,13 +65,16 @@ public class save_data_user extends javax.swing.JFrame {
                                     d.getDescription(), 
                                     d.getGeneratedDate(),
                                     d.getAuthor(),
-                                    d.getConfiguration()
+                                    d.getConfiguration(),
+                                    d.getManufacturer(),
+                                    d.getMpn(),
+                                    d.getWhereUsed()
                                     );
                 dataList.add(data);
             }
             
-            model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
-            Object[] row = new Object[6];
+            model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Date Generated", "Author", "Configuration", "Manufacturer", "MPN", "Where Used"});
+            Object[] row = new Object[9];
 
             for (int i = 0; i < dataList.size(); i++){
                 row[0] = dataList.get(i).getPn();
@@ -80,6 +83,9 @@ public class save_data_user extends javax.swing.JFrame {
                 row[3] = dataList.get(i).getDate();
                 row[4] = dataList.get(i).getAut();
                 row[5] = dataList.get(i).getConfig();
+                row[6] = dataList.get(i).getManu();
+                row[7] = dataList.get(i).getMpn();
+                row[8] = dataList.get(i).getWhere();
                 model.addRow(row);
             }
             tbl_database.setModel(model);
@@ -364,6 +370,9 @@ public class save_data_user extends javax.swing.JFrame {
                     data.setGeneratedDate(sqlDate);
                     data.setAuthor(aut);
                     data.setConfiguration(config);
+                    data.setManufacturer(txt_manu.getText());
+                    data.setMpn(txt_mpn.getText());
+                    data.setWhereUsed(txt_wu.getText());
 
                     em.getEntityManagerFactory().getCache().evictAll();                    
                     em.getTransaction().begin();

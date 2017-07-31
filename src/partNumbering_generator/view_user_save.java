@@ -86,7 +86,10 @@ public class view_user_save extends javax.swing.JFrame {
                                     d.getDescription(), 
                                     d.getGeneratedDate(),
                                     d.getAuthor(),
-                                    d.getConfiguration()
+                                    d.getConfiguration(),
+                                    d.getManufacturer(),
+                                    d.getMpn(),
+                                    d.getWhereUsed()
                                     );
                 dataList.add(data);
             }
@@ -101,8 +104,8 @@ public class view_user_save extends javax.swing.JFrame {
     //function to Display data in JTable
     public void findData(){
         ArrayList<Class_data> data = ListClass_Data(txt_search.getText());
-        model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration"});
-        Object[] row = new Object[6];
+        model.setColumnIdentifiers(new Object[]{"Part Number", "Category", "Description", "Generated Date", "Author", "Configuration", "Manufacturer", "MPN", "Where Used"});
+        Object[] row = new Object[9];
         
         for (int i = 0; i < data.size(); i++){
             row[0] = data.get(i).getPn();
@@ -111,6 +114,9 @@ public class view_user_save extends javax.swing.JFrame {
             row[3] = data.get(i).getDate();
             row[4] = data.get(i).getAut();
             row[5] = data.get(i).getConfig();
+            row[6] = data.get(i).getManu();
+            row[7] = data.get(i).getMpn();
+            row[8] = data.get(i).getWhere();
             model.addRow(row);
         }
         tbl_database.setModel(model);

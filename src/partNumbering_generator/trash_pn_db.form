@@ -61,7 +61,7 @@
                           <Component id="btn_retrieve" max="32767" attributes="0"/>
                       </Group>
                       <Component id="header_pan" max="32767" attributes="0"/>
-                      <Component id="data_pan" alignment="0" pref="907" max="32767" attributes="0"/>
+                      <Component id="data_pan" alignment="0" pref="914" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
