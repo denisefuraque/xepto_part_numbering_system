@@ -14,6 +14,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 public class generate_modify extends javax.swing.JFrame {
     
@@ -43,10 +44,13 @@ public class generate_modify extends javax.swing.JFrame {
     
     EntityManager em;
     
-    String pn, cat, des, aut, con, un;
+    String ty, pn, cat, des, aut, con, un;
     Date date;
     
-    public generate_modify(String part, String category, String description, Date genDate, String author, String configuration) {
+    Admins logged_admin;
+    String message;
+    
+    public generate_modify(String type, String part, String category, String description, Date genDate, String author, String configuration) {
         
         initComponents();
         
@@ -70,6 +74,7 @@ public class generate_modify extends javax.swing.JFrame {
             this.setTitle("Modify Part Number Information - User (" + Account.getUser() + ")" );
         }
         
+        ty = type;
         pn = part;
         cat = category;
         des =  description;
@@ -472,6 +477,50 @@ public class generate_modify extends javax.swing.JFrame {
 
     }    
     
+    public void updateMain(PartNumberData partNum, String m_part, String m_cat, String m_des, Date m_date, String m_aut, String m_config) throws Exception{
+        em.getEntityManagerFactory().getCache().evictAll();
+        em.getTransaction().begin();
+        em.remove(partNum);
+        em.flush();
+        em.getTransaction().commit();
+        
+        em.getEntityManagerFactory().getCache().evictAll();
+        em.clear();
+        em.getTransaction().begin();
+        PartNumberData new_data = new PartNumberData();
+        new_data.setPartNumber(m_part);
+        new_data.setCategory(m_cat);
+        new_data.setDescription(m_des);
+        new_data.setGeneratedDate(m_date);
+        new_data.setAuthor(m_aut);
+        new_data.setConfiguration(m_config);
+        em.persist(new_data);
+        em.flush();
+        em.getTransaction().commit();
+    }
+    
+    public void updateTba(DataUsers tba, String m_part, String m_cat, String m_des, Date m_date, String m_aut, String m_config) throws Exception{
+        em.getEntityManagerFactory().getCache().evictAll();
+        em.getTransaction().begin();
+        em.remove(tba);
+        em.flush();
+        em.getTransaction().commit();
+        
+        em.getEntityManagerFactory().getCache().evictAll();
+        em.clear();
+        em.getTransaction().begin();
+        DataUsers new_data = new DataUsers();
+        new_data.setPartNumber(m_part);
+        new_data.setCategory(m_cat);
+        new_data.setDescription(m_des);
+        new_data.setGeneratedDate(m_date);
+        new_data.setAuthor(m_aut);
+        new_data.setConfiguration(m_config);
+        em.persist(new_data);
+        em.flush();
+        em.getTransaction().commit();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -791,7 +840,6 @@ public class generate_modify extends javax.swing.JFrame {
         btn_save.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/partNumbering_generator/Actions-document-save-as-icon.png"))); // NOI18N
         btn_save.setText("Save");
-        btn_save.setEnabled(false);
         btn_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_saveActionPerformed(evt);
@@ -1137,13 +1185,84 @@ public class generate_modify extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_configKeyTyped
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        btn_generate.doClick();
+
+        PartNumberData pn_data = null;
+        DataUsers tba_data = null;
+
+        if(ty.equals("main")){
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                    .setParameter("partNumber", pn);
+            pn_data = (PartNumberData) q.getSingleResult();
+        }
+        else if(ty.equals("tba")){
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                    .setParameter("partNumber", pn);
+            tba_data = (DataUsers) q.getSingleResult();
+        }
+
+        String val1 = lbl_genPartNum.getText();
+        String val2 = cmb_scheme.getSelectedItem().toString();
+        String val3 = txt_des.getText();
+        String val4 = cmb_aut.getSelectedItem().toString();
+        String val5 = txt_config.getText();
+        
+        try{
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query q = em.createNamedQuery("Admins.findByUsername")
+                    .setParameter("username", Account.getUser());
+            logged_admin = (Admins) q.getSingleResult();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println(message);
+        if("ok".equals(message)){
+        JPasswordField pwd = new JPasswordField();
+        int action = JOptionPane.showConfirmDialog(null, pwd,"Enter " + logged_admin.getUsername() + "'s Password",JOptionPane.OK_CANCEL_OPTION);
+        switch(action){
+            case 0:
+                if(pwd.getText().equals(logged_admin.getPassword())){
+                    Object[] options = {"Yes","No"};
+                    int opt = JOptionPane.showOptionDialog(this, "Are you sure you want to modify the data?", "WARNING!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                    switch (opt){
+                        case 0:
+                            try {
+                                if(ty.equals("main")){
+                                    updateMain(pn_data, val1, val2, val3, date, val4, val5);
+                                }
+                                else if(ty.equals("tba")){
+                                    updateTba(tba_data, val1, val2, val3, date, val4, val5);
+                                }
+                                JOptionPane.showMessageDialog(null, "Database has been Updated !");
+                            } catch (Exception e){
+                                JOptionPane.showMessageDialog(null, e);
+                            }
+                            break;
+                        case 1:
+                            break;
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "WRONG PASSWORD", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    btn_save.doClick();
+                    }
+                break;
+            case 1:
+                break;
+            }
         this.setVisible(false);
-        new mod_pn(lbl_genPartNum.getText(), cmb_scheme.getSelectedItem().toString(), txt_des.getText(), date, cmb_aut.getSelectedItem().toString(), txt_config.getText()).setVisible(true);
+        new mod_pn(ty, lbl_genPartNum.getText(), cmb_scheme.getSelectedItem().toString(), txt_des.getText(), date, cmb_aut.getSelectedItem().toString(), txt_config.getText()).setVisible(true);
+        }
+        else if("no".equals(message)){
+            
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
         this.setVisible(false);
-        new mod_pn(pn, cat, des, date, aut, con).setVisible(true);
+        new mod_pn(ty, pn, cat, des, date, aut, con).setVisible(true);
     }//GEN-LAST:event_btn_backActionPerformed
 
     private void btn_generateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generateActionPerformed
@@ -1298,45 +1417,53 @@ public class generate_modify extends javax.swing.JFrame {
         
         String gen_pn = lbl_genPartNum.getText();
         
-        boolean valid_pn = false;
-        boolean isUserData = false;
-        
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            Query q = em.createNamedQuery("DataUsers.findByPartNumber")
-                    .setParameter("partNumber", gen_pn);
-            DataUsers data = (DataUsers) q.getSingleResult();
-            isUserData = true;
-        }
-        catch(NoResultException e){
-            
-        }
-        
-        try{
-            em.getEntityManagerFactory().getCache().evictAll();
-            em.clear();
-            Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
-                    .setParameter("partNumber", gen_pn);
-            PartNumberData data = (PartNumberData) q.getSingleResult();
-        }
-        catch(NoResultException e){
-            if(!isUserData){
-                valid_pn = true;
-            }
-        }
-
-        if(valid_pn){
+        if(gen_pn.equals(pn)){
             btn_save.setEnabled(true);
             lbl_genPartNum.setForeground(Color.white);
+            message = "ok";
         }
         else{
-            JOptionPane.showMessageDialog(this, "Similar Part Number!!! \n Try Again.","Error", JOptionPane.ERROR_MESSAGE);
-            lbl_genPartNum.setForeground(Color.BLUE);
+            boolean valid_pn = false;
+            boolean isUserData = false;
+
+            try{
+                em.getEntityManagerFactory().getCache().evictAll();
+                Query q = em.createNamedQuery("DataUsers.findByPartNumber")
+                        .setParameter("partNumber", gen_pn);
+                DataUsers data = (DataUsers) q.getSingleResult();
+                isUserData = true;
+            }
+            catch(NoResultException e){
+
+            }
+            try{
+                em.getEntityManagerFactory().getCache().evictAll();
+                em.clear();
+                Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
+                        .setParameter("partNumber", gen_pn);
+                PartNumberData data = (PartNumberData) q.getSingleResult();
+            }
+            catch(NoResultException e){
+                if(!isUserData){
+                    valid_pn = true;
+                }
+            }
+
+            if(valid_pn){
+                message = "ok";
+                btn_save.setEnabled(true);
+                lbl_genPartNum.setForeground(Color.white);
+            }
+            else{
+                message = "no";
+                JOptionPane.showMessageDialog(this, "Similar Part Number!!! \n Try Again.","Error", JOptionPane.ERROR_MESSAGE);
+                lbl_genPartNum.setForeground(Color.BLUE);
+            }
         }
     }//GEN-LAST:event_btn_generateActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        new mod_pn(pn, cat, des, date, aut, con).setVisible(true);
+        new mod_pn(ty, pn, cat, des, date, aut, con).setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -1369,7 +1496,7 @@ public class generate_modify extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new generate_modify(null, null, null, null, null, null).setVisible(true);
+                new generate_modify(null, null, null, null, null, null, null).setVisible(true);
             }
         });
     }

@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class mod_pn extends javax.swing.JFrame {
 
-    String pn, cat, des, aut, con;
+    String ty, pn, cat, des, aut, con;
     Date date;
     
     EntityManager em;
@@ -23,7 +23,7 @@ public class mod_pn extends javax.swing.JFrame {
     ImageIcon war = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-warning-icon (1).png"));
     ImageIcon che = new ImageIcon(getClass().getResource("/partNumbering_generator/sign-check-icon (1).png"));
     
-    public mod_pn(String part, String category, String description, Date genDate, String author, String configuration) {
+    public mod_pn(String type, String part, String category, String description, Date genDate, String author, String configuration) {
         initComponents();
         
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage());
@@ -36,6 +36,7 @@ public class mod_pn extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e.toString());
         }     
         
+        ty = type;
         pn = part;
         cat = category;
         des =  description;
@@ -296,7 +297,7 @@ public class mod_pn extends javax.swing.JFrame {
 
     private void btn_modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modActionPerformed
         this.setVisible(false);
-        new generate_modify(pn, cat, des, date, aut, con).setVisible(true);
+        new generate_modify(ty, pn, cat, des, date, aut, con).setVisible(true);
     }//GEN-LAST:event_btn_modActionPerformed
 
     private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
@@ -334,7 +335,7 @@ public class mod_pn extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new mod_pn(null, null, null, null, null, null).setVisible(true);
+            new mod_pn(null,null, null, null, null, null, null).setVisible(true);
         });
     }
 
