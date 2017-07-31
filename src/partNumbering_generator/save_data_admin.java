@@ -2,6 +2,7 @@
 package partNumbering_generator;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -107,16 +108,22 @@ public class save_data_admin extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_des = new javax.swing.JTextArea();
         btn_save = new javax.swing.JButton();
+        txt_wu = new javax.swing.JTextField();
+        txt_mpn = new javax.swing.JTextField();
+        txt_manu = new javax.swing.JTextField();
+        lbl_manu = new javax.swing.JLabel();
+        lbl_mpn = new javax.swing.JLabel();
+        lbl_wu = new javax.swing.JLabel();
         header_pan = new javax.swing.JPanel();
         lbl_icon = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setTitle("Save Record (Admin) - Part Number Generator");
-        setMaximumSize(new java.awt.Dimension(700, 600));
-        setMinimumSize(new java.awt.Dimension(700, 600));
-        setPreferredSize(new java.awt.Dimension(700, 600));
+        setMaximumSize(new java.awt.Dimension(700, 660));
+        setMinimumSize(new java.awt.Dimension(700, 660));
+        setPreferredSize(new java.awt.Dimension(700, 660));
         setResizable(false);
-        setSize(new java.awt.Dimension(700, 600));
+        setSize(new java.awt.Dimension(700, 660));
 
         bg_pan.setBackground(new java.awt.Color(204, 204, 255));
         bg_pan.setMaximumSize(new java.awt.Dimension(700, 535));
@@ -143,13 +150,13 @@ public class save_data_admin extends javax.swing.JFrame {
         );
         database_panLayout.setVerticalGroup(
             database_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(database_panLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         information_pan.setBackground(new java.awt.Color(204, 204, 204));
         information_pan.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "INFORMATION", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Miriam Fixed", 1, 20), new java.awt.Color(255, 255, 255))); // NOI18N
+        information_pan.setMinimumSize(new java.awt.Dimension(479, 324));
+        information_pan.setPreferredSize(new java.awt.Dimension(479, 324));
 
         lbl_partNumber.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         lbl_partNumber.setText("Part Number : ");
@@ -178,26 +185,71 @@ public class save_data_admin extends javax.swing.JFrame {
             }
         });
 
+        txt_wu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        txt_wu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_wuActionPerformed(evt);
+            }
+        });
+
+        txt_mpn.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        txt_mpn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_mpnActionPerformed(evt);
+            }
+        });
+
+        txt_manu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        txt_manu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_manuActionPerformed(evt);
+            }
+        });
+
+        lbl_manu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        lbl_manu.setText("Manufacturer : ");
+
+        lbl_mpn.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        lbl_mpn.setText("MPN : ");
+
+        lbl_wu.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
+        lbl_wu.setText("Where - Used : ");
+
         javax.swing.GroupLayout information_panLayout = new javax.swing.GroupLayout(information_pan);
         information_pan.setLayout(information_panLayout);
         information_panLayout.setHorizontalGroup(
             information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(information_panLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_description)
-                    .addComponent(lbl_partNumber)
-                    .addComponent(lbl_category))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(txt_cat)
-                    .addComponent(txt_partNum))
+                    .addGroup(information_panLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_description)
+                            .addComponent(lbl_partNumber))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_cat, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                            .addComponent(txt_partNum)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
+                        .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_manu, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_mpn, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_wu, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_manu)
+                            .addComponent(txt_mpn)
+                            .addComponent(txt_wu)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(lbl_category)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, information_panLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
         );
         information_panLayout.setVerticalGroup(
             information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,16 +262,25 @@ public class save_data_admin extends javax.swing.JFrame {
                 .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_description)
                     .addComponent(txt_cat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
                 .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(information_panLayout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(lbl_category))
-                    .addGroup(information_panLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_category))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_manu)
+                    .addComponent(txt_manu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_mpn)
+                    .addComponent(txt_mpn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(information_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_wu)
+                    .addComponent(txt_wu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_save)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         txt_partNum.setEditable(false);
@@ -264,19 +325,18 @@ public class save_data_admin extends javax.swing.JFrame {
                 .addGroup(bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(header_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(database_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(information_pan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(information_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         bg_panLayout.setVerticalGroup(
             bg_panLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bg_panLayout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
+            .addGroup(bg_panLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(header_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(database_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(information_pan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                .addComponent(information_pan, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -297,7 +357,7 @@ public class save_data_admin extends javax.swing.JFrame {
         
         String aut = Account.getUser();
         Date today = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(today.getTime());
+        java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
         String config = txt_partNum.getText().substring(txt_partNum.getText().length() - 4);
        
         Object[] options = { "Yes", "No"};
@@ -350,6 +410,18 @@ public class save_data_admin extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btn_saveActionPerformed
 
+    private void txt_wuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_wuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_wuActionPerformed
+
+    private void txt_mpnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_mpnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_mpnActionPerformed
+
+    private void txt_manuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_manuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_manuActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -393,10 +465,16 @@ public class save_data_admin extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_category;
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_icon;
+    private javax.swing.JLabel lbl_manu;
+    private javax.swing.JLabel lbl_mpn;
     private javax.swing.JLabel lbl_partNumber;
+    private javax.swing.JLabel lbl_wu;
     private javax.swing.JTable tbl_database;
     private javax.swing.JTextField txt_cat;
     private javax.swing.JTextArea txt_des;
+    private javax.swing.JTextField txt_manu;
+    private javax.swing.JTextField txt_mpn;
     private javax.swing.JTextField txt_partNum;
+    private javax.swing.JTextField txt_wu;
     // End of variables declaration//GEN-END:variables
 }

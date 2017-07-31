@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -28,6 +29,12 @@ public class view_database_user extends javax.swing.JFrame {
     
     ArrayList<Class_data> dataList = new ArrayList<>();
     
+    List<String> partNumber;
+    String category, description, author, config;
+    Date genDate;
+    int[] row;
+    int selectedRowCount;
+    
     EntityManager em;
     
     public view_database_user() {
@@ -44,6 +51,8 @@ public class view_database_user extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(getClass().getResource("xepto logo - white bg - x.jpg")).getImage()); 
         
         setLocationRelativeTo(null);
+        
+        partNumber = new ArrayList<>();
         
         //call function
         findData();
@@ -149,6 +158,14 @@ public class view_database_user extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseReleased(evt);
             }
         });
         jScrollPane2.setViewportView(tbl_database);
@@ -306,6 +323,33 @@ public class view_database_user extends javax.swing.JFrame {
         exportToCSV ex = new exportToCSV();
         ex.export();
     }//GEN-LAST:event_btn_exportActionPerformed
+
+    private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
+        if (evt.getClickCount() == 2) {
+            category = tbl_database.getModel().getValueAt(row[0], 1).toString();
+            description = tbl_database.getModel().getValueAt(row[0], 2).toString();
+            genDate = (Date) tbl_database.getModel().getValueAt(row[0], 3);
+            author = tbl_database.getModel().getValueAt(row[0], 4).toString();
+            config = tbl_database.getModel().getValueAt(row[0], 5).toString();
+            
+            this.hide();
+            new mod_pn("user_main", partNumber.get(0), category, description, genDate, author, config).setVisible(true);
+        }
+    }//GEN-LAST:event_tbl_databaseMouseClicked
+
+    private void tbl_databaseMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseReleased
+        partNumber.clear();
+        
+        selectedRowCount = tbl_database.getSelectedRowCount();
+        row = tbl_database.getSelectedRows();
+        for(int i=0; i<row.length; i++){
+            if (tbl_database.getRowSorter()!=null) {
+                row[i] = tbl_database.getRowSorter().convertRowIndexToModel(row[i]);
+            }
+            partNumber.add(tbl_database.getModel().getValueAt(row[i], 0).toString());
+            System.out.println(row[i]);
+        }
+    }//GEN-LAST:event_tbl_databaseMouseReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

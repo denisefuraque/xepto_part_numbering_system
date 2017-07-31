@@ -31,6 +31,8 @@ public class view_user_added_admin extends javax.swing.JFrame {
     
     List<String> partNumber, category, description, author, config;
     List<Date> genDate;
+    String category1, description1, author1, config1;
+    Date genDate1;
     int[] row;
     int selectedRowCount;
     
@@ -189,6 +191,9 @@ public class view_user_added_admin extends javax.swing.JFrame {
         data_pan.setMinimumSize(new java.awt.Dimension(445, 840));
 
         tbl_database.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_databaseMouseClicked(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 tbl_databaseMouseReleased(evt);
             }
@@ -446,6 +451,19 @@ public class view_user_added_admin extends javax.swing.JFrame {
             System.out.println(row[i]);
         }
     }//GEN-LAST:event_tbl_databaseMouseReleased
+
+    private void tbl_databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_databaseMouseClicked
+        if (evt.getClickCount() == 2) {
+            category1 = tbl_database.getModel().getValueAt(row[0], 1).toString();
+            description1 = tbl_database.getModel().getValueAt(row[0], 2).toString();
+            genDate1 = (Date) tbl_database.getModel().getValueAt(row[0], 3);
+            author1 = tbl_database.getModel().getValueAt(row[0], 4).toString();
+            config1 = tbl_database.getModel().getValueAt(row[0], 5).toString();
+            
+            this.hide();
+            new mod_pn("admin_tba", partNumber.get(0), category1, description1, genDate1, author1, config1).setVisible(true);
+        }
+    }//GEN-LAST:event_tbl_databaseMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

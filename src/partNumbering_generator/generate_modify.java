@@ -1190,13 +1190,13 @@ public class generate_modify extends javax.swing.JFrame {
         PartNumberData pn_data = null;
         DataUsers tba_data = null;
 
-        if(ty.equals("main")){
+        if(ty.equals("admin_main") || ty.equals("user_main")){
             em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("PartNumberData.findByPartNumber")
                     .setParameter("partNumber", pn);
             pn_data = (PartNumberData) q.getSingleResult();
         }
-        else if(ty.equals("tba")){
+        else if(ty.equals("user_tba") || ty.equals("admin_tba")){
             em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createNamedQuery("DataUsers.findByPartNumber")
                     .setParameter("partNumber", pn);
@@ -1229,10 +1229,10 @@ public class generate_modify extends javax.swing.JFrame {
                     switch (opt){
                         case 0:
                             try {
-                                if(ty.equals("main")){
+                                if(ty.equals("admin_main") || ty.equals("user_main")){
                                     updateMain(pn_data, val1, val2, val3, date, val4, val5);
                                 }
-                                else if(ty.equals("tba")){
+                                else if(ty.equals("user_tba") || ty.equals("admin_tba")){
                                     updateTba(tba_data, val1, val2, val3, date, val4, val5);
                                 }
                                 JOptionPane.showMessageDialog(null, "Database has been Updated !");
