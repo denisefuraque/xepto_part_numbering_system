@@ -94,6 +94,11 @@ public class emp_dir_user extends javax.swing.JFrame {
                     Query q = em.createNamedQuery("Employee.findByUsername")
                             .setParameter("username", selected);
                     Employee emp = (Employee) q.getSingleResult();
+                    
+                    Trash trash = new Trash(emp.getUsername(), emp.getFirstName(), emp.getLastName(),
+                            emp.getJobTitle(), emp.getPassword());
+                    trash.addToDb();
+                    
                     em.remove(emp);
                     em.flush();
                     em.getTransaction().commit();
@@ -269,7 +274,7 @@ public class emp_dir_user extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbl_icon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         header_panLayout.setVerticalGroup(
@@ -285,6 +290,11 @@ public class emp_dir_user extends javax.swing.JFrame {
         btn_delete.setBackground(new java.awt.Color(204, 204, 255));
         btn_delete.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
         btn_delete.setText("Delete Account");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_save.setBackground(new java.awt.Color(204, 204, 255));
         btn_save.setFont(new java.awt.Font("Miriam", 0, 20)); // NOI18N
@@ -433,6 +443,10 @@ public class emp_dir_user extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tbl_databaseMouseClicked
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

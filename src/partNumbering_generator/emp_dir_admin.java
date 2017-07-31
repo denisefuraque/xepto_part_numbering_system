@@ -86,6 +86,11 @@ public class emp_dir_admin extends javax.swing.JFrame {
                     Query q = em.createNamedQuery("Admins.findByUsername")
                             .setParameter("username", selected);
                     Admins admin = (Admins) q.getSingleResult();
+                    
+                    Trash trash = new Trash(admin.getUsername(), admin.getFirstName(), admin.getLastName(),
+                            admin.getJobTitle(), admin.getPassword());
+                    trash.addToDb();
+                    
                     em.remove(admin);
                     em.flush();
                     em.getTransaction().commit();
